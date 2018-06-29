@@ -1,0 +1,106 @@
+package org.kdb.studio;
+
+import org.kdb.studio.db.ConnectionManager;
+
+import java.util.*;
+
+public class State {
+
+    public Collection<Connection> connections;
+
+    public String activeConnection;
+
+    public static class Connection {
+
+        public String name;
+
+        public String host;
+
+        public int port;
+
+        public String username;
+
+        public String password;
+
+        public Connection() {
+        }
+
+        public Connection(String name, String host, int port, String username, char[] password) {
+            this.name = name;
+            this.host = host;
+            this.port = port;
+            this.username = username;
+            this.password = new String(password);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Connection that = (Connection) o;
+            return port == that.port &&
+                    Objects.equals(name, that.name) &&
+                    Objects.equals(host, that.host) &&
+                    Objects.equals(username, that.username) &&
+                    Objects.equals(password, that.password);
+        }
+
+        @Override
+        public int hashCode() {
+
+            int result = Objects.hash(name, host, port, username, password);
+            return result;
+        }
+    }
+
+    public State() {
+    }
+
+    public Collection<Connection> getConnections() {
+        return connections;
+    }
+
+    public void setConnections(Collection<Connection> connections) {
+        this.connections = connections;
+    }
+
+    public String getActiveConnection() {
+        return activeConnection;
+    }
+
+    public void setActiveConnection(String activeConnection) {
+        this.activeConnection = activeConnection;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        State state = (State) o;
+        return Objects.equals(connections, state.connections) &&
+                Objects.equals(activeConnection, state.activeConnection);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(connections, activeConnection);
+    }
+
+    static State create(ConnectionManager connectionManager) {
+        State state = new State();
+        state.setConnections(new LinkedList<>());
+        Optional.ofNullable(connectionManager.getActiveConnection()).ifPresent(conn -> state.setActiveConnection(conn.getView()));
+        for (org.kdb.studio.db.Connection conn : connectionManager.getConnections()) {
+            state.getConnections().add(new Connection(conn.getName(), conn.getHost(), conn.getPort(), conn.getUsername(), conn.getPassword()));
+        }
+        return state;
+    }
+
+    void apply(ConnectionManager connectionManager) {
+        connectionManager.releaseAll();
+        connections.forEach(connection -> connectionManager.addOrUpdate(new org.kdb.studio.db.Connection(connection.name, connection.host, connection.port, connection.username, connection.password.toCharArray())));
+        connectionManager.setActiveConnection(connectionManager.getConnectionByName(activeConnection));
+
+    }
+}

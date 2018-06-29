@@ -1,0 +1,43 @@
+package org.kdb.studio.kx.type;
+
+import org.kdb.studio.kx.Config;
+import org.kdb.studio.kx.LimitedWriter;
+
+import java.io.IOException;
+import java.sql.Timestamp;
+
+public class KDatetime extends KBase {
+    public String getDataType() {
+        return "Datetime";
+    }
+
+    double time;
+
+    public KDatetime(double time) {
+        type = -15;
+        this.time = time;
+    }
+
+    public boolean isNull() {
+        return Double.isNaN(time);
+    }
+
+    public String toString(boolean showType) {
+        if (isNull())
+            return "0nz";
+        else if (time == Double.POSITIVE_INFINITY)
+            return "0wz";
+        else if (time == Double.NEGATIVE_INFINITY)
+            return "-0wz";
+        else
+            return Config.getInstance().getDateFormat("yyyy.MM.dd HH:mm:ss.SSS").format(toTimestamp());
+    }
+
+    public void toString(LimitedWriter w, boolean showType) throws IOException {
+        w.write(toString(showType));
+    }
+
+    public Timestamp toTimestamp() {
+        return new Timestamp(((long) (.5 + 8.64e7 * (time + 10957))));
+    }
+}
