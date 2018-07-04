@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Array;
 import java.sql.Time;
+import java.time.Instant;
 
 public class KTimeVector extends KBaseVector {
     public String getDataType() {
@@ -51,7 +52,7 @@ public class KTimeVector extends KBaseVector {
                 else if (v == -Integer.MAX_VALUE)
                     w.write("-0Wt");
                 else
-                    w.write(Config.getInstance().getDateFormat("HH:mm:ss.SSS").format(new Time(v)));
+                    w.write(Config.getInstance().getDateTimeFormatter("HH:mm:ss.SSS").format(Instant.ofEpochMilli(v)));
             }
         }
     }

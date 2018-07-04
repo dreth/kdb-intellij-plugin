@@ -23,7 +23,9 @@ import org.kdb.studio.kx.ToDouble;
 import org.kdb.studio.kx.type.*;
 
 import javax.swing.*;
+import java.time.Instant;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -87,19 +89,19 @@ public class LineChart extends DialogWrapper {
     public static RegularTimePeriod convertToPeriod(KBase period, Class kBaseVector, TimeZone tz) {
         if (KDateVector.class == kBaseVector) {
             KDate date = (KDate) period;
-            return new Day(date.toDate(), tz, Locale.getDefault());
+            return new Day(Date.from(date.toDate()), tz, Locale.getDefault());
         } else if (KTimeVector.class == kBaseVector) {
             KTime time = (KTime) period;
-            return new Millisecond(time.toTime(), tz, Locale.getDefault());
+            return new Millisecond(Date.from(time.toTime()), tz, Locale.getDefault());
         } else if (KTimestampVector.class == kBaseVector) {
             KTimestamp date = (KTimestamp) period;
-            return new Day(new java.util.Date(date.toTimestamp().getTime()), tz, Locale.getDefault());
+            return new Day(Date.from(Instant.class.cast(date.toTimestamp()[0])), tz, Locale.getDefault());
         } else if (KTimespanVector.class == kBaseVector) {
             KTimespan time = (KTimespan) period;
             return new Millisecond(time.toTime(), tz, Locale.getDefault());
         } else if (KDatetimeVector.class == kBaseVector) {
             KDatetime time = (KDatetime) period;
-            return new Millisecond(time.toTimestamp(), tz, Locale.getDefault());
+            return new Millisecond(Date.from(time.toTimestamp()), tz, Locale.getDefault());
         } else if (KMonthVector.class == kBaseVector) {
             org.kdb.studio.kx.type.Month time = (org.kdb.studio.kx.type.Month) period;
             int m = time.i + 24000;
@@ -156,8 +158,10 @@ public class LineChart extends DialogWrapper {
 
                         for (int row = 0; row < table.getRowCount(); row++) {
                             double x = ((ToDouble) table.getValueAt(row, 0)).toDouble();
-                            double y = ((ToDouble) table.getValueAt(row, col)).toDouble();
-                            series.add(x, y);
+                            Object y = table.getValueAt(row, col);
+                            if (y instanceof ToDouble) {
+                                series.addOrUpdate(x, ((ToDouble) y).toDouble());
+                            }
                         }
                     } catch (SeriesException e) {
                         Notifications.Bus.notify(new Notification("KDBStudio", "Failed to parse data for chart view", e.getMessage(),  NotificationType.WARNING));

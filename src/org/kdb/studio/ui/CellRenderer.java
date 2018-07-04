@@ -18,6 +18,21 @@ class CellRenderer extends DefaultTableCellRenderer {
 
     static Color gridColor = UIManager.getColor("Table.background");
 
+    static Color selectionFGColor = UIManager.getColor("Table.selectionForeground");
+
+    static Color fgColor = UIManager.getColor("Table.foreground");
+
+    static Color keyColor = new Color(220,255,220);
+
+    static Color altColor = new Color(220,220,255);
+
+    static Color nullColor = new Color(255,150,150);
+
+    public CellRenderer() {
+        setFont(UIManager.getFont("Table.font"));
+        setBackground(UIManager.getColor("Table.background"));
+    }
+
     public Component getTableCellRendererComponent(JTable table,
                                                    Object value,
                                                    boolean isSelected,
@@ -36,12 +51,23 @@ class CellRenderer extends DefaultTableCellRenderer {
                 Notifications.Bus.notify(new Notification("KDBStudio", "Failed to parse data for table view", ex.getMessage(),  NotificationType.WARNING));
             }
             setText(w.toString());
+            setForeground(kb.isNull() ? nullColor : fgColor);
         }
-        if (isSelected) {
-            setBackground(bgColor);
+
+        if (!isSelected) {
+            KTableModel ktm = (KTableModel) table.getModel();
+            column = table.convertColumnIndexToModel(column);
+            if (ktm.isKey(column))
+                setBackground(keyColor);
+            else if (row % 2 == 0)
+                setBackground(altColor);
+            else
+                setBackground(gridColor);
         } else {
-            setBackground(gridColor);
+            setForeground(selectionFGColor);
+            setBackground(bgColor);
         }
+        setHorizontalAlignment(SwingConstants.RIGHT);
         return this;
     }
 }

@@ -21,7 +21,7 @@ public class ExcelAction extends AnAction {
     private TableGroupPanel tableGroupPanel;
 
     public ExcelAction(TableGroupPanel tableGroupPanel) {
-        super("Open in excel");
+        super("Open in Excel");
         this.tableGroupPanel = tableGroupPanel;
         getTemplatePresentation().setIcon(IconLoader.findIcon("/icons/excel_icon.gif"));
     }

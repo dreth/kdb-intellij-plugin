@@ -5,6 +5,7 @@ import org.kdb.studio.kx.LimitedWriter;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.time.Instant;
 import java.util.Date;
 
 public class KDateVector extends KBaseVector {
@@ -42,7 +43,7 @@ public class KDateVector extends KBaseVector {
                     w.write("-0W");
                 else {
                     printD = false;
-                    w.write(Config.getInstance().getDateFormat("yyyy.MM.dd").format(new Date(86400000L * (v + 10957))));
+                    w.write(Config.getInstance().getDateTimeFormatter("yyyy.MM.dd").format(Instant.ofEpochMilli(86400000L * (v + 10957))));
                 }
             }
             if (printD)

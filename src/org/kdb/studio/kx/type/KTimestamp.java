@@ -5,6 +5,7 @@ import org.kdb.studio.kx.LimitedWriter;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.time.Instant;
 
 public class KTimestamp extends KBase {
     public String getDataType() {
@@ -30,8 +31,8 @@ public class KTimestamp extends KBase {
         else if (time == -Long.MAX_VALUE)
             return "-0Wp";
         else {
-            Timestamp ts = toTimestamp();
-            return Config.getInstance().getDateFormat("yyyy.MM.dd HH:mm:ss.").format(ts) + Config.getInstance().getNanosFormat().format(ts.getNanos());
+            Object[] ts = toTimestamp();
+            return Config.getInstance().getDateTimeFormatter("yyyy.MM.dd HH:mm:ss.").format(Instant.class.cast(ts[0])) + Config.getInstance().getNanosFormat().format(ts[1]);
         }
     }
 
@@ -39,14 +40,12 @@ public class KTimestamp extends KBase {
         w.write(toString(showType));
     }
 
-    public Timestamp toTimestamp() {
+    public Object[] toTimestamp() {
         long k = 86400000L * 10957;
         long n = 1000000000L;
         long d = time < 0 ? (time + 1) / n - 1 : time / n;
         long ltime = time == Long.MIN_VALUE ? time : (k + 1000 * d);
         int nanos = (int) (time - n * d);
-        Timestamp ts = new Timestamp(ltime);
-        ts.setNanos(nanos);
-        return ts;
+        return new Object[] {Instant.ofEpochMilli(ltime), nanos};
     }
 }

@@ -3,6 +3,7 @@ package org.kdb.studio.kx.type;
 import org.kdb.studio.kx.LimitedWriter;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -11,7 +12,6 @@ public class Minute extends KBase {
         return "Minute";
     }
 
-    ;
     public int i;
 
     public Minute(int x) {
@@ -38,10 +38,10 @@ public class Minute extends KBase {
         w.write(toString(showType));
     }
 
-    public Date toDate() {
+    public Instant toDate() {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.HOUR, i / 60);
         cal.set(Calendar.MINUTE, i % 60);
-        return cal.getTime();
+        return cal.toInstant();
     }
 }

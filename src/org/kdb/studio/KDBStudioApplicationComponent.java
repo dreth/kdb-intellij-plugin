@@ -5,6 +5,7 @@ import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.Storage;
+import com.intellij.openapi.keymap.KeymapManager;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.kdb.studio.actions.ConnectionsBoxAction;
@@ -26,12 +27,18 @@ public class KDBStudioApplicationComponent implements ApplicationComponent, Pers
     @Override
     public void initComponent() {
         ConnectionManager connectionManager = ConnectionManager.getInstance();
+        RunCodeAction runCodeAction = new RunCodeAction(connectionManager);
+        RunAllAction runAllAction = new RunAllAction(connectionManager);
+
         kdbActionGroup = new DefaultActionGroup();
         kdbActionGroup.add(new ConnectionsBoxAction(connectionManager));
-        kdbActionGroup.add(new RunCodeAction(connectionManager));
-        kdbActionGroup.add(new RunAllAction(connectionManager));
+        kdbActionGroup.add(runCodeAction);
+        kdbActionGroup.add(runAllAction);
 
         ActionManager am = ActionManager.getInstance();
+        am.registerAction("KDB_run_line", runCodeAction);
+        am.registerAction("KDB_run_all", runAllAction);
+
         DefaultActionGroup windowM = (DefaultActionGroup) am.getAction(MAIN_TOOL_BAR);
 
         windowM.add(kdbActionGroup);

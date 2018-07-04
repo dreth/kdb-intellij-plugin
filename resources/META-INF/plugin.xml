@@ -42,6 +42,7 @@
     </project-components>
 
     <extensions defaultExtensionNs="com.intellij">
+        <keymapExtension implementation="org.kdb.studio.KDBKeymapExtension"/>
         <!-- Add your extensions here -->
     </extensions>
 

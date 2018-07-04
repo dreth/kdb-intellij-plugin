@@ -37,6 +37,9 @@ public class KDBStudioProjectComponent implements ProjectComponent {
 
     @Override
     public void projectClosed() {
+        ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
+        toolWindowManager.unregisterToolWindow("KDBStudio");
+
         QGrid.closeInstance(project);
     }
 }

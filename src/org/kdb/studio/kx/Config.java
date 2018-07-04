@@ -3,6 +3,8 @@ package org.kdb.studio.kx;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 public class Config {
     private static final Config INSTANCE = new Config();
@@ -33,6 +35,10 @@ public class Config {
 
     public SimpleDateFormat getDateFormat(String pattern) {
         return new SimpleDateFormat(pattern);
+    }
+
+    public DateTimeFormatter getDateTimeFormatter(String pattern) {
+        return DateTimeFormatter.ofPattern(pattern).withZone(ZoneId.of("UTC"));
     }
 
     public void setEncoding(String encoding) {

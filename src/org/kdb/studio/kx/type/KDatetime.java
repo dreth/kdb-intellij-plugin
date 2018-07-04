@@ -5,6 +5,7 @@ import org.kdb.studio.kx.LimitedWriter;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.time.Instant;
 
 public class KDatetime extends KBase {
     public String getDataType() {
@@ -30,14 +31,14 @@ public class KDatetime extends KBase {
         else if (time == Double.NEGATIVE_INFINITY)
             return "-0wz";
         else
-            return Config.getInstance().getDateFormat("yyyy.MM.dd HH:mm:ss.SSS").format(toTimestamp());
+            return Config.getInstance().getDateTimeFormatter("yyyy.MM.dd HH:mm:ss.SSS").format(toTimestamp());
     }
 
     public void toString(LimitedWriter w, boolean showType) throws IOException {
         w.write(toString(showType));
     }
 
-    public Timestamp toTimestamp() {
-        return new Timestamp(((long) (.5 + 8.64e7 * (time + 10957))));
+    public Instant toTimestamp() {
+        return Instant.ofEpochMilli(((long) (.5 + 8.64e7 * (time + 10957))));
     }
 }

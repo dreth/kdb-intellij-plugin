@@ -17,12 +17,19 @@ import org.kdb.studio.kx.type.KBase;
 import org.kdb.studio.kx.type.UnaryPrimitive;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Map;
 import java.util.WeakHashMap;
 
 public class QGrid {
+
+    static Color editorBgColor = UIManager.getColor("EditorPane.background");
+
+    static Color editorFgColor = UIManager.getColor("EditorPane.foreground");
+
+    static Font editorFont = UIManager.getFont("EditorPane.font");
 
     private JPanel panel1;
     private JTabbedPane tabbedPane1;
@@ -40,6 +47,9 @@ public class QGrid {
     private QGrid(Project project) {
         this.project = project;
         tableGroupPanel.disableAll();
+        textPane.setBackground(editorBgColor);
+        textPane.setForeground(editorFgColor);
+        textPane.setFont(editorFont);
     }
 
     public void showTable(String query, KTableModel tableModel) {
@@ -63,7 +73,7 @@ public class QGrid {
         tabbedPane1.setEnabledAt(1, true);
         tabbedPane1.setSelectedIndex(1);
         tableGroupPanel.disableAll();
-
+        this.tabbedPane1.setTitleAt(0, "Table");
         textPane.setText("<html><body>" + sb + "</body></html>");
     }
 

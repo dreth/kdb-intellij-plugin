@@ -13,14 +13,15 @@ import java.io.*;
 import java.text.CharacterIterator;
 import java.text.SimpleDateFormat;
 import java.text.StringCharacterIterator;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 
 public class ExcelExporter {
 
-    private static SimpleDateFormat formatter = new SimpleDateFormat();
-
-    private static synchronized String sd(String s, java.util.Date x) {
-        formatter.applyPattern(s);
-        return formatter.format(x);
+    private static synchronized String sd(String s, Instant x) {
+        return DateTimeFormatter.ofPattern(s).withZone(ZoneId.of("UTC")).format(x);
     }
 
     public static String escape(String s) {
@@ -103,7 +104,7 @@ public class ExcelExporter {
                         writer.write("<ss:Cell ss:StyleID=\"time\"><ss:Data ss:Type=\"DateTime\">" +
                                 "1899-12-31T" + sd("HH:mm:ss.SSS", ((KTime) b).toTime()));
                     } else if (table.getColumnClass(j) == KTimestampVector.class) {
-                        char[] cs = sd("yyyy-MM-dd HH:mm:ss.SSS", ((KTimestamp) b).toTimestamp()).toCharArray();
+                        char[] cs = sd("yyyy-MM-dd HH:mm:ss.SSS", Instant.class.cast(((KTimestamp) b).toTimestamp()[0])).toCharArray();
                         cs[10] = 'T';
                         writer.write("<ss:Cell ss:StyleID=\"datetime\"><ss:Data ss:Type=\"DateTime\">" + new String(cs));
                     } else if (table.getColumnClass(j) == KMonthVector.class) {

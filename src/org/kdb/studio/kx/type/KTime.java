@@ -5,6 +5,7 @@ import org.kdb.studio.kx.LimitedWriter;
 
 import java.io.IOException;
 import java.sql.Time;
+import java.time.Instant;
 
 public class KTime extends KBase {
     public String getDataType() {
@@ -30,14 +31,14 @@ public class KTime extends KBase {
         else if (time == -Integer.MAX_VALUE)
             return "-0Wt";
         else
-            return Config.getInstance().getDateFormat("HH:mm:ss.SSS").format(new Time(time));
+            return Config.getInstance().getDateTimeFormatter("HH:mm:ss.SSS").format(toTime());
     }
 
     public void toString(LimitedWriter w, boolean showType) throws IOException {
         w.write(toString(showType));
     }
 
-    public Time toTime() {
-        return new Time(time);
+    public Instant toTime() {
+        return Instant.ofEpochMilli(time);
     }
 }

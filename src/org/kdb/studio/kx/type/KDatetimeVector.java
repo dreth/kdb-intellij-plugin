@@ -6,6 +6,7 @@ import org.kdb.studio.kx.LimitedWriter;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.sql.Timestamp;
+import java.time.Instant;
 
 public class KDatetimeVector extends KBaseVector {
     public String getDataType() {
@@ -44,7 +45,7 @@ public class KDatetimeVector extends KBaseVector {
                     w.write("-0w");
                 else {
                     printZ = false;
-                    w.write(Config.getInstance().getDateFormat("yyyy.MM.dd HH:mm:ss.SSS").format(new Timestamp(((long) (.5 + 8.64e7 * (d + 10957))))));
+                    w.write(Config.getInstance().getDateTimeFormatter("yyyy.MM.dd HH:mm:ss.SSS").format(Instant.ofEpochMilli(((long) (.5 + 8.64e7 * (d + 10957))))));
                 }
             }
             if (printZ)
