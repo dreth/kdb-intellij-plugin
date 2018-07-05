@@ -5,10 +5,20 @@
     <vendor email="shupakabras@gmail.com">Andrii Borovyk</vendor>
 
     <description><![CDATA[
-      Open source IntelliJ IDEA plugin for sending queries to a q database, and showing the query results to the user
+      Open source IntelliJ IDEA plugin for sending queries to a q database, and showing the query results to the user.
+      <br/>
+      Based on open source "Studio for kdb+" application, described at <a href="https://code.kx.com/wiki/StudioForKdb%2B">https://code.kx.com/wiki/StudioForKdb+</a>.
+      <br/>
+      Source code of this plugin is available at <a href="https://gitlab.com/shupakabras/kdb-intellij-plugin">https://gitlab.com/shupakabras/kdb-intellij-plugin</a>
     ]]></description>
 
     <change-notes><![CDATA[
+      <h3>1.0.1</h3>
+      <br/>
+      <ul>
+        <li>bug fixes</li>
+      </ul>
+      <br/>
       <h3>1.0 functionality</h3>
       <ul>
         <li>Create/Edit connections</li>
