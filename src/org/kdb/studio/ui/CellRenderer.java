@@ -28,7 +28,11 @@ class CellRenderer extends DefaultTableCellRenderer {
 
     static Color nullColor = new Color(255,150,150);
 
-    public CellRenderer() {
+    private QGrid.ErrorLogger logger;
+
+
+    public CellRenderer(QGrid.ErrorLogger logger) {
+        this.logger = logger;
         setFont(UIManager.getFont("Table.font"));
         setBackground(UIManager.getColor("Table.background"));
     }
@@ -41,14 +45,14 @@ class CellRenderer extends DefaultTableCellRenderer {
                                                    int column) {
         if (value instanceof KBase) {
             KBase kb = (KBase) value;
-            LimitedWriter w = new LimitedWriter(256);
+            LimitedWriter w = new LimitedWriter(512);
 
             try {
                 kb.toString(w, kb instanceof KBaseVector);
             } catch (IOException e) {
-                Notifications.Bus.notify(new Notification("KDBStudio", "Failed to parse data for table view", e.getMessage(),  NotificationType.WARNING));
+                this.logger.log("Failed to parse data for table view", e.getMessage() != null ? e.getMessage() : e.toString());
             } catch (LimitedWriter.LimitException ex) {
-                Notifications.Bus.notify(new Notification("KDBStudio", "Failed to parse data for table view", ex.getMessage(),  NotificationType.WARNING));
+                this.logger.log("Failed to parse data for table view", "Data is loo long. Cut output.");
             }
             setText(w.toString());
             setForeground(kb.isNull() ? nullColor : fgColor);

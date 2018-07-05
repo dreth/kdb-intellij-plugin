@@ -6,6 +6,7 @@ import com.intellij.notification.Notifications;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.table.JBTable;
+import org.jetbrains.annotations.NotNull;
 import org.kdb.studio.db.Connection;
 import org.kdb.studio.db.ConnectionManager;
 import org.kdb.studio.kx.K4Exception;
@@ -22,6 +23,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Map;
 import java.util.WeakHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class QGrid {
 
@@ -42,6 +44,8 @@ public class QGrid {
 
     private Project project;
 
+    private AtomicBoolean errorLogged = new AtomicBoolean(false);
+
     private static Map<Project, QGrid> instanceMap = new WeakHashMap();
 
     private QGrid(Project project) {
@@ -60,6 +64,7 @@ public class QGrid {
 
         int rows = tableModel.getRowCount();
         this.table.setModel(tableModel);
+        errorLogged.set(false);
         this.tabbedPane1.setTitleAt(0, "Table [" + rows + " rows]");
         wa.resizeAllColumns();
     }
@@ -193,12 +198,22 @@ public class QGrid {
 
     private void createUIComponents() {
         table = new JBTable();
-        table.setDefaultRenderer(KBase.class, new CellRenderer());
+        table.setDefaultRenderer(KBase.class, new CellRenderer((title, content) -> {
+            if (!errorLogged.get()) {
+                Notifications.Bus.notify(new Notification("KDBStudio", title, content, NotificationType.WARNING));
+                errorLogged.set(true);
+            }
+        }));
         table.getTableHeader().setDefaultRenderer(new TableHeaderRenderer());
         table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         table.setCellSelectionEnabled(true);
         wa = new WidthAdjuster(table);
         wa.resizeAllColumns();
 
+    }
+
+    @FunctionalInterface
+    public interface ErrorLogger {
+        void log(@NotNull String title, @NotNull String content);
     }
 }
