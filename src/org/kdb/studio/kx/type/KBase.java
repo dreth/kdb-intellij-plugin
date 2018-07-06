@@ -8,6 +8,10 @@ import java.io.OutputStream;
 
 public abstract class KBase {
 
+    static long MILLIS_IN_DAY = 86400000L;
+
+    static int DAYS_BETWEEN_1970_AND_2000 = 10957;
+
     static java.text.DecimalFormat i2Formatter= new java.text.DecimalFormat("00");
 
     public abstract String getDataType();

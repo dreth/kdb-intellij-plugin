@@ -43,7 +43,7 @@ public class KDateVector extends KBaseVector {
                     w.write("-0W");
                 else {
                     printD = false;
-                    w.write(Config.getInstance().getDateTimeFormatter("yyyy.MM.dd").format(Instant.ofEpochMilli(86400000L * (v + 10957))));
+                    w.write(Config.getInstance().getDateTimeFormatter("yyyy.MM.dd").format(Instant.ofEpochMilli(MILLIS_IN_DAY * (v + DAYS_BETWEEN_1970_AND_2000))));
                 }
             }
             if (printD)

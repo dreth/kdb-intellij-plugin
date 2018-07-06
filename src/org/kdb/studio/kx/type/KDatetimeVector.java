@@ -45,7 +45,7 @@ public class KDatetimeVector extends KBaseVector {
                     w.write("-0w");
                 else {
                     printZ = false;
-                    w.write(Config.getInstance().getDateTimeFormatter("yyyy.MM.dd HH:mm:ss.SSS").format(Instant.ofEpochMilli(((long) (.5 + 8.64e7 * (d + 10957))))));
+                    w.write(Config.getInstance().getDateTimeFormatter("yyyy.MM.dd HH:mm:ss.SSS").format(Instant.ofEpochMilli(((long) (.5 + ((double) MILLIS_IN_DAY) * (d + DAYS_BETWEEN_1970_AND_2000))))));
                 }
             }
             if (printZ)

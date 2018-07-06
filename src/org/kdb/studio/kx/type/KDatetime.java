@@ -39,6 +39,6 @@ public class KDatetime extends KBase {
     }
 
     public Instant toTimestamp() {
-        return Instant.ofEpochMilli(((long) (.5 + 8.64e7 * (time + 10957))));
+        return Instant.ofEpochMilli(((long) (.5 + ((double) MILLIS_IN_DAY) * (time + DAYS_BETWEEN_1970_AND_2000))));
     }
 }
