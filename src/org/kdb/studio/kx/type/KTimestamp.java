@@ -41,7 +41,7 @@ public class KTimestamp extends KBase {
     }
 
     public Object[] toTimestamp() {
-        long k = 86400000L * 10957;
+        long k = MILLIS_IN_DAY * DAYS_BETWEEN_1970_AND_2000;
         long n = 1000000000L;
         long d = time < 0 ? (time + 1) / n - 1 : time / n;
         long ltime = time == Long.MIN_VALUE ? time : (k + 1000 * d);

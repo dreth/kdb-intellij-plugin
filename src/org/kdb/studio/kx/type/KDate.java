@@ -39,6 +39,6 @@ public class KDate extends KBase {
     }
 
     public Instant toDate() {
-        return Instant.ofEpochMilli(86400000L * (date + 10957));
+        return Instant.ofEpochMilli(MILLIS_IN_DAY * (date + DAYS_BETWEEN_1970_AND_2000));
     }
 }
