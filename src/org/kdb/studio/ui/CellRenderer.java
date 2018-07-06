@@ -3,6 +3,7 @@ package org.kdb.studio.ui;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
+import org.kdb.studio.KDBBundle;
 import org.kdb.studio.kx.LimitedWriter;
 import org.kdb.studio.kx.type.KBase;
 import org.kdb.studio.kx.type.KBaseVector;
@@ -22,7 +23,7 @@ class CellRenderer extends DefaultTableCellRenderer {
 
     static Color fgColor = UIManager.getColor("Table.foreground");
 
-    static Color keyColor = new Color(220,255,220);
+    static Color keyColor = KDBBundle.getKeyColumnBackgroundColor();
 
     static Color altColor = new Color(220,220,255);
 
@@ -33,6 +34,7 @@ class CellRenderer extends DefaultTableCellRenderer {
 
     public CellRenderer(QGrid.ErrorLogger logger) {
         this.logger = logger;
+
         setFont(UIManager.getFont("Table.font"));
         setBackground(UIManager.getColor("Table.background"));
     }
