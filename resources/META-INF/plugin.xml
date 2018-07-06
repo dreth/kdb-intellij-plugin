@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>org.kdb.studio</id>
     <name>KDB+ Studio Plugin</name>
-    <version>1.0</version>
+    <version>1.0.1</version>
     <vendor email="shupakabras@gmail.com">Andrii Borovyk</vendor>
 
     <description><![CDATA[
