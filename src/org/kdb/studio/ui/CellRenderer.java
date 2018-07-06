@@ -25,9 +25,11 @@ class CellRenderer extends DefaultTableCellRenderer {
 
     static Color keyColor = KDBBundle.getKeyColumnBackgroundColor();
 
-    static Color altColor = new Color(220,220,255);
+    static Color altColor = KDBBundle.getOddColumnBackgroundColor();
 
-    static Color nullColor = new Color(255,150,150);
+    static Color nullColor = KDBBundle.getNullColumnForegroundColor();
+
+    static Font columnFont = KDBBundle.getTableColumnFont();
 
     private QGrid.ErrorLogger logger;
 
@@ -35,7 +37,7 @@ class CellRenderer extends DefaultTableCellRenderer {
     public CellRenderer(QGrid.ErrorLogger logger) {
         this.logger = logger;
 
-        setFont(UIManager.getFont("Table.font"));
+        setFont(columnFont);
         setBackground(UIManager.getColor("Table.background"));
     }
 
