@@ -3,6 +3,10 @@ package org.kdb.studio.ui;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
+import com.intellij.openapi.editor.colors.EditorColorsManager;
+import com.intellij.openapi.editor.colors.EditorColorsScheme;
+import com.intellij.openapi.editor.colors.EditorFontType;
+import com.intellij.openapi.editor.impl.EditorImpl;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.table.JBTable;
@@ -44,16 +48,22 @@ public class QGrid {
 
     private Project project;
 
+    private String style;
+
     private AtomicBoolean errorLogged = new AtomicBoolean(false);
 
     private static Map<Project, QGrid> instanceMap = new WeakHashMap();
 
     private QGrid(Project project) {
+        EditorColorsScheme editorColorsScheme = EditorColorsManager.getInstance().getSchemeForCurrentUITheme();
         this.project = project;
         tableGroupPanel.disableAll();
-        textPane.setBackground(editorBgColor);
-        textPane.setForeground(editorFgColor);
-        textPane.setFont(editorFont);
+        textPane.setBackground(editorColorsScheme.getDefaultBackground());
+        textPane.setForeground(editorColorsScheme.getDefaultForeground());
+        Font font = editorColorsScheme.getFont(EditorFontType.PLAIN);
+        style = new StringBuilder("style=\"font-family: '").append(font.getFamily())
+                .append("'; font-size:").append(font.getSize()).append("pt;").append("\"").toString();
+        textPane.setFont(font);
     }
 
     public void showTable(String query, KTableModel tableModel) {
@@ -79,7 +89,7 @@ public class QGrid {
         tabbedPane1.setSelectedIndex(1);
         tableGroupPanel.disableAll();
         this.tabbedPane1.setTitleAt(0, "Table");
-        textPane.setText("<html><body>" + sb + "</body></html>");
+        textPane.setText("<html><body " + style + " >" + sb + "</body></html>");
     }
 
     public void showResponse(String query, KBase response) {
@@ -122,7 +132,7 @@ public class QGrid {
             throw e;
         } catch (IOException ex) {
             StringBuilder sb = new StringBuilder("<span style=\"color:red\">");
-            sb.append("A communications error occurred whilst sending the query ");
+            sb.append("A communications error occurred while sending the query ");
             if (conn != null) {
                 sb.append(" to ").append(conn.getHost()).append(":").append(conn.getPort());
             }
