@@ -3,14 +3,15 @@ package org.kdb.studio.ui;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
+import com.intellij.openapi.editor.colors.EditorColorsListener;
 import com.intellij.openapi.editor.colors.EditorColorsManager;
 import com.intellij.openapi.editor.colors.EditorColorsScheme;
 import com.intellij.openapi.editor.colors.EditorFontType;
-import com.intellij.openapi.editor.impl.EditorImpl;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.table.JBTable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.kdb.studio.db.Connection;
 import org.kdb.studio.db.ConnectionManager;
 import org.kdb.studio.kx.K4Exception;
@@ -22,6 +23,8 @@ import org.kdb.studio.kx.type.KBase;
 import org.kdb.studio.kx.type.UnaryPrimitive;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.io.IOException;
 import java.io.StringWriter;
@@ -29,13 +32,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class QGrid {
-
-    static Color editorBgColor = UIManager.getColor("EditorPane.background");
-
-    static Color editorFgColor = UIManager.getColor("EditorPane.foreground");
-
-    static Font editorFont = UIManager.getFont("EditorPane.font");
+public class QGrid implements EditorColorsListener {
 
     private JPanel panel1;
     private JTabbedPane tabbedPane1;
@@ -43,6 +40,11 @@ public class QGrid {
     private JTable table;
     private JTextPane textPane;
     private TableGroupPanel tableGroupPanel;
+    private JScrollPane scrollPane;
+    private CellRenderer cellRenderer;
+    private TableHeaderRenderer tableHeaderRenderer;
+
+    private TableRowHeader trh;
 
     private WidthAdjuster wa;
 
@@ -55,15 +57,29 @@ public class QGrid {
     private static Map<Project, QGrid> instanceMap = new WeakHashMap();
 
     private QGrid(Project project) {
-        EditorColorsScheme editorColorsScheme = EditorColorsManager.getInstance().getSchemeForCurrentUITheme();
         this.project = project;
         tableGroupPanel.disableAll();
-        textPane.setBackground(editorColorsScheme.getDefaultBackground());
-        textPane.setForeground(editorColorsScheme.getDefaultForeground());
+        updateStyles();
+    }
+
+    @Override
+    public void globalSchemeChange(@Nullable EditorColorsScheme scheme) {
+        updateStyles();
+        cellRenderer.updateStyles();
+        trh.updateStyle();
+        tableHeaderRenderer.updateStyles();
+    }
+
+    protected void updateStyles() {
+        EditorColorsScheme editorColorsScheme = EditorColorsManager.getInstance().getSchemeForCurrentUITheme();
         Font font = editorColorsScheme.getFont(EditorFontType.PLAIN);
-        style = new StringBuilder("style=\"font-family: '").append(font.getFamily())
-                .append("'; font-size:").append(font.getSize()).append("pt;").append("\"").toString();
         textPane.setFont(font);
+        EditorColorsScheme scheme = EditorColorsManager.getInstance().getGlobalScheme();
+        textPane.setBackground(scheme.getColor(KDBColorSettingsPage.KDB_CONSOLE_BACKGROUND));
+        Color fg = scheme.getColor(KDBColorSettingsPage.KDB_CONSOLE_FOREGROUND);
+        style = new StringBuilder("style=\"font-family: '").append(font.getFamily()).append("'; font-size:").append(font.getSize()).append("pt; color:")
+                .append(String.format("#%02x%02x%02x", fg.getRed(), fg.getGreen(), fg.getBlue()).toUpperCase()).append(";\"").toString();
+        textPane.setForeground(scheme.getColor(KDBColorSettingsPage.KDB_CONSOLE_FOREGROUND));
     }
 
     public void showTable(String query, KTableModel tableModel) {
@@ -76,6 +92,7 @@ public class QGrid {
         this.table.setModel(tableModel);
         errorLogged.set(false);
         this.tabbedPane1.setTitleAt(0, "Table [" + rows + " rows]");
+        trh.updateSize();
         wa.resizeAllColumns();
     }
 
@@ -116,7 +133,7 @@ public class QGrid {
             try {
                 lm.writeTo(writer);
             } catch (IOException e) {
-                Notifications.Bus.notify(new Notification("KDBStudio", "Failed to show response in console", e.getMessage(),  NotificationType.WARNING));
+                Notifications.Bus.notify(new Notification("KDBStudio", "Failed to show response in console", e.getMessage(), NotificationType.WARNING));
             }
             showConsole(writer.toString());
 
@@ -185,9 +202,10 @@ public class QGrid {
         if (instance == null && create) {
             try {
                 instance = new QGrid(project);
+                EditorColorsManager.getInstance().addEditorColorsListener(instance);
                 instanceMap.put(project, instance);
             } catch (Exception e) {
-                Notifications.Bus.notify(new Notification("KDBStudio", "Plugin instantiation error", e.getMessage(),  NotificationType.WARNING));
+                Notifications.Bus.notify(new Notification("KDBStudio", "Plugin instantiation error", e.getMessage(), NotificationType.WARNING));
             }
         }
         return instance;
@@ -201,24 +219,64 @@ public class QGrid {
         instanceMap.remove(project);
     }
 
-
     public JTabbedPane getTabbedPane1() {
         return tabbedPane1;
     }
 
     private void createUIComponents() {
         table = new JBTable();
-        table.setDefaultRenderer(KBase.class, new CellRenderer((title, content) -> {
+        cellRenderer = new CellRenderer((title, content) -> {
             if (!errorLogged.get()) {
                 Notifications.Bus.notify(new Notification("KDBStudio", title, content, NotificationType.WARNING));
                 errorLogged.set(true);
             }
-        }));
-        table.getTableHeader().setDefaultRenderer(new TableHeaderRenderer());
+        });
+        table.setDefaultRenderer(KBase.class, cellRenderer);
+        tableHeaderRenderer = new TableHeaderRenderer();
+        table.getTableHeader().setDefaultRenderer(tableHeaderRenderer);
         table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         table.setCellSelectionEnabled(true);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        scrollPane = new JScrollPane(table);
+        trh = new TableRowHeader(table);
+        scrollPane.setRowHeaderView(trh);
+
+        scrollPane.getRowHeader().addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent ev) {
+                Point header_pt = ((JViewport) ev.getSource()).getViewPosition();
+                Point main_pt = main.getViewPosition();
+                if (header_pt.y != main_pt.y) {
+                    main_pt.y = header_pt.y;
+                    main.setViewPosition(main_pt);
+                }
+            }
+
+            JViewport main = scrollPane.getViewport();
+        });
         wa = new WidthAdjuster(table);
         wa.resizeAllColumns();
+
+        scrollPane.setWheelScrollingEnabled(true);
+        scrollPane.getViewport().setBackground(UIManager.getColor("Table.background"));
+        JLabel rowCountLabel = new JLabel("");
+        rowCountLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        rowCountLabel.setVerticalAlignment(SwingConstants.CENTER);
+        rowCountLabel.setOpaque(true);
+        rowCountLabel.setBorder(UIManager.getBorder("TableHeader.cellBorder"));
+        rowCountLabel.setFont(UIManager.getFont("Table.font"));
+        rowCountLabel.setBackground(UIManager.getColor("TableHeader.background"));
+        rowCountLabel.setForeground(UIManager.getColor("TableHeader.foreground"));
+        scrollPane.setCorner(JScrollPane.UPPER_LEFT_CORNER,rowCountLabel);
+
+        rowCountLabel = new JLabel("");
+        rowCountLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        rowCountLabel.setVerticalAlignment(SwingConstants.CENTER);
+        rowCountLabel.setOpaque(true);
+        rowCountLabel.setBorder(UIManager.getBorder("TableHeader.cellBorder"));
+        rowCountLabel.setFont(UIManager.getFont("Table.font"));
+        rowCountLabel.setBackground(UIManager.getColor("TableHeader.background"));
+        rowCountLabel.setForeground(UIManager.getColor("TableHeader.foreground"));
+        scrollPane.setCorner(JScrollPane.UPPER_RIGHT_CORNER,rowCountLabel);
 
     }
 
