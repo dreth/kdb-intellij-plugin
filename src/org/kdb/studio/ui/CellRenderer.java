@@ -1,9 +1,10 @@
 package org.kdb.studio.ui;
 
-import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
-import org.kdb.studio.KDBBundle;
+import com.intellij.openapi.editor.colors.EditorColorsListener;
+import com.intellij.openapi.editor.colors.EditorColorsManager;
+import com.intellij.openapi.editor.colors.EditorColorsScheme;
+import com.intellij.openapi.editor.colors.EditorFontType;
+import org.jetbrains.annotations.Nullable;
 import org.kdb.studio.kx.LimitedWriter;
 import org.kdb.studio.kx.type.KBase;
 import org.kdb.studio.kx.type.KBaseVector;
@@ -15,30 +16,39 @@ import java.io.IOException;
 
 class CellRenderer extends DefaultTableCellRenderer {
 
-    static Color bgColor = UIManager.getColor("Table.selectionBackground");
+    private Color bgColor;
 
-    static Color gridColor = UIManager.getColor("Table.background");
+    private Color gridColor;
 
-    static Color selectionFGColor = UIManager.getColor("Table.selectionForeground");
+    private Color selectionFGColor;
 
-    static Color fgColor = UIManager.getColor("Table.foreground");
+    private Color fgColor;
 
-    static Color keyColor = KDBBundle.getKeyColumnBackgroundColor();
+    private Color keyColor;
 
-    static Color altColor = KDBBundle.getOddColumnBackgroundColor();
+    private Color altColor;
 
-    static Color nullColor = KDBBundle.getNullColumnForegroundColor();
-
-    static Font columnFont = KDBBundle.getTableColumnFont();
+    private Color nullColor;
 
     private QGrid.ErrorLogger logger;
 
-
     public CellRenderer(QGrid.ErrorLogger logger) {
         this.logger = logger;
+        updateStyles();
+    }
 
-        setFont(columnFont);
-        setBackground(UIManager.getColor("Table.background"));
+    public void updateStyles() {
+        EditorColorsScheme editorColorsScheme = EditorColorsManager.getInstance().getSchemeForCurrentUITheme();
+        setFont(editorColorsScheme.getFont(EditorFontType.PLAIN));
+
+        EditorColorsScheme scheme = EditorColorsManager.getInstance().getGlobalScheme();
+        keyColor = scheme.getColor(KDBColorSettingsPage.KDB_KEY_COLUMN_BACKGROUND);
+        altColor = scheme.getColor(KDBColorSettingsPage.KDB_ODD_COLUMN_BACKGROUND);
+        nullColor = scheme.getColor(KDBColorSettingsPage.KDB_NULL_COLUMN_FOREGROUND);
+        bgColor = scheme.getColor(KDBColorSettingsPage.KDB_TABLE_SELECTION_BACKGROUND);
+        selectionFGColor = scheme.getColor(KDBColorSettingsPage.KDB_TABLE_SELECTION_FOREGROUND);
+        gridColor = scheme.getColor(KDBColorSettingsPage.KDB_TABLE_BACKGROUND);
+        fgColor = scheme.getColor(KDBColorSettingsPage.KDB_TABLE_FOREGROUND);
     }
 
     public Component getTableCellRendererComponent(JTable table,

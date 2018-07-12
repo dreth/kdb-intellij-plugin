@@ -1,5 +1,8 @@
 package org.kdb.studio.ui;
 
+import com.intellij.openapi.editor.colors.EditorColorsManager;
+import com.intellij.openapi.editor.colors.EditorColorsScheme;
+import com.intellij.openapi.editor.colors.EditorFontType;
 import com.intellij.openapi.util.IconLoader;
 import org.kdb.studio.kx.type.KSymbolVector;
 
@@ -11,6 +14,12 @@ public class TableHeaderRenderer extends DefaultTableCellRenderer {
     public TableHeaderRenderer() {
         setHorizontalAlignment(SwingConstants.RIGHT);
         setVerticalAlignment(SwingConstants.CENTER);
+        updateStyles();
+    }
+
+    public void updateStyles() {
+        EditorColorsScheme editorColorsScheme = EditorColorsManager.getInstance().getSchemeForCurrentUITheme();
+        setFont(editorColorsScheme.getFont(EditorFontType.PLAIN));
     }
 
     public Component getTableCellRendererComponent(JTable table,
