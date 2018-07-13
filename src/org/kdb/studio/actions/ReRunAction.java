@@ -4,6 +4,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.IconLoader;
 import org.kdb.studio.db.ConnectionManager;
+import org.kdb.studio.ui.QGrid;
 import org.kdb.studio.ui.TableGroupPanel;
 
 public class ReRunAction extends RunCodeAction {
@@ -24,7 +25,7 @@ public class ReRunAction extends RunCodeAction {
 
     @Override
     public void update(AnActionEvent e) {
-        e.getPresentation().setEnabled(tableGroupPanel.isActive());
+        e.getPresentation().setEnabled(!QGrid.getInstance(e.getProject(), false).isBlocked() &&tableGroupPanel.isActive());
         super.update(e);
     }
 }

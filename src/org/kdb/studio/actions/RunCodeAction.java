@@ -8,10 +8,14 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.openapi.fileEditor.FileEditorManager;
+import com.intellij.openapi.progress.ProgressIndicator;
+import com.intellij.openapi.progress.ProgressManager;
+import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.util.text.StringUtil;
 import org.apache.commons.pool2.ObjectPool;
+import org.jetbrains.annotations.NotNull;
 import org.kdb.studio.db.ConnectionManager;
 import org.kdb.studio.kx.Connector;
 import org.kdb.studio.kx.type.KBase;
@@ -44,7 +48,7 @@ public class RunCodeAction extends AnAction {
     @Override
     public void update(AnActionEvent e) {
         Project project = e.getProject();
-        e.getPresentation().setEnabled(connectionManager.getActiveConnection() != null && project != null && FileEditorManager.getInstance(project).getSelectedTextEditor() != null);
+        e.getPresentation().setEnabled(!QGrid.getInstance(project, false).isBlocked() && connectionManager.getActiveConnection() != null && project != null && FileEditorManager.getInstance(project).getSelectedTextEditor() != null);
     }
 
     protected String getQuery(Project project) {
@@ -71,14 +75,38 @@ public class RunCodeAction extends AnAction {
         ObjectPool<Connector> connectorObjectPool = connectionManager.getActiveConnection().getConnectorPool();
         try {
             Connector connector = connectorObjectPool.borrowObject();
-            try {
-                KBase response = connector.query(new KCharacterVector(query), KBase.class, project);
-                QGrid.getInstance(project, false).showResponse(query, response);
-            } catch (Throwable e) {
-                QGrid.getInstance(project, false).showError(e);
-            } finally {
-                connectorObjectPool.returnObject(connector);
-            }
+            new Task.Backgroundable(project, "Execute query",true) {
+                @Override
+                public void run(@NotNull ProgressIndicator progressIndicator) {
+                    try {
+                        QGrid.getInstance(project, false).blockRun();
+                        KBase response = connector.query(new KCharacterVector(query), KBase.class, ProgressManager.getInstance().getProgressIndicator());
+                        QGrid.getInstance(project, false).setState(new QGrid.State(query, response));
+
+                    } catch (Throwable e) {
+                        QGrid.getInstance(project, false).setState(new QGrid.State(e));
+                    } finally {
+                        try {
+                            connectorObjectPool.returnObject(connector);
+                        } catch (Exception e) {
+                            //IGNORE
+                        }
+                    }
+                }
+
+                @Override
+                public void onFinished() {
+                    QGrid.getInstance(project, false).showState();
+                    super.onFinished();
+                }
+
+                @Override
+                public void onCancel() {
+                    connector.onCancel();
+                    super.onCancel();
+                }
+            }.queue();
+
         } catch (Exception e) {
             connectionManager.getActiveConnection().close();
             QGrid.getInstance(project, false).showError(e);

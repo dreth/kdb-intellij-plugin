@@ -142,6 +142,33 @@ public class Connector implements AutoCloseable {
         });
     }
 
+    public <T extends KBase> T query(KBase request, Class<T> type, ProgressIndicator progressIndicator) throws Throwable {
+        progressIndicator.setText("Send query to server...");
+        k(request);
+        progressIndicator.checkCanceled();
+        try {
+            return type.cast(read(progressIndicator));
+        } catch (K4Exception e) {
+            throw e;
+        } catch (ProcessCanceledException e) {
+            throw new IOException("Cancelled by user.");
+        } catch (Throwable thr) {
+            close();
+            throw thr;
+        } finally {
+            b = null;
+        }
+    }
+
+    public void onCancel() {
+        close();
+        try {
+            reconnect(true);
+        } catch (Exception e) {
+            Notifications.Bus.notify(new Notification("KDBStudio", "Server reconnection failed", e.getMessage(),  NotificationType.WARNING));
+        }
+    }
+
     protected void w(int i, KBase x) throws IOException {
         try (ByteArrayOutputStream baosBody = new ByteArrayOutputStream(); DataOutputStream dosBody = new DataOutputStream(baosBody);
              ByteArrayOutputStream baosHeader = new ByteArrayOutputStream(); DataOutputStream dosHeader = new DataOutputStream(baosHeader)) {
@@ -166,6 +193,7 @@ public class Connector implements AutoCloseable {
 
         boolean responseMsg = false;
         boolean c = false;
+        progressIndicator.setText("Wait for response...");
         synchronized (inputStream) {
             while (!responseMsg) { // throw away incoming aync, and error out on incoming sync
                 inputStream.readFully(b = new byte[8]);
@@ -181,7 +209,7 @@ public class Connector implements AutoCloseable {
                 j = 4;
 
                 final int msgLength = ri() - 8;
-
+                progressIndicator.setText("Receiving response...");
                 try {
                     b = new byte[msgLength];
                     int total = 0;

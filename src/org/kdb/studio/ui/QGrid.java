@@ -34,6 +34,21 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class QGrid implements EditorColorsListener {
 
+    public static class State {
+        public String query;
+        public KBase response;
+        public Throwable error;
+
+        public State(String query, KBase response) {
+            this.query = query;
+            this.response = response;
+        }
+
+        public State(Throwable error) {
+            this.error = error;
+        }
+    }
+
     private JPanel panel1;
     private JTabbedPane tabbedPane1;
 
@@ -55,6 +70,10 @@ public class QGrid implements EditorColorsListener {
     private AtomicBoolean errorLogged = new AtomicBoolean(false);
 
     private static Map<Project, QGrid> instanceMap = new WeakHashMap();
+
+    private State state;
+
+    private boolean blocked = false;
 
     private QGrid(Project project) {
         this.project = project;
@@ -80,6 +99,24 @@ public class QGrid implements EditorColorsListener {
         style = new StringBuilder("style=\"font-family: '").append(font.getFamily()).append("'; font-size:").append(font.getSize()).append("pt; color:")
                 .append(String.format("#%02x%02x%02x", fg.getRed(), fg.getGreen(), fg.getBlue()).toUpperCase()).append(";\"").toString();
         textPane.setForeground(scheme.getColor(KDBColorSettingsPage.KDB_CONSOLE_FOREGROUND));
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public void showState() {
+        if (state.error != null) {
+            this.showError(state.error);
+        } else {
+            this.showResponse(state.query, state.response);
+        }
+        this.state = null;
+        this.blocked = false;
+    }
+
+    public boolean isBlocked() {
+        return blocked;
     }
 
     public void showTable(String query, KTableModel tableModel) {
@@ -195,6 +232,10 @@ public class QGrid implements EditorColorsListener {
             showConsole(sb.toString());
         }
 
+    }
+
+    public void blockRun() {
+        this.blocked = true;
     }
 
     public static QGrid getInstance(Project project, boolean create) {
