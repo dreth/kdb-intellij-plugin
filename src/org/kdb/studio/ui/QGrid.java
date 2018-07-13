@@ -38,7 +38,7 @@ public class QGrid implements EditorColorsListener {
     private JTabbedPane tabbedPane1;
 
     private JTable table;
-    private JTextPane textPane;
+    private JEditorPane textPane;
     private TableGroupPanel tableGroupPanel;
     private JScrollPane scrollPane;
     private CellRenderer cellRenderer;
@@ -101,12 +101,22 @@ public class QGrid implements EditorColorsListener {
     }
 
     public void showConsole(String sb) {
+        showConsole(sb, true);
+    }
+
+    public void showConsole(String sb, boolean asHtml) {
         tabbedPane1.setEnabledAt(0, false);
         tabbedPane1.setEnabledAt(1, true);
         tabbedPane1.setSelectedIndex(1);
         tableGroupPanel.disableAll();
         this.tabbedPane1.setTitleAt(0, "Table");
-        textPane.setText("<html><body " + style + " >" + sb + "</body></html>");
+        if (asHtml) {
+            textPane.setContentType("text/html");
+            textPane.setText("<html><body " + style + " >" + sb + "</body></html>");
+        } else {
+            textPane.setContentType("text/plain");
+            textPane.setText(sb);
+        }
     }
 
     public void showResponse(String query, KBase response) {
@@ -127,16 +137,10 @@ public class QGrid implements EditorColorsListener {
                 if (!(response instanceof UnaryPrimitive && 0 == ((UnaryPrimitive) response).getPrimitiveAsInt()))
                     response.toString(lm, true);
             } catch (IOException e) {
-
-            }
-            StringWriter writer = new StringWriter();
-            try {
-                lm.writeTo(writer);
-            } catch (IOException e) {
                 Notifications.Bus.notify(new Notification("KDBStudio", "Failed to show response in console", e.getMessage(), NotificationType.WARNING));
-            }
-            showConsole(writer.toString());
 
+            }
+            showConsole(lm.toString(), false);
         }
     }
 
