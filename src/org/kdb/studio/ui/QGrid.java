@@ -27,7 +27,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.io.IOException;
-import java.io.StringWriter;
+import java.text.DecimalFormat;
 import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -73,7 +73,10 @@ public class QGrid implements EditorColorsListener {
 
     private State state;
 
+    private long executionStart = 0;
+
     private boolean blocked = false;
+
 
     private QGrid(Project project) {
         this.project = project;
@@ -106,6 +109,7 @@ public class QGrid implements EditorColorsListener {
     }
 
     public void showState() {
+        long exTime = System.currentTimeMillis() - executionStart;
         if (state.error != null) {
             this.showError(state.error);
         } else {
@@ -113,6 +117,18 @@ public class QGrid implements EditorColorsListener {
         }
         this.state = null;
         this.blocked = false;
+        ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
+        toolWindowManager.getToolWindow("KDBStudio").setTitle("           Last execution time: " + formatTime(exTime));
+    }
+
+    protected String formatTime(long ms) {
+        if (ms < 1000) {
+            return ms + "mS";
+        } else if(ms< 60*1000) {
+            return new DecimalFormat("#.#").format((double)ms/1000) + "sec";
+        } else {
+            return (int)(ms/(60 * 1000)) + "min " + (int)(ms % (60* 1000))/1000 + "sec";
+        }
     }
 
     public boolean isBlocked() {
@@ -240,6 +256,7 @@ public class QGrid implements EditorColorsListener {
 
     public void blockRun() {
         this.blocked = true;
+        executionStart = System.currentTimeMillis();
     }
 
     public static QGrid getInstance(Project project, boolean create) {
