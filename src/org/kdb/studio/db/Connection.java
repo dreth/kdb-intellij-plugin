@@ -2,6 +2,7 @@ package org.kdb.studio.db;
 
 import org.apache.commons.pool2.ObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPool;
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.kdb.studio.kx.Connector;
 import org.kdb.studio.kx.ConnectorFactory;
 
@@ -82,8 +83,17 @@ public class Connection {
         synchronized (SYNC) {
             if (connectorObjectPool == null) {
                 synchronized (SYNC) {
-                    connectorObjectPool = new GenericObjectPool<>(new ConnectorFactory(this));
-                    ((GenericObjectPool<Connector>) connectorObjectPool).setTestOnBorrow(true);
+                    GenericObjectPoolConfig config = new GenericObjectPoolConfig();
+                    config.setMinIdle(4);
+                    config.setTimeBetweenEvictionRunsMillis(500);
+                    config.setTestOnBorrow(true);
+                    config.setTestOnReturn(true);
+                    connectorObjectPool = new GenericObjectPool<>(new ConnectorFactory(this), config);
+                    try {
+                        ((GenericObjectPool<Connector>) connectorObjectPool).preparePool();
+                    } catch (Exception e) {
+                        //IGNORE
+                    }
                 }
             }
         }
