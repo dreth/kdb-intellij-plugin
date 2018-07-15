@@ -14,7 +14,11 @@ import org.kdb.studio.kx.type.*;
 import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.UUID;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -143,21 +147,60 @@ public class Connector implements AutoCloseable {
     }
 
     public <T extends KBase> T query(KBase request, Class<T> type, ProgressIndicator progressIndicator) throws Throwable {
+
+        BlockingQueue<Object> queue = new LinkedBlockingQueue<>();
         progressIndicator.setText("Send query to server...");
         k(request);
         progressIndicator.checkCanceled();
-        try {
-            return type.cast(read(progressIndicator));
-        } catch (K4Exception e) {
-            throw e;
-        } catch (ProcessCanceledException e) {
-            throw new IOException("Cancelled by user.");
-        } catch (Throwable thr) {
-            close();
-            throw thr;
-        } finally {
-            b = null;
+        Thread check = new Thread(() -> {
+            while(true) {
+                try {
+                    Object obj = queue.poll(500, TimeUnit.MICROSECONDS);
+                    if (obj == null) {
+                      if (progressIndicator.isCanceled()) {
+                          close();
+                      }
+                    } else {
+                        if (obj instanceof SocketException && progressIndicator.isCanceled()) {
+                            queue.put(new K4Exception("Canceled by user"));
+                        } else {
+                            queue.put(obj);
+                        }
+                        return;
+                    }
+                } catch (InterruptedException e) {
+                    return;
+                }
+            }
+        });
+        Thread execute = new Thread(() -> {
+            try {
+                queue.put(type.cast(read(progressIndicator)));
+            } catch (InterruptedException ex) {
+                queue.add(new K4Exception("Cancelled by user."));
+            } catch (K4Exception |  IOException e) {
+                queue.add(e);
+            }
+        });
+        execute.setUncaughtExceptionHandler((t, e) -> queue.add(e));
+        execute.start();
+        check.start();
+        execute.join();
+        b = null;
+        Object result = queue.poll(1, TimeUnit.SECONDS);
+        if (request == null) {
+            if (check.isAlive()) {
+                check.interrupt();
+            }
+            throw new IllegalStateException("Execution interrupted by unknown reason.");
+        } else {
+            if (result instanceof KBase) {
+                return (T) result;
+            } else {
+                throw (Exception) result;
+            }
         }
+
     }
 
     public void onCancel() {

@@ -48,7 +48,7 @@ public class RunCodeAction extends AnAction {
     @Override
     public void update(AnActionEvent e) {
         Project project = e.getProject();
-        e.getPresentation().setEnabled(!QGrid.getInstance(project, false).isBlocked() && connectionManager.getActiveConnection() != null && project != null && FileEditorManager.getInstance(project).getSelectedTextEditor() != null);
+        e.getPresentation().setEnabled(connectionManager.getActiveConnection() != null && project != null && !QGrid.getInstance(project, false).isBlocked() && FileEditorManager.getInstance(project).getSelectedTextEditor() != null);
     }
 
     protected String getQuery(Project project) {
@@ -98,12 +98,6 @@ public class RunCodeAction extends AnAction {
                 public void onFinished() {
                     QGrid.getInstance(project, false).showState();
                     super.onFinished();
-                }
-
-                @Override
-                public void onCancel() {
-                    connector.onCancel();
-                    super.onCancel();
                 }
             }.queue();
 
