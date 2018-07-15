@@ -41,6 +41,7 @@ public class LineChart extends DialogWrapper {
             chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
             chartPanel.setMouseZoomable(true, false);
         }
+        setModal(false);
         setTitle("Chart");
         init();
     }
