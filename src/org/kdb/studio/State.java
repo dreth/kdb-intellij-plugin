@@ -10,6 +10,8 @@ public class State {
 
     public String activeConnection;
 
+    public Boolean toolbarEnabled;
+
     public static class Connection {
 
         public String name;
@@ -72,28 +74,37 @@ public class State {
         this.activeConnection = activeConnection;
     }
 
+    public Boolean getToolbarEnabled() {
+        return toolbarEnabled;
+    }
+
+    public void setToolbarEnabled(Boolean toolbarEnabled) {
+        this.toolbarEnabled = toolbarEnabled;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         State state = (State) o;
         return Objects.equals(connections, state.connections) &&
-                Objects.equals(activeConnection, state.activeConnection);
+                Objects.equals(activeConnection, state.activeConnection) &&
+                Objects.equals(toolbarEnabled, state.toolbarEnabled);
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(connections, activeConnection);
+        return Objects.hash(connections, activeConnection, toolbarEnabled);
     }
 
-    static State create(ConnectionManager connectionManager) {
+    static State create(ConnectionManager connectionManager, boolean toolbarEnabled) {
         State state = new State();
         state.setConnections(new LinkedList<>());
         Optional.ofNullable(connectionManager.getActiveConnection()).ifPresent(conn -> state.setActiveConnection(conn.getView()));
         for (org.kdb.studio.db.Connection conn : connectionManager.getConnections()) {
             state.getConnections().add(new Connection(conn.getName(), conn.getHost(), conn.getPort(), conn.getUsername(), conn.getPassword()));
         }
+        state.setToolbarEnabled(toolbarEnabled);
         return state;
     }
 
