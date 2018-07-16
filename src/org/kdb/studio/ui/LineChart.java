@@ -181,24 +181,32 @@ public class LineChart extends DialogWrapper {
 
             if (ds.getSeriesCount() > 1)
                 legend = true;
-
-            if (ds instanceof XYSeriesCollection) {
-                return ChartFactory.createXYLineChart("",
-                        "",
-                        "",
-                        ds,
-                        PlotOrientation.VERTICAL,
-                        legend,
-                        true,
-                        true);
-            } else if (ds instanceof TimeSeriesCollection) {
-                return ChartFactory.createTimeSeriesChart("",
-                        "",
-                        "",
-                        ds,
-                        legend,
-                        true,
-                        true);
+            //ChartFactory doesn't allows for set timezone from method parameters.
+            //Set required as default, and set it back after init;
+            TimeZone defultTZ = TimeZone.getDefault();
+            TimeZone.setDefault(tz);
+            try {
+                if (ds instanceof XYSeriesCollection) {
+                    return ChartFactory.createXYLineChart("",
+                            "",
+                            "",
+                            ds,
+                            PlotOrientation.VERTICAL,
+                            legend,
+                            true,
+                            true);
+                } else if (ds instanceof TimeSeriesCollection) {
+                    return ChartFactory.createTimeSeriesChart("",
+                            "",
+                            "",
+                            ds,
+                            legend,
+                            true,
+                            true);
+                }
+            } finally {
+                //restore TimeZone
+                TimeZone.setDefault(defultTZ);
             }
         }
 
