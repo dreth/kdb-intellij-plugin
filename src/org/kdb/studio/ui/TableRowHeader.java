@@ -67,6 +67,7 @@ public class TableRowHeader extends JList {
 
     public void updateSize() {
         setFixedCellHeight(table.getRowHeight());
+        recalcWidth();
     }
 
     public void updateStyle() {
