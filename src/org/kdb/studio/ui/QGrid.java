@@ -54,7 +54,7 @@ public class QGrid implements EditorColorsListener {
 
     private JTable table;
     private JEditorPane textPane;
-    private TableGroupPanel tableGroupPanel;
+    private TableGroup tableGroup;
     private JScrollPane scrollPane;
     private CellRenderer cellRenderer;
     private TableHeaderRenderer tableHeaderRenderer;
@@ -80,7 +80,8 @@ public class QGrid implements EditorColorsListener {
 
     private QGrid(Project project) {
         this.project = project;
-        tableGroupPanel.disableAll();
+        tableGroup = new TableGroup();
+        tableGroup.disableAll();
         updateStyles();
     }
 
@@ -135,11 +136,15 @@ public class QGrid implements EditorColorsListener {
         return blocked;
     }
 
+    public boolean refreshAllowed() {
+        return !isBlocked() && getTableGroup().getCurrentQuery() != null;
+    }
+
     public void showTable(String query, KTableModel tableModel) {
         tabbedPane1.setEnabledAt(0, true);
         tabbedPane1.setEnabledAt(1, false);
         tabbedPane1.setSelectedIndex(0);
-        tableGroupPanel.enableAll(query, tableModel, table);
+        tableGroup.enableAll(query, tableModel, table);
 
         int rows = tableModel.getRowCount();
         this.table.setModel(tableModel);
@@ -154,14 +159,15 @@ public class QGrid implements EditorColorsListener {
     }
 
     public void showConsole(String sb) {
-        showConsole(sb, true);
+        showConsole(sb, true, null);
     }
 
-    public void showConsole(String sb, boolean asHtml) {
+    public void showConsole(String sb, boolean asHtml, String query) {
         tabbedPane1.setEnabledAt(0, false);
         tabbedPane1.setEnabledAt(1, true);
         tabbedPane1.setSelectedIndex(1);
-        tableGroupPanel.disableAll();
+        tableGroup.disableAll();
+        tableGroup.setCurrentQuery(query);
         this.tabbedPane1.setTitleAt(0, "Table");
         if (asHtml) {
             textPane.setContentType("text/html");
@@ -193,7 +199,7 @@ public class QGrid implements EditorColorsListener {
                 Notifications.Bus.notify(new Notification("KDBStudio", "Failed to show response in console", e.getMessage(), NotificationType.WARNING));
 
             }
-            showConsole(lm.toString(), false);
+            showConsole(lm.toString(), false, query);
         }
     }
 
@@ -340,6 +346,10 @@ public class QGrid implements EditorColorsListener {
         rowCountLabel.setForeground(UIManager.getColor("TableHeader.foreground"));
         scrollPane.setCorner(JScrollPane.UPPER_RIGHT_CORNER,rowCountLabel);
 
+    }
+
+    public TableGroup getTableGroup() {
+        return tableGroup;
     }
 
     @FunctionalInterface
