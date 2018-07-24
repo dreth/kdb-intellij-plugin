@@ -7,10 +7,7 @@ import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.Storage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.kdb.studio.actions.ConnectionsBoxAction;
-import org.kdb.studio.actions.RunAllAction;
-import org.kdb.studio.actions.RunCodeAction;
-import org.kdb.studio.actions.ToolbarControlAction;
+import org.kdb.studio.actions.*;
 import org.kdb.studio.db.ConnectionManager;
 import org.kdb.studio.ui.KDBToolbarUIManager;
 
@@ -33,16 +30,32 @@ public class KDBStudioApplicationComponent implements ApplicationComponent, Pers
         ConnectionManager connectionManager = ConnectionManager.getInstance();
         RunCodeAction runCodeAction = new RunCodeAction(connectionManager);
         RunAllAction runAllAction = new RunAllAction(connectionManager);
+        ReRunAction reRunAction = new ReRunAction(connectionManager);
+        ExcelAction excelAction = new ExcelAction();
+        ExportAction exportAction = new ExportAction();
+        ChartAction chartAction = new ChartAction();
+
 
         kdbActionGroup = new DefaultActionGroup("KDBToolbarActions", false);
         kdbActionGroup.add(new ConnectionsBoxAction(connectionManager));
         kdbActionGroup.add(runCodeAction);
         kdbActionGroup.add(runAllAction);
+        kdbActionGroup.addSeparator();
+        kdbActionGroup.add(reRunAction);
+        kdbActionGroup.addSeparator();
+        kdbActionGroup.add(excelAction);
+        kdbActionGroup.add(exportAction);
+        kdbActionGroup.add(chartAction);
+
         KDBToolbarUIManager.initInstance(kdbActionGroup, initialEnabled);
 
         ActionManager am = ActionManager.getInstance();
-        am.registerAction("KDB_run_line", runCodeAction);
-        am.registerAction("KDB_run_all", runAllAction);
+        am.registerAction("KDB_1_run_line", runCodeAction);
+        am.registerAction("KDB_2_run_all", runAllAction);
+        am.registerAction("KDB_3_run_refresh", reRunAction);
+        am.registerAction("KDB_4_open_excel", excelAction);
+        am.registerAction("KDB_5_open_export", exportAction);
+        am.registerAction("KDB_6_open_chart", chartAction);
 
         DefaultActionGroup uiToggleGroup = (DefaultActionGroup) am.getAction("UIToggleActions");
         uiToggleGroup.add(new ToolbarControlAction());

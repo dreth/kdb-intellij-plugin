@@ -5,27 +5,31 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.IconLoader;
 import org.kdb.studio.db.ConnectionManager;
 import org.kdb.studio.ui.QGrid;
-import org.kdb.studio.ui.TableGroupPanel;
 
 public class ReRunAction extends RunCodeAction {
 
-    private TableGroupPanel tableGroupPanel;
-
-    public ReRunAction(TableGroupPanel tableGroupPanel, ConnectionManager connectionManager) {
+    public ReRunAction(ConnectionManager connectionManager) {
         super(connectionManager);
-        this.tableGroupPanel = tableGroupPanel;
         getTemplatePresentation().setText("Refresh");
-        getTemplatePresentation().setIcon(IconLoader.findIcon("/icons/rerun.png"));
+        getTemplatePresentation().setIcon(IconLoader.findIcon("/icons/refresh.png"));
     }
 
     @Override
     protected String getQuery(Project project) {
-        return tableGroupPanel.getCurrentQuery();
+        if (project != null) {
+            return QGrid.getInstance(project, false).getTableGroup().getCurrentQuery();
+        } else {
+            return null;
+        }
     }
 
     @Override
     public void update(AnActionEvent e) {
-        e.getPresentation().setEnabled(!QGrid.getInstance(e.getProject(), false).isBlocked() &&tableGroupPanel.isActive());
-        super.update(e);
+        e.getPresentation().setEnabled(isAvailable(e) && QGrid.getInstance(e.getProject(), false).refreshAllowed());
     }
+
+    protected boolean isAvailable(AnActionEvent e) {
+        return e.getProject() != null &&  QGrid.getInstance(e.getProject(), false) != null;
+    }
+
 }
