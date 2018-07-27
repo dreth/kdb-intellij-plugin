@@ -14,13 +14,24 @@ import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.util.containers.ConcurrentList;
 import org.apache.commons.pool2.ObjectPool;
 import org.jetbrains.annotations.NotNull;
 import org.kdb.studio.db.ConnectionManager;
 import org.kdb.studio.kx.Connector;
+import org.kdb.studio.kx.K4Exception;
 import org.kdb.studio.kx.type.KBase;
 import org.kdb.studio.kx.type.KCharacterVector;
 import org.kdb.studio.ui.QGrid;
+
+import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 public class RunCodeAction extends AnAction {
 
@@ -72,24 +83,86 @@ public class RunCodeAction extends AnAction {
     }
 
     protected void executeQuery(String query, Project project) {
-        ObjectPool<Connector> connectorObjectPool = connectionManager.getActiveConnection().getConnectorPool();
+
         try {
-            Connector connector = connectorObjectPool.borrowObject();
-            new Task.Backgroundable(project, "Execute query",true) {
+
+            new Task.Backgroundable(project, "Execute query", true) {
                 @Override
                 public void run(@NotNull ProgressIndicator progressIndicator) {
+                    ObjectPool<Connector> connectorObjectPool = connectionManager.getActiveConnection().getConnectorPool();
+                    List<Connector> connectors = Collections.synchronizedList(new ArrayList<>());
                     try {
-                        QGrid.getInstance(project, false).blockRun();
-                        KBase response = connector.query(new KCharacterVector(query), KBase.class, ProgressManager.getInstance().getProgressIndicator());
-                        QGrid.getInstance(project, false).setState(new QGrid.State(query, response));
+                        BlockingQueue<Object> queue = new LinkedBlockingQueue<>();
 
-                    } catch (Throwable e) {
+                        Thread executor = new Thread(() -> {
+                            try {
+                                QGrid.getInstance(project, false).blockRun();
+                                progressIndicator.setText("Establishing connection to the server...");
+                                Connector connector = connectorObjectPool.borrowObject();
+                                connectors.add(connector);
+                                connector.query(new KCharacterVector(query), KBase.class, progressIndicator, queue);
+                            } catch (Throwable e) {
+                                queue.add(e);
+                            }
+                        });
+                        executor.setUncaughtExceptionHandler((t, e) -> {
+                            queue.add(e);
+                        });
+                        Thread check = new Thread(() -> {
+                            long timeAfterCancel = -1;
+                            while (true) {
+                                try {
+                                    Object obj = queue.poll(500, TimeUnit.MICROSECONDS);
+                                    if (obj == null) {
+                                        if (progressIndicator.isCanceled()) {
+                                            if (timeAfterCancel < 0) timeAfterCancel = System.currentTimeMillis();
+                                            if (connectors.size() > 0) {
+                                                connectors.get(0).close();
+                                            }
+                                            if (System.currentTimeMillis() - timeAfterCancel > 5000) {
+                                                return;
+                                            }
+                                        }
+                                    } else {
+                                        if (obj instanceof SocketException && progressIndicator.isCanceled()) {
+                                            queue.put(new K4Exception("Canceled by user"));
+                                        } else {
+                                            queue.put(obj);
+                                        }
+                                        return;
+                                    }
+                                } catch (InterruptedException e) {
+                                    return;
+                                }
+                            }
+                        });
+
+                        executor.start();
+                        check.start();
+                        executor.join();
+
+                        Object result = queue.poll(1, TimeUnit.SECONDS);
+                        if (result == null) {
+                            if (check.isAlive()) {
+                                check.interrupt();
+                            }
+                            QGrid.getInstance(project, false).setState(new QGrid.State(new IllegalStateException("Execution interrupted by unknown reason.")));
+                        } else {
+                            if (result instanceof KBase) {
+                                QGrid.getInstance(project, false).setState(new QGrid.State(query, KBase.class.cast(result)));
+                            } else {
+                                QGrid.getInstance(project, false).setState(new QGrid.State(Exception.class.cast(result)));
+                            }
+                        }
+                    } catch (Exception e) {
                         QGrid.getInstance(project, false).setState(new QGrid.State(e));
                     } finally {
-                        try {
-                            connectorObjectPool.returnObject(connector);
-                        } catch (Exception e) {
-                            //IGNORE
+                        if (connectors.size() > 0) {
+                            try {
+                                connectorObjectPool.returnObject(connectors.get(0));
+                            } catch (Exception e) {
+                                //IGNORE
+                            }
                         }
                     }
                 }
