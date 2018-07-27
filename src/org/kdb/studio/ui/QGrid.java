@@ -124,11 +124,11 @@ public class QGrid implements EditorColorsListener {
 
     protected String formatTime(long ms) {
         if (ms < 1000) {
-            return ms + "mS";
+            return ms + " mS";
         } else if(ms< 60*1000) {
-            return new DecimalFormat("#.#").format((double)ms/1000) + "sec";
+            return new DecimalFormat("#.#").format((double)ms/1000) + " sec";
         } else {
-            return (int)(ms/(60 * 1000)) + "min " + (int)(ms % (60* 1000))/1000 + "sec";
+            return (int)(ms/(60 * 1000)) + " min " + (int)(ms % (60* 1000))/1000 + " sec";
         }
     }
 
@@ -227,7 +227,7 @@ public class QGrid implements EditorColorsListener {
             StringBuilder sb = new StringBuilder();
             String hint = QErrors.lookup(ex.getMessage());
             sb.append("<span style=\"color:red\">")
-                    .append("An error occurred during execution of the query.</span><br/> The server sent the response:</br>")
+                    .append("An error occurred during execution of the query.</span><br/> The server sent the response: ")
                     .append(ex.getMessage());
             if (hint != null) {
                 sb.append("<br/><span style=\"color:green\">")

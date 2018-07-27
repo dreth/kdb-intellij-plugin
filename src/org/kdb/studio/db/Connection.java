@@ -84,16 +84,11 @@ public class Connection {
             if (connectorObjectPool == null) {
                 synchronized (SYNC) {
                     GenericObjectPoolConfig config = new GenericObjectPoolConfig();
-                    config.setMinIdle(4);
-                    config.setTimeBetweenEvictionRunsMillis(500);
-                    config.setTestOnBorrow(true);
+                    //config.setMinIdle(4);
+                    //config.setTimeBetweenEvictionRunsMillis(500);
+                    //config.setTestOnBorrow(true);
                     config.setTestOnReturn(true);
                     connectorObjectPool = new GenericObjectPool<>(new ConnectorFactory(this), config);
-                    try {
-                        ((GenericObjectPool<Connector>) connectorObjectPool).preparePool();
-                    } catch (Exception e) {
-                        //IGNORE
-                    }
                 }
             }
         }

@@ -13,6 +13,13 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      <h3>1.0.4</h3>
+      <br/>
+      <ul>
+        <li>Fixed issues with queries to busy server</li>
+        <li>Fixed number of UI issues</li>
+      </ul>
+      <br/>
       <h3>1.0.3</h3>
       <br/>
       <ul>
