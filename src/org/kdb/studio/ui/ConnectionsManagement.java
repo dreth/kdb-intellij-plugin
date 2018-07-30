@@ -1,19 +1,31 @@
 package org.kdb.studio.ui;
 
+import com.intellij.openapi.progress.ProgressIndicator;
+import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.util.text.StringUtil;
+import org.apache.commons.pool2.ObjectPool;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.kdb.studio.db.Connection;
 import org.kdb.studio.db.ConnectionManager;
 import org.kdb.studio.kx.Connector;
 import org.kdb.studio.kx.ConnectorFactory;
+import org.kdb.studio.kx.K4Exception;
+import org.kdb.studio.kx.type.KBase;
 import org.kdb.studio.kx.type.KCharacterVector;
 import org.kdb.studio.kx.type.KSymbolVector;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 public class ConnectionsManagement extends DialogWrapper {
 
@@ -33,6 +45,7 @@ public class ConnectionsManagement extends DialogWrapper {
 
     private ConnectionManager connectionManager;
     private Project project;
+    protected boolean testBlocked = false;
 
     public ConnectionsManagement(@Nullable Project project, ConnectionManager connectionManager) {
         super(project);
@@ -112,15 +125,111 @@ public class ConnectionsManagement extends DialogWrapper {
         }
     }
 
+    protected void blockTest() {
+        this.testBlocked = true;
+    }
+
+    protected void unblockTest() {
+        this.testBlocked = false;
+    }
+
     protected void testCurrentValues() {
-        Connection connection = new Connection(textName.getText(), textHost.getText(), Integer.parseInt(textPort.getText()), textUsername.getText(), passwordField1.getPassword());
-        try (Connector connector = new ConnectorFactory(connection).create()) {
-            connector.query(new KCharacterVector("key`.q"), KSymbolVector.class, project);
-            validationMessage.setText("");
-            succedValidationMessage.setText("Valid.");
-        } catch (Throwable e) {
-            succedValidationMessage.setText("");
-            validationMessage.setText(e.getMessage());
+        if (testBlocked) {
+            return;
+        }
+        try {
+            new Task.Modal(project, "Check connection", true) {
+                @Override
+                public void run(@NotNull ProgressIndicator progressIndicator) {
+                    blockTest();
+                    Connection connection = new Connection(textName.getText(), textHost.getText(), Integer.parseInt(textPort.getText()), textUsername.getText(), passwordField1.getPassword());
+                    List<Connector> connectors = Collections.synchronizedList(new ArrayList<>());
+                    succedValidationMessage.setText("");
+                    validationMessage.setText("");
+                    try {
+                        BlockingQueue<Object> queue = new LinkedBlockingQueue<>();
+                        Thread executor = new Thread(() -> {
+                            try {
+                                //QGrid.getInstance(project, false).blockRun();
+                                progressIndicator.setText("Establishing connection to the server...");
+
+                                Connector connector = new ConnectorFactory(connection).create();
+                                connectors.add(connector);
+                                connector.query(new KCharacterVector("key`.q"), KSymbolVector.class, progressIndicator, queue);
+                            } catch (Throwable e) {
+                                queue.add(e);
+                            }
+                        });
+                        executor.setUncaughtExceptionHandler((t, e) -> {
+                            queue.add(e);
+                        });
+                        Thread check = new Thread(() -> {
+                            long timeAfterCancel = -1;
+                            while (true) {
+                                try {
+                                    Object obj = queue.poll(500, TimeUnit.MICROSECONDS);
+                                    if (obj == null) {
+                                        if (progressIndicator.isCanceled()) {
+                                            if (timeAfterCancel < 0) timeAfterCancel = System.currentTimeMillis();
+                                            if (connectors.size() > 0) {
+                                                connectors.get(0).close();
+                                            }
+                                            if (System.currentTimeMillis() - timeAfterCancel > 5000) {
+                                                return;
+                                            }
+                                        }
+                                    } else {
+                                        if (obj instanceof SocketException && progressIndicator.isCanceled()) {
+                                            queue.put(new K4Exception("Canceled by user"));
+                                        } else {
+                                            queue.put(obj);
+                                        }
+                                        return;
+                                    }
+                                } catch (InterruptedException e) {
+                                    return;
+                                }
+                            }
+                        });
+
+                        executor.start();
+                        check.start();
+                        executor.join();
+
+                        Object result = queue.poll(1, TimeUnit.SECONDS);
+                        if (result == null) {
+                            if (check.isAlive()) {
+                                check.interrupt();
+                            }
+                            validationMessage.setText("Execution interrupted by unknown reason.");
+                        } else {
+                            if (result instanceof KBase) {
+                                succedValidationMessage.setText("Valid.");
+                            } else {
+                                validationMessage.setText(result.toString());
+                            }
+                        }
+                    } catch (Exception e) {
+                        validationMessage.setText(e.toString());
+                    } finally {
+                        if (connectors.size() > 0) {
+                            try {
+                                connectors.get(0).close();
+                            } catch (Exception e) {
+                                //IGNORE
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onFinished() {
+                    unblockTest();
+                    super.onFinished();
+                }
+            }.queue();
+        } catch (Exception e) {
+            validationMessage.setText(e.toString());
         }
 
     }
