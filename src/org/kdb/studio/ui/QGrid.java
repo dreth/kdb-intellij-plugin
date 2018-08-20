@@ -352,6 +352,10 @@ public class QGrid implements EditorColorsListener {
         return tableGroup;
     }
 
+    public JEditorPane getConsolePane() {
+        return textPane;
+    }
+
     @FunctionalInterface
     public interface ErrorLogger {
         void log(@NotNull String title, @NotNull String content);
