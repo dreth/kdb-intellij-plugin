@@ -19,11 +19,7 @@ public class HTMLViewer extends DialogWrapper {
         editorPane.setContentType("text/html");
         editorPane.setMinimumSize(new java.awt.Dimension(20, 20));
         editorPane.setPreferredSize(new java.awt.Dimension(500, 500));
-        if (content.startsWith("\"")) {
-            editorPane.setText(content.substring(1, content.length() - 2));
-        } else {
-            editorPane.setText(content);
-        }
+        editorPane.setText(content);
         setTitle("Console (as HTML)");
         setModal(false);
         init();
