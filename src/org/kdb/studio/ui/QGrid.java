@@ -109,6 +109,10 @@ public class QGrid implements EditorColorsListener {
         this.state = state;
     }
 
+    public State getState() {
+        return state;
+    }
+
     public void showState() {
         long exTime = System.currentTimeMillis() - executionStart;
         if (state.error != null) {
@@ -116,7 +120,7 @@ public class QGrid implements EditorColorsListener {
         } else {
             this.showResponse(state.query, state.response);
         }
-        this.state = null;
+        //this.state = null;
         this.blocked = false;
         ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
         toolWindowManager.getToolWindow("KDBStudio").setTitle("           Last execution time: " + formatTime(exTime));
@@ -195,9 +199,10 @@ public class QGrid implements EditorColorsListener {
             try {
                 if (!(response instanceof UnaryPrimitive && 0 == ((UnaryPrimitive) response).getPrimitiveAsInt()))
                     response.toString(lm, true);
+            } catch (LimitedWriter.LimitException e) {
+                Notifications.Bus.notify(new Notification("KDBStudio", "Response is too big to be shown in console", "Data is too long. Cut output.", NotificationType.WARNING));
             } catch (IOException e) {
                 Notifications.Bus.notify(new Notification("KDBStudio", "Failed to show response in console", e.getMessage(), NotificationType.WARNING));
-
             }
             showConsole(lm.toString(), false, query);
         }
@@ -350,10 +355,6 @@ public class QGrid implements EditorColorsListener {
 
     public TableGroup getTableGroup() {
         return tableGroup;
-    }
-
-    public JEditorPane getConsolePane() {
-        return textPane;
     }
 
     @FunctionalInterface
