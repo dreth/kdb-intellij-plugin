@@ -135,7 +135,7 @@ public class ExcelExporter {
                             b.toString(w, false);
                         } catch (LimitedWriter.LimitException e) {
                             Notifications.Bus.notify(new Notification("KDBStudio", "Failed to export full data to excel","Data is loo long. Cut output.", NotificationType.WARNING));
-                        } catch (Exception e) {
+                        } catch (Throwable e) {
                             Notifications.Bus.notify(new Notification("KDBStudio", "There was an error exporting to excel.", e.getMessage(), NotificationType.ERROR));
                         }
                         writer.write("<ss:Cell><ss:Data ss:Type=\"String\">" + escape(w.toString()));

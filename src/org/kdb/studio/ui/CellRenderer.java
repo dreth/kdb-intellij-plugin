@@ -63,10 +63,10 @@ class CellRenderer extends DefaultTableCellRenderer {
 
             try {
                 kb.toString(w, kb instanceof KBaseVector);
-            } catch (IOException e) {
-                this.logger.log("Failed to parse data for table view", e.getMessage() != null ? e.getMessage() : e.toString());
             } catch (LimitedWriter.LimitException ex) {
                 this.logger.log("Failed to parse data for table view", "Data is loo long. Cut output.");
+            } catch (Throwable e) {
+                this.logger.log("Failed to parse data for table view", e.getMessage() != null ? e.getMessage() : e.toString());
             }
             setText(w.toString());
             setForeground(kb.isNull() ? nullColor : fgColor);

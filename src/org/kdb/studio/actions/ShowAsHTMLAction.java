@@ -13,6 +13,8 @@ import org.kdb.studio.ui.QGrid;
 
 import javax.swing.*;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class ShowAsHTMLAction extends AnAction {
@@ -31,7 +33,9 @@ public class ShowAsHTMLAction extends AnAction {
                 if (state != null && state.error == null && !FlipTableModel.isTable(state.response)) {
                     try {
                         File file = FileUtil.createTempFile("kdb-plugin-console-view", ".html", true);
-                        FileUtil.writeToFile(file, state.response.toString(true));
+                        try (FileOutputStream os = new FileOutputStream(file)) {
+                            state.response.serialise(os);
+                        }
                         BrowserUtil.browse(file);
                     } catch (IOException e) {
                         Notifications.Bus.notify(new Notification("KDBStudio", "Failed to open output as HTML", e.getMessage(), NotificationType.WARNING));
