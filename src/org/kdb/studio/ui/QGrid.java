@@ -114,16 +114,18 @@ public class QGrid implements EditorColorsListener {
     }
 
     public void showState() {
-        long exTime = System.currentTimeMillis() - executionStart;
-        if (state.error != null) {
-            this.showError(state.error);
-        } else {
-            this.showResponse(state.query, state.response);
+        try {
+            long exTime = System.currentTimeMillis() - executionStart;
+            if (state.error != null) {
+                this.showError(state.error);
+            } else {
+                this.showResponse(state.query, state.response);
+            }
+            ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
+            toolWindowManager.getToolWindow("KDBStudio").setTitle("           Last execution time: " + formatTime(exTime));
+        } finally { //unblock the QGrid state
+            this.blocked = false;
         }
-        //this.state = null;
-        this.blocked = false;
-        ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
-        toolWindowManager.getToolWindow("KDBStudio").setTitle("           Last execution time: " + formatTime(exTime));
     }
 
     protected String formatTime(long ms) {
@@ -199,9 +201,9 @@ public class QGrid implements EditorColorsListener {
             try {
                 if (!(response instanceof UnaryPrimitive && 0 == ((UnaryPrimitive) response).getPrimitiveAsInt()))
                     response.toString(lm, true);
-            } catch (LimitedWriter.LimitException e) {
-                Notifications.Bus.notify(new Notification("KDBStudio", "Response is too big to be shown in console", "Data is too long. Cut output.", NotificationType.WARNING));
-            } catch (IOException e) {
+            } catch (LimitedWriter.LimitException ignore) {
+                //Notifications.Bus.notify(new Notification("KDBStudio", "Response is too big to be shown in console", "Data is too long. Cut output.", NotificationType.WARNING));
+            } catch (Throwable e) {
                 Notifications.Bus.notify(new Notification("KDBStudio", "Failed to show response in console", e.getMessage(), NotificationType.WARNING));
             }
             showConsole(lm.toString(), false, query);
