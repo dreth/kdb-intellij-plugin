@@ -5,6 +5,7 @@ import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
+import com.intellij.ui.CollectionComboBoxModel;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jfree.chart.ChartFactory;
@@ -13,19 +14,17 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.general.SeriesException;
 import org.jfree.data.time.*;
-import org.jfree.data.time.Minute;
-import org.jfree.data.time.Month;
-import org.jfree.data.time.Second;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import org.kdb.studio.chart.ChartConfigLoader;
 import org.kdb.studio.chart.ChartConfigurator;
 import org.kdb.studio.chart.PlotConfigManager;
-import org.kdb.studio.chart.entity.Grid;
 import org.kdb.studio.chart.entity.Plot;
 import org.kdb.studio.kx.ToDouble;
 import org.kdb.studio.kx.type.*;
+import org.kdb.studio.kx.type.Minute;
+import org.kdb.studio.kx.type.Month;
+import org.kdb.studio.kx.type.Second;
 
 import javax.swing.*;
 import java.time.Instant;
@@ -34,31 +33,37 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class LineChart extends DialogWrapper {
+public class LineChartForm extends DialogWrapper {
+    private JComboBox plotConfig;
+    private ChartPanel chartPanel;
+    private JPanel centralPanel;
+    private KTableModel table;
+    private JFreeChart chart;
 
-    public ChartPanel chartPanel;
-
-    public LineChart(@Nullable Project project, KTableModel table) {
+    public LineChartForm(@Nullable Project project, KTableModel table) {
         super(project);
-        JFreeChart chart = createDataset(table);
-        Plot config = null;
-        if (chart != null) {
-            try {
-                config = PlotConfigManager.getInstance().forModel(table);
-                new ChartConfigurator().configureChart(config, chart);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-            chartPanel = new ChartPanel(chart);
-            if (config != null && config.getSize() != null) {
-                chartPanel.setPreferredSize(new java.awt.Dimension(config.getSize().getWidth(), config.getSize().getHeight()));
-            } else {
-                chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
-            }
-            chartPanel.setMouseZoomable(true, false);
-        }
+        this.table = table;
         setModal(false);
         setTitle("Chart");
+        plotConfig.setModel(new CollectionComboBoxModel(PlotConfigManager.getInstance().listAllPlots()));
+        plotConfig.addItemListener(e -> {
+            String item = (String) e.getItem();
+            Plot config = null;
+            chart = createDataset(table);
+            if (chart != null) {
+                try {
+                    config = PlotConfigManager.getInstance().byName(item);
+                    new ChartConfigurator().configureChart(config, chart);
+                } catch (Exception ignore) {
+                    //
+                }
+                if (config != null && config.getSize() != null) {
+                    chartPanel.setPreferredSize(new java.awt.Dimension(config.getSize().getWidth(), config.getSize().getHeight()));
+                }
+            }
+            chartPanel.setChart(chart);
+        });
+
         init();
     }
 
@@ -71,7 +76,7 @@ public class LineChart extends DialogWrapper {
     @Nullable
     @Override
     protected JComponent createCenterPanel() {
-        return chartPanel;
+        return centralPanel;
     }
 
     public static boolean couldBeShown(KTableModel table) {
@@ -94,11 +99,11 @@ public class LineChart extends DialogWrapper {
         } else if (KDatetimeVector.class == kBaseVector) {
             return Millisecond.class;
         } else if (KMonthVector.class == kBaseVector) {
-            return Month.class;
+            return org.jfree.data.time.Month.class;
         } else if (KSecondVector.class == kBaseVector) {
-            return Second.class;
+            return org.jfree.data.time.Second.class;
         } else if (KMinuteVector.class == kBaseVector) {
-            return Minute.class;
+            return org.jfree.data.time.Minute.class;
         }
         return null;
     }
@@ -124,13 +129,13 @@ public class LineChart extends DialogWrapper {
             int m = time.i + 24000;
             int y = m / 12;
             m = 1 + m % 12;
-            return new Month(m, y);
+            return new org.jfree.data.time.Month(m, y);
         } else if (KSecondVector.class == kBaseVector) {
             org.kdb.studio.kx.type.Second time = (org.kdb.studio.kx.type.Second) period;
-            return new Second(time.i % 60, time.i / 60, 0, 1, 1, 2001);
+            return new org.jfree.data.time.Second(time.i % 60, time.i / 60, 0, 1, 1, 2001);
         } else if (KMinuteVector.class == kBaseVector) {
             org.kdb.studio.kx.type.Minute time = (org.kdb.studio.kx.type.Minute) period;
-            return new Minute(time.i % 60, time.i / 60, 1, 1, 2001);
+            return new org.jfree.data.time.Minute(time.i % 60, time.i / 60, 1, 1, 2001);
         }
         return null;
     }
@@ -228,5 +233,25 @@ public class LineChart extends DialogWrapper {
 
         return null;
     }
-}
 
+    private void createUIComponents() {
+
+        Plot config = null;
+        chart = createDataset(table);
+        if (chart != null) {
+            try {
+                config = PlotConfigManager.getInstance().forModel(table);
+                new ChartConfigurator().configureChart(config, chart);
+            } catch (Exception ignore) {
+//
+            }
+            chartPanel = new ChartPanel(chart);
+            if (config != null && config.getSize() != null) {
+                chartPanel.setPreferredSize(new java.awt.Dimension(config.getSize().getWidth(), config.getSize().getHeight()));
+            } else {
+                chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
+            }
+            chartPanel.setMouseZoomable(true, false);
+        }
+    }
+}

@@ -1,0 +1,312 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://studio.kdb.org/plot/schema#",
+  "title": "Plot configuration schema",
+  "type": "object",
+  "properties": {
+    "title": {
+      "$ref": "#/definitions/Label"
+    },
+    "legend": {
+      "$ref": "#/definitions/Legend"
+    },
+    "type": {
+      "$ref": "#/definitions/ChartType"
+    },
+    "domainAxis": {
+      "$ref": "#/definitions/DomainAxis"
+    },
+    "rangeAxis": {
+      "$ref": "#/definitions/RangeAxis"
+    },
+    "grid": {
+      "$ref": "#/definitions/Grid"
+    },
+    "backgroundColor": {
+      "type": "string",
+      "format": "color"
+    },
+    "plotBackgroundColor": {
+      "type": "string",
+      "format": "color"
+    },
+    "series": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Series"
+      }
+    },
+    "size": {
+      "$ref": "#/definitions/Size"
+    }
+  },
+  "definitions": {
+    "Series": {
+      "type": "object",
+      "properties": {
+        "lineWidth": {
+          "type": "number"
+        },
+        "color": {
+          "type": "string",
+          "format": "color"
+        },
+        "lineType" : {
+          "$ref": "#/definitions/LineType"
+        },
+        "visibleInLegend": {
+          "type": "boolean"
+        },
+        "show": {
+          "type": "boolean"
+        }
+      }
+    },
+    "ChartType": {
+      "type": "string",
+      "enum": [
+        "LINE",
+        "STAIRCASE",
+        "SCATTER"
+      ]
+    },
+    "LineType": {
+      "type": "string",
+      "enum": [
+        "SOLID",
+        "DASHED",
+        "DASH_DOT",
+        "DOT_DOT"
+      ]
+    },
+    "Label": {
+      "type": "object",
+      "properties": {
+        "show": {
+          "type": "boolean"
+        },
+        "text": {
+          "type": "string"
+        },
+        "font": {
+          "$ref": "#/definitions/Font"
+        },
+        "color": {
+          "type": "string",
+          "format": "color"
+        }
+      },
+      "required": [
+        "show"
+      ]
+    },
+    "DomainAxis": {
+      "type": "object",
+      "properties": {
+        "label": {
+          "$ref": "#/definitions/Label"
+        },
+        "ticks": {
+          "$ref": "#/definitions/Tick"
+        },
+        "axisLineColor": {
+          "type": "string",
+          "format": "color"
+        },
+        "tickMarkColor": {
+          "type": "string",
+          "format": "color"
+        }
+      }
+    },
+    "RangeAxis": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/DomainAxis"
+        },
+        {
+          "properties": {
+            "range": {
+              "$ref": "#/definitions/Range"
+            },
+            "tickUnit": {
+              "$ref": "#/definitions/TickUnit"
+            }
+          }
+        }
+      ]
+    },
+    "Range": {
+      "type": "object",
+      "properties": {
+        "autoAdjust": {
+          "type": "boolean"
+        },
+        "minimumRangeValue": {
+          "type": "number"
+        },
+        "maximumRangeValue": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "autoAdjust"
+      ]
+    },
+    "TickUnit": {
+      "type": "object",
+      "properties": {
+        "autoSelection": {
+          "type": "boolean"
+        },
+        "tickUnitValue": {
+          "type": "number"
+        }
+      }
+    },
+    "Tick": {
+      "type": "object",
+      "properties": {
+        "showTickLabels": {
+          "type": "boolean"
+        },
+        "showTickMarks": {
+          "type": "boolean"
+        },
+        "tickLabelFont": {
+          "$ref": "#/definitions/Font"
+        },
+        "tickLabelColor": {
+          "type": "string",
+          "format": "color"
+        }
+      },
+      "required": [
+        "showTickLabels",
+        "showTickMarks"
+      ]
+    },
+    "Font": {
+      "type": "object",
+      "properties": {
+        "size": {
+          "type": "integer"
+        },
+        "attributes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "PLAIN",
+              "BOLD",
+              "ITALIC"
+            ]
+          }
+        },
+        "font": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "size",
+        "style",
+        "family"
+      ]
+    },
+    "Grid": {
+      "type": "object",
+      "properties": {
+        "horizontal": {
+          "type": "boolean"
+        },
+        "horizontalLineWidth": {
+          "type": "number"
+        },
+        "horizontalLineColor": {
+          "type": "string",
+          "format": "color"
+        },
+        "horizontalLineType" : {
+          "$ref": "#/definitions/LineType"
+        },
+        "vertical": {
+          "type": "boolean"
+        },
+        "verticalLineWidth": {
+          "type": "number"
+        },
+        "verticalLineColor": {
+          "type": "string",
+          "format": "color"
+        },
+        "verticalLineType" : {
+          "$ref": "#/definitions/LineType"
+        }
+      }
+    },
+    "Position": {
+      "type": "string",
+      "enum": [
+        "TOP",
+        "BOTTOM",
+        "LEFT",
+        "RIGHT"
+      ]
+    },
+    "Margin": {
+      "type": "object",
+      "properties": {
+        "top": {
+          "type": "number"
+        },
+        "left": {
+          "type": "number"
+        },
+        "bottom": {
+          "type": "number"
+        },
+        "right": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "top",
+        "left",
+        "bottom",
+        "right"
+      ]
+    },
+    "Legend": {
+      "type": "object",
+      "properties": {
+        "show": {
+          "type": "boolean"
+        },
+        "margin": {
+          "$ref": "#/definitions/Margin"
+        },
+        "position": {
+          "$ref": "#/definitions/Position"
+        },
+        "backgroundColor": {
+          "type": "string",
+          "format": "color"
+        }
+      },
+      "required": [
+        "show"
+      ]
+    },
+    "Size": {
+      "type": "object",
+      "properties": {
+        "width": {
+          "type": "integer"
+        },
+        "height": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

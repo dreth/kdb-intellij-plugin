@@ -1,0 +1,80 @@
+{
+  "type" : "SCATTER",
+  "title": {
+    "show": true,
+    "text": "",
+    "font": {
+      "font": "Tahoma",
+      "size": 20,
+      "attributes": [
+        "BOLD"
+      ]
+    }
+  },
+  "backgroundColor": "#FFFFFF",
+  "plotBackgroundColor": "#C0C0C0",
+  "domainAxis": {
+    "label": {
+      "show": false
+    },
+    "ticks": {
+      "showTickLabels": true,
+      "showTickMarks": true,
+      "tickLabelColor": "#404040",
+      "tickLabelFont": {
+        "font": "Tahoma",
+        "size": 14,
+        "attributes": ["BOLD"]
+      }
+    }
+  },
+  "rangeAxis": {
+    "label": {
+      "show": false
+    },
+    "ticks": {
+      "showTickLabels": true,
+      "showTickMarks": true,
+      "tickLabelColor": "#404040",
+      "tickLabelFont": {
+        "font": "Tahoma",
+        "size": 14,
+        "attributes": ["BOLD"]
+      }
+    },
+    "range": {
+      "autoAdjust": true
+    },
+    "tickUnit": {
+      "autoSelection": true
+    }
+  },
+  "grid": {
+    "horizontal": true,
+    "vertical": true,
+    "horizontalLineColor": "#FFFFFF",
+    "verticalLineColor": "#FFFFFF",
+    "horizontalLineWidth": 0.5,
+    "verticalLineWidth": 0.5,
+    "horizontalLineType": "DASHED",
+    "verticalLineType": "DASHED"
+  },
+  "legend": {
+    "show": true,
+    "backgroundColor": "#FFFFFF",
+    "position": "BOTTOM",
+    "margin": {
+      "top": 2.0,
+      "bottom": 2.0,
+      "left": 2.0,
+      "right": 2.0
+    }
+  },
+  "series": [
+
+  ],
+  "size": {
+    "width": 500,
+    "height": 400
+  }
+}

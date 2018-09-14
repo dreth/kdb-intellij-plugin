@@ -87,6 +87,9 @@
         <component>
             <implementation-class>org.kdb.studio.KDBStudioApplicationComponent</implementation-class>
         </component>
+        <component>
+            <implementation-class>org.kdb.studio.KDBStudioPlotConfigComponent</implementation-class>
+        </component>
     </application-components>
 
     <project-components>
