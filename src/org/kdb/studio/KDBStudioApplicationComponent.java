@@ -57,6 +57,7 @@ public class KDBStudioApplicationComponent implements ApplicationComponent, Pers
         am.registerAction("KDB_5_open_export", exportAction);
         am.registerAction("KDB_6_open_chart", chartAction);
         am.registerAction("KDB_7_open_as_html", new ShowAsHTMLAction());
+        am.registerAction("KDB_8_plot_config", new PlotConfigManagementAction());
 
         DefaultActionGroup uiToggleGroup = (DefaultActionGroup) am.getAction("UIToggleActions");
         uiToggleGroup.add(new ToolbarControlAction());

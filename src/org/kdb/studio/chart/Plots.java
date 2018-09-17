@@ -2,24 +2,48 @@ package org.kdb.studio.chart;
 
 import org.kdb.studio.chart.entity.Plot;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Plots {
 
     public List<Plot> plots = new ArrayList<>();
 
-    public String defaultId;
+    public Map<PlotDefaultType, String> defaultId = new TreeMap<>();
 
     public List<Plot> getPlots() {
         return plots;
     }
 
-    public String getDefaultId() {
-        return defaultId;
+    public String getDefaultId(PlotDefaultType plotDefaultType) {
+        return defaultId.get(plotDefaultType);
     }
 
-    public void setDefaultId(String defaultId) {
-        this.defaultId = defaultId;
+    public void setDefaultId(PlotDefaultType plotDefaultType, String id) {
+        for (Iterator<Map.Entry<PlotDefaultType, String>> it = defaultId.entrySet().iterator(); it.hasNext(); ) {
+            if (id.equals(it.next().getValue())) {
+                it.remove();
+            }
+        }
+        if (plotDefaultType != null) {
+            this.defaultId.put(plotDefaultType, id);
+        }
     }
+
+    public void remove(String plotId) {
+        for (Iterator<Plot> it = plots.iterator(); it.hasNext();) {
+            if (plotId.equals(it.next().getId())) {
+                it.remove();
+            }
+        }
+        for (Iterator<Map.Entry<PlotDefaultType, String>> it = defaultId.entrySet().iterator(); it.hasNext();) {
+            if (plotId.equals(it.next().getValue())) {
+                it.remove();
+            }
+        }
+    }
+
+    public PlotDefaultType typeFor(String plotId) {
+        return defaultId.entrySet().stream().filter(entry -> plotId.equals(entry.getValue())).map(Map.Entry::getKey).findFirst().orElse(null);
+    }
+
 }

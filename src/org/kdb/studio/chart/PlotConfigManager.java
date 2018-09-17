@@ -16,12 +16,18 @@ public class PlotConfigManager {
         return INSTANCE;
     }
 
-    private Plots plots;
+    private Plots plots = new Plots();
+
+    public List<String> listAllPlots(boolean includeDefault) {
+        List<String> ids = Optional.ofNullable(plots).orElse(new Plots()).getPlots().stream().map(Plot::getId).collect(Collectors.toList());
+        if (includeDefault) {
+            ids.add("<<DEFAULT>>");
+        }
+        return ids;
+    }
 
     public List<String> listAllPlots() {
-        List<String> ids = Optional.ofNullable(plots).orElse(new Plots()).getPlots().stream().map(Plot::getId).collect(Collectors.toList());
-        ids.add("<<DEFAULT>>");
-        return ids;
+        return listAllPlots(true);
     }
 
     public Plot byName(String id) {
@@ -54,5 +60,9 @@ public class PlotConfigManager {
 
     public void setState(Plots plots) {
         this.plots = plots;
+    }
+
+    public Plots getState() {
+        return this.plots;
     }
 }
