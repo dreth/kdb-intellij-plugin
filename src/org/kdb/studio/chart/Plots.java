@@ -6,11 +6,11 @@ import java.util.*;
 
 public class Plots {
 
-    public List<Plot> plots = new ArrayList<>();
+    public Set<Plot> plots = new LinkedHashSet<>();
 
     public Map<PlotDefaultType, String> defaultId = new TreeMap<>();
 
-    public List<Plot> getPlots() {
+    public Set<Plot> getPlots() {
         return plots;
     }
 

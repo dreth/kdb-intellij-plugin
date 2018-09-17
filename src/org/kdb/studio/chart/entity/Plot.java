@@ -2,6 +2,7 @@ package org.kdb.studio.chart.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Plot {
     public String id;
@@ -15,6 +16,23 @@ public class Plot {
     public Legend legend;
     public List<Series> series;
     public Size size;
+
+    public Plot() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Plot plot = (Plot) o;
+        return Objects.equals(id, plot.id);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id);
+    }
 
     public DomainAxis getDomainAxis() {
         return domainAxis;

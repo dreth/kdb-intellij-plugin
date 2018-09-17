@@ -15,7 +15,8 @@ public class PlotConfigManagementAction extends AnAction {
     public void actionPerformed(AnActionEvent anActionEvent) {
         Project project = anActionEvent.getProject();
         if (project != null) {
-            new PlotConfigManagement(project).show();
+            PlotConfigManagement management = new PlotConfigManagement(project);
+            management.show();
         }
     }
 }

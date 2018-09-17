@@ -7,6 +7,9 @@
     "title": {
       "$ref": "#/definitions/Label"
     },
+    "id": {
+      "type": "string"
+    },
     "legend": {
       "$ref": "#/definitions/Legend"
     },
@@ -40,6 +43,7 @@
       "$ref": "#/definitions/Size"
     }
   },
+  "required": ["id"],
   "definitions": {
     "Series": {
       "type": "object",
@@ -209,8 +213,8 @@
       },
       "required": [
         "size",
-        "style",
-        "family"
+        "attributes",
+        "font"
       ]
     },
     "Grid": {

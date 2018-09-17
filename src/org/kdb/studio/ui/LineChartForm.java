@@ -4,6 +4,7 @@ import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.ui.CollectionComboBoxModel;
 import org.jetbrains.annotations.NotNull;
@@ -45,7 +46,6 @@ public class LineChartForm extends DialogWrapper {
         this.table = table;
         setModal(false);
         setTitle("Chart");
-        plotConfig.setModel(new CollectionComboBoxModel(PlotConfigManager.getInstance().listAllPlots()));
         plotConfig.addItemListener(e -> {
             String item = (String) e.getItem();
             Plot config = null;
@@ -55,7 +55,8 @@ public class LineChartForm extends DialogWrapper {
                     config = PlotConfigManager.getInstance().byName(item);
                     new ChartConfigurator().configureChart(config, chart);
                 } catch (Exception ignore) {
-                    //
+                    Notifications.Bus.notify(new Notification("KDBStudio", "Apply chart config error.", ignore.toString(), NotificationType.ERROR));
+                    ignore.printStackTrace();
                 }
                 if (config != null && config.getSize() != null) {
                     chartPanel.setPreferredSize(new java.awt.Dimension(config.getSize().getWidth(), config.getSize().getHeight()));
@@ -235,15 +236,17 @@ public class LineChartForm extends DialogWrapper {
     }
 
     private void createUIComponents() {
-
+        plotConfig = new ComboBox();
+        plotConfig.setModel(new CollectionComboBoxModel(PlotConfigManager.getInstance().listAllPlots()));
         Plot config = null;
         chart = createDataset(table);
         if (chart != null) {
             try {
                 config = PlotConfigManager.getInstance().forModel(table);
+                plotConfig.setSelectedItem(config.getId());
                 new ChartConfigurator().configureChart(config, chart);
             } catch (Exception ignore) {
-//
+                Notifications.Bus.notify(new Notification("KDBStudio", "Apply chart config error.", ignore.toString(), NotificationType.ERROR));
             }
             chartPanel = new ChartPanel(chart);
             if (config != null && config.getSize() != null) {

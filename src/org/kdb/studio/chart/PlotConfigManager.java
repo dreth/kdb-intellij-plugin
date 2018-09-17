@@ -1,14 +1,18 @@
 package org.kdb.studio.chart;
 
 import org.kdb.studio.chart.entity.Plot;
+import org.kdb.studio.kx.type.*;
 import org.kdb.studio.ui.KTableModel;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 
 public class PlotConfigManager {
+
+    public static String DEFAULT_ID = "<<DEFAULT>>";
 
     private static final PlotConfigManager INSTANCE = new PlotConfigManager();
 
@@ -21,7 +25,7 @@ public class PlotConfigManager {
     public List<String> listAllPlots(boolean includeDefault) {
         List<String> ids = Optional.ofNullable(plots).orElse(new Plots()).getPlots().stream().map(Plot::getId).collect(Collectors.toList());
         if (includeDefault) {
-            ids.add("<<DEFAULT>>");
+            ids.add(DEFAULT_ID);
         }
         return ids;
     }
@@ -31,7 +35,7 @@ public class PlotConfigManager {
     }
 
     public Plot byName(String id) {
-        if (id.equals("<<DEFAULT>>")) {
+        if (id == null || id.equals(DEFAULT_ID)) {
             return defaultConfig();
         } else {
             return Optional.ofNullable(plots).orElse(new Plots()).getPlots().stream().filter(plot -> id.equals(plot.getId())).findFirst().orElse(null);
@@ -43,11 +47,25 @@ public class PlotConfigManager {
     }
 
     public Plot forModel(KTableModel table) {
-        if (plots.getPlots().size() > 0) {
-            return plots.getPlots().get(0);
-        } else {
+        PlotDefaultType type = typeFor(table);
+        if (type == null) {
             return defaultConfig();
         }
+        String defaultId = plots.getDefaultId(type);
+        return byName(defaultId);
+    }
+
+    protected PlotDefaultType typeFor(KTableModel table) {
+        if (table.getColumnCount() > 0) {
+            Class klass = table.getColumnClass(0);
+            if (Arrays.asList(KTimestampVector.class, KTimespanVector.class, KDateVector.class, KTimeVector.class, KMonthVector.class, KMinuteVector.class, KSecondVector.class, KDatetimeVector.class).contains(klass)) {
+                return PlotDefaultType.TimeSeriesChart;
+            } else if (Arrays.asList(KDoubleVector.class, KFloatVector.class, KShortVector.class, KIntVector.class, KLongVector.class).contains(klass)) {
+                return PlotDefaultType.XYLineChart;
+            }
+        }
+        return null;
+
     }
 
     public Plot defaultConfig() {

@@ -1,5 +1,6 @@
 {
   "type" : "SCATTER",
+  "id": "<<DEFAULT>>",
   "title": {
     "show": true,
     "text": "",
