@@ -1,17 +1,15 @@
 package org.kdb.studio;
 
 import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.Anchor;
-import com.intellij.openapi.actionSystem.Constraints;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.Storage;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.kdb.studio.actions.*;
 import org.kdb.studio.db.ConnectionManager;
+import org.kdb.studio.ui.ColorAndFontManager;
 import org.kdb.studio.ui.KDBToolbarUIManager;
 
 import java.util.Optional;
@@ -66,8 +64,12 @@ public class KDBStudioApplicationComponent implements ApplicationComponent, Pers
         DefaultActionGroup uiToggleGroup = (DefaultActionGroup) am.getAction("UIToggleActions");
         uiToggleGroup.add(new ToolbarControlAction());
 
+        DefaultActionGroup kdbStudioGroup = new DefaultActionGroup("KDB+ Studio Config", true);
+        kdbStudioGroup.add(plotConfigManagementAction);
+        kdbStudioGroup.add(new FontConfigManagementAction());
+
         DefaultActionGroup viewMenuGroup = (DefaultActionGroup) am.getAction("ViewMenu");
-        viewMenuGroup.add(plotConfigManagementAction);
+        viewMenuGroup.add(kdbStudioGroup);
     }
 
     @Override
@@ -86,11 +88,12 @@ public class KDBStudioApplicationComponent implements ApplicationComponent, Pers
 
     @Nullable
     public State getState() {
-        return State.create(ConnectionManager.getInstance(), KDBToolbarUIManager.getInstance() != null ? KDBToolbarUIManager.getInstance().isVisible() : initialEnabled);
+        return State.create(ConnectionManager.getInstance(), ColorAndFontManager.getInstance(), KDBToolbarUIManager.getInstance() != null ? KDBToolbarUIManager.getInstance().isVisible() : initialEnabled);
     }
 
     public void loadState(State state) {
         state.apply(ConnectionManager.getInstance());
+        state.apply(ColorAndFontManager.getInstance());
         if (KDBToolbarUIManager.getInstance() == null) {
             initialEnabled = Optional.ofNullable(state.getToolbarEnabled()).orElse(true);
         } else {

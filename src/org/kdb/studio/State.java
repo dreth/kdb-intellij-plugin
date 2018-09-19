@@ -1,6 +1,8 @@
 package org.kdb.studio;
 
+import org.kdb.studio.chart.entity.Font;
 import org.kdb.studio.db.ConnectionManager;
+import org.kdb.studio.ui.ColorAndFontManager;
 
 import java.util.*;
 
@@ -11,6 +13,8 @@ public class State {
     public String activeConnection;
 
     public Boolean toolbarEnabled;
+
+    public Map<String, Font> styles = new LinkedHashMap<>();
 
     public static class Connection {
 
@@ -97,7 +101,7 @@ public class State {
         return Objects.hash(connections, activeConnection, toolbarEnabled);
     }
 
-    static State create(ConnectionManager connectionManager, boolean toolbarEnabled) {
+    static State create(ConnectionManager connectionManager, ColorAndFontManager colorAndFontManager, boolean toolbarEnabled) {
         State state = new State();
         state.setConnections(new LinkedList<>());
         Optional.ofNullable(connectionManager.getActiveConnection()).ifPresent(conn -> state.setActiveConnection(conn.getView()));
@@ -105,6 +109,8 @@ public class State {
             state.getConnections().add(new Connection(conn.getName(), conn.getHost(), conn.getPort(), conn.getUsername(), conn.getPassword()));
         }
         state.setToolbarEnabled(toolbarEnabled);
+        state.styles.clear();
+        colorAndFontManager.getFontMap().forEach((key, font) -> state.styles.put(key, Font.fromAwtFont(font)));
         return state;
     }
 
@@ -112,6 +118,10 @@ public class State {
         connectionManager.releaseAll();
         connections.forEach(connection -> connectionManager.addOrUpdate(new org.kdb.studio.db.Connection(connection.name, connection.host, connection.port, connection.username, connection.password.toCharArray())));
         connectionManager.setActiveConnection(connectionManager.getConnectionByName(activeConnection));
+    }
 
+    void apply(ColorAndFontManager colorAndFontManager) {
+        colorAndFontManager.getFontMap().clear();
+        styles.forEach((key, font) -> colorAndFontManager.getFontMap().put(key, Font.toAwtFont(font)));
     }
 }

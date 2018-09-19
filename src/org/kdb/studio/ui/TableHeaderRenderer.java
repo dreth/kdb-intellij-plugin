@@ -18,8 +18,7 @@ public class TableHeaderRenderer extends DefaultTableCellRenderer {
     }
 
     public void updateStyles() {
-        EditorColorsScheme editorColorsScheme = EditorColorsManager.getInstance().getSchemeForCurrentUITheme();
-        setFont(editorColorsScheme.getFont(EditorFontType.PLAIN));
+        setFont(ColorAndFontManager.getInstance().getFont(ColorAndFontManager.TABLE_HEADER_FONT));
     }
 
     public Component getTableCellRendererComponent(JTable table,

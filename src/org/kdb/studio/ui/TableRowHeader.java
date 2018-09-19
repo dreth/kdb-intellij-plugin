@@ -71,8 +71,7 @@ public class TableRowHeader extends JList {
     }
 
     public void updateStyle() {
-        EditorColorsScheme editorColorsScheme = EditorColorsManager.getInstance().getSchemeForCurrentUITheme();
-        setFont(editorColorsScheme.getFont(EditorFontType.PLAIN));
+        setFont(ColorAndFontManager.getInstance().getFont(ColorAndFontManager.TABLE_ROW_NUM_FONT));
         rowHeaderRenderer.updateStyle();
     }
 
@@ -100,8 +99,7 @@ public class TableRowHeader extends JList {
         }
 
         public void updateStyle() {
-            EditorColorsScheme editorColorsScheme = EditorColorsManager.getInstance().getSchemeForCurrentUITheme();
-            setFont(editorColorsScheme.getFont(EditorFontType.PLAIN));
+            setFont(ColorAndFontManager.getInstance().getFont(ColorAndFontManager.TABLE_ROW_NUM_FONT));
         }
 
 

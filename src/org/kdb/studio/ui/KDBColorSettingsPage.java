@@ -1,6 +1,5 @@
 package org.kdb.studio.ui;
 
-import com.intellij.openapi.editor.colors.ColorKey;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.PlainSyntaxHighlighter;
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
@@ -11,29 +10,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.Map;
 
+import static org.kdb.studio.ui.ColorAndFontManager.*;
+
 public class KDBColorSettingsPage implements ColorSettingsPage {
-
-    public static ColorKey KDB_CONSOLE_BACKGROUND = ColorKey.createColorKey("KDB_CONSOLE_BACKGROUND", UIManager.getColor("EditorPane.background"));
-
-    public static ColorKey KDB_CONSOLE_FOREGROUND = ColorKey.createColorKey("KDB_CONSOLE_FOREGROUND", UIManager.getColor("EditorPane.foreground"));
-
-    public static ColorKey KDB_KEY_COLUMN_BACKGROUND = ColorKey.createColorKey("KDB_KEY_COLUMN_BACKGROUND", new Color(220, 255, 220));
-
-    public static ColorKey KDB_ODD_COLUMN_BACKGROUND = ColorKey.createColorKey("KDB_ODD_COLUMN_BACKGROUND",new Color(220,220,255));
-
-    public static ColorKey KDB_NULL_COLUMN_FOREGROUND = ColorKey.createColorKey("KDB_NULL_COLUMN_FOREGROUND",new Color(255,150,150));
-
-    public static ColorKey KDB_TABLE_SELECTION_BACKGROUND = ColorKey.createColorKey("KBD_SELECTION_BACKGROUND", UIManager.getColor("Table.selectionBackground"));
-
-    public static ColorKey KDB_TABLE_SELECTION_FOREGROUND = ColorKey.createColorKey("KBD_SELECTION_FOREGROUND", UIManager.getColor("Table.selectionForeground"));
-
-    public static ColorKey KDB_TABLE_BACKGROUND = ColorKey.createColorKey("KDB_TABLE_BACKGROUND", UIManager.getColor("Table.background"));
-
-    public static ColorKey KDB_TABLE_FOREGROUND = ColorKey.createColorKey("KDB_TABLE_FOREGROUND", UIManager.getColor("Table.foreground"));
-
 
     private static final ColorDescriptor[] DESCRIPTORS = new ColorDescriptor[] {
             new ColorDescriptor("Console//Background color", KDB_CONSOLE_BACKGROUND, ColorDescriptor.Kind.BACKGROUND),

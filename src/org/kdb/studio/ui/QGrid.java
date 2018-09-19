@@ -29,6 +29,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Map;
+import java.util.Optional;
 import java.util.WeakHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -88,21 +89,33 @@ public class QGrid implements EditorColorsListener {
     @Override
     public void globalSchemeChange(@Nullable EditorColorsScheme scheme) {
         updateStyles();
+    }
+
+    public void updateStyles() {
+
+        ColorAndFontManager colorAndFontManager = ColorAndFontManager.getInstance();
+        Font font = colorAndFontManager.getFont(ColorAndFontManager.CONSOLE_FONT);
+        textPane.setFont(font);
+        textPane.setBackground(colorAndFontManager.getColor(ColorAndFontManager.KDB_CONSOLE_BACKGROUND));
+        Color fg = colorAndFontManager.getColor(ColorAndFontManager.KDB_CONSOLE_FOREGROUND);
+
+        StringBuilder fontPrefs = new StringBuilder("style=\"");
+        fontPrefs.append("font-family: '").append(font.getFamily()).append("'; ");
+        fontPrefs.append("font-size: ").append(font.getSize()).append("pt; ");
+        if (font.isItalic()) {
+            fontPrefs.append("font-style: italic; ");
+        }
+        if (font.isBold()) {
+            fontPrefs.append("font-weight: bold; ");
+        }
+        fontPrefs.append("color: ").append(String.format("#%02x%02x%02x", fg.getRed(), fg.getGreen(), fg.getBlue()).toUpperCase()).append(";\"");
+
+        style = fontPrefs.toString();
+        textPane.setForeground(fg);
+
         cellRenderer.updateStyles();
         trh.updateStyle();
         tableHeaderRenderer.updateStyles();
-    }
-
-    protected void updateStyles() {
-        EditorColorsScheme editorColorsScheme = EditorColorsManager.getInstance().getSchemeForCurrentUITheme();
-        Font font = editorColorsScheme.getFont(EditorFontType.PLAIN);
-        textPane.setFont(font);
-        EditorColorsScheme scheme = EditorColorsManager.getInstance().getGlobalScheme();
-        textPane.setBackground(scheme.getColor(KDBColorSettingsPage.KDB_CONSOLE_BACKGROUND));
-        Color fg = scheme.getColor(KDBColorSettingsPage.KDB_CONSOLE_FOREGROUND);
-        style = new StringBuilder("style=\"font-family: '").append(font.getFamily()).append("'; font-size:").append(font.getSize()).append("pt; color:")
-                .append(String.format("#%02x%02x%02x", fg.getRed(), fg.getGreen(), fg.getBlue()).toUpperCase()).append(";\"").toString();
-        textPane.setForeground(scheme.getColor(KDBColorSettingsPage.KDB_CONSOLE_FOREGROUND));
     }
 
     public void setState(State state) {
@@ -280,7 +293,7 @@ public class QGrid implements EditorColorsListener {
                 EditorColorsManager.getInstance().addEditorColorsListener(instance);
                 instanceMap.put(project, instance);
             } catch (Exception e) {
-                Notifications.Bus.notify(new Notification("KDBStudio", "Plugin instantiation error", e.getMessage(), NotificationType.WARNING));
+                Notifications.Bus.notify(new Notification("KDBStudio", "Plugin instantiation error", Optional.ofNullable(e.getMessage()).orElse(e.toString()), NotificationType.WARNING));
             }
         }
         return instance;
