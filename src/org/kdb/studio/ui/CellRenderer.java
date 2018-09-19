@@ -38,17 +38,18 @@ class CellRenderer extends DefaultTableCellRenderer {
     }
 
     public void updateStyles() {
-        EditorColorsScheme editorColorsScheme = EditorColorsManager.getInstance().getSchemeForCurrentUITheme();
-        setFont(editorColorsScheme.getFont(EditorFontType.PLAIN));
 
-        EditorColorsScheme scheme = EditorColorsManager.getInstance().getGlobalScheme();
-        keyColor = scheme.getColor(KDBColorSettingsPage.KDB_KEY_COLUMN_BACKGROUND);
-        altColor = scheme.getColor(KDBColorSettingsPage.KDB_ODD_COLUMN_BACKGROUND);
-        nullColor = scheme.getColor(KDBColorSettingsPage.KDB_NULL_COLUMN_FOREGROUND);
-        bgColor = scheme.getColor(KDBColorSettingsPage.KDB_TABLE_SELECTION_BACKGROUND);
-        selectionFGColor = scheme.getColor(KDBColorSettingsPage.KDB_TABLE_SELECTION_FOREGROUND);
-        gridColor = scheme.getColor(KDBColorSettingsPage.KDB_TABLE_BACKGROUND);
-        fgColor = scheme.getColor(KDBColorSettingsPage.KDB_TABLE_FOREGROUND);
+        ColorAndFontManager colorAndFontManager = ColorAndFontManager.getInstance();
+
+        setFont(colorAndFontManager.getFont(ColorAndFontManager.TABLE_CONTENT_FONT));
+
+        keyColor = colorAndFontManager.getColor(ColorAndFontManager.KDB_KEY_COLUMN_BACKGROUND);
+        altColor = colorAndFontManager.getColor(ColorAndFontManager.KDB_ODD_COLUMN_BACKGROUND);
+        nullColor = colorAndFontManager.getColor(ColorAndFontManager.KDB_NULL_COLUMN_FOREGROUND);
+        bgColor = colorAndFontManager.getColor(ColorAndFontManager.KDB_TABLE_SELECTION_BACKGROUND);
+        selectionFGColor = colorAndFontManager.getColor(ColorAndFontManager.KDB_TABLE_SELECTION_FOREGROUND);
+        gridColor = colorAndFontManager.getColor(ColorAndFontManager.KDB_TABLE_BACKGROUND);
+        fgColor = colorAndFontManager.getColor(ColorAndFontManager.KDB_TABLE_FOREGROUND);
     }
 
     public Component getTableCellRendererComponent(JTable table,
