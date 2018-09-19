@@ -4,6 +4,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.IconLoader;
 import org.kdb.studio.ui.LineChart;
+import org.kdb.studio.ui.LineChartForm;
 
 public class ChartAction extends QGridAction {
 
@@ -16,7 +17,7 @@ public class ChartAction extends QGridAction {
     public void actionPerformed(AnActionEvent anActionEvent) {
         Project project = anActionEvent.getProject();
         if (isAvailable(anActionEvent) && getTableGroup(anActionEvent).getCurrentTableModel() != null) {
-            new LineChart(project, getTableGroup(anActionEvent).getCurrentTableModel()).show();
+            new LineChartForm(project, getTableGroup(anActionEvent).getCurrentTableModel()).show();
         }
     }
 

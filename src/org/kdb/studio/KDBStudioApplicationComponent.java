@@ -1,10 +1,13 @@
 package org.kdb.studio;
 
 import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.Anchor;
+import com.intellij.openapi.actionSystem.Constraints;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.Storage;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.kdb.studio.actions.*;
@@ -34,6 +37,7 @@ public class KDBStudioApplicationComponent implements ApplicationComponent, Pers
         ExcelAction excelAction = new ExcelAction();
         ExportAction exportAction = new ExportAction();
         ChartAction chartAction = new ChartAction();
+        PlotConfigManagementAction plotConfigManagementAction = new PlotConfigManagementAction();
 
 
         kdbActionGroup = new DefaultActionGroup("KDBToolbarActions", false);
@@ -57,9 +61,13 @@ public class KDBStudioApplicationComponent implements ApplicationComponent, Pers
         am.registerAction("KDB_5_open_export", exportAction);
         am.registerAction("KDB_6_open_chart", chartAction);
         am.registerAction("KDB_7_open_as_html", new ShowAsHTMLAction());
+        am.registerAction("KDB_8_plot_config", plotConfigManagementAction);
 
         DefaultActionGroup uiToggleGroup = (DefaultActionGroup) am.getAction("UIToggleActions");
         uiToggleGroup.add(new ToolbarControlAction());
+
+        DefaultActionGroup viewMenuGroup = (DefaultActionGroup) am.getAction("ViewMenu");
+        viewMenuGroup.add(plotConfigManagementAction);
     }
 
     @Override

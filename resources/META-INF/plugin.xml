@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>org.kdb.studio</id>
     <name>KDB+ Studio Plugin</name>
-    <version>1.0.8</version>
+    <version>1.1.0</version>
     <vendor email="shupakabras@gmail.com">Andrii Borovyk</vendor>
 
     <description><![CDATA[
@@ -13,6 +13,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      <h3>1.1.0</h3>
+      <ul>
+        <li>Initial support of Configurable plotting</li>
+      </ul>
+      <br/>
       <h3>1.0.8</h3>
       <ul>
         <li>Unblock query executor just after last execution complete</li>
@@ -86,6 +91,9 @@
     <application-components>
         <component>
             <implementation-class>org.kdb.studio.KDBStudioApplicationComponent</implementation-class>
+        </component>
+        <component>
+            <implementation-class>org.kdb.studio.KDBStudioPlotConfigComponent</implementation-class>
         </component>
     </application-components>
 

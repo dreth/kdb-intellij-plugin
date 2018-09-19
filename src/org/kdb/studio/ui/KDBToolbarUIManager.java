@@ -1,8 +1,6 @@
 package org.kdb.studio.ui;
 
-import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.actionSystem.ToggleAction;
+import com.intellij.openapi.actionSystem.*;
 
 public class KDBToolbarUIManager {
 

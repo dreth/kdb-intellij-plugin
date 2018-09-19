@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JsonSchemaMappingsProjectConfiguration">
+    <state>
+      <map>
+        <entry key="meta-schema">
+          <value>
+            <SchemaInfo>
+              <option name="name" value="meta-schema" />
+              <option name="relativePathToSchema" value="resources\meta-schema.json" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="path" value="resources\plot-schema.json" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
+        <entry key="plot-schema">
+          <value>
+            <SchemaInfo>
+              <option name="name" value="plot-schema" />
+              <option name="relativePathToSchema" value="resources\plot-schema.json" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="path" value="resources\default-plot.json" />
+                  </Item>
+                  <Item>
+                    <option name="path" value="resources\plot.json" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
+      </map>
+    </state>
+  </component>
+</project>

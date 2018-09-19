@@ -1,9 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="47758ac1-081b-4c58-92d6-74ed825e1224" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+    <list default="true" id="47758ac1-081b-4c58-92d6-74ed825e1224" name="Default" comment="Fixed TimeZone issue with">
+      <change afterPath="$PROJECT_DIR$/.idea/jsonSchemas.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/com_fasterxml_jackson_core_jackson_databind_2_9_6.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/org_jfree_jfreechart_1_5_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/jackson-annotations-2.9.0.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/jackson-core-2.9.6.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/jackson-databind-2.9.6.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/jfreechart-1.5.0.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/default-plot.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/meta-schema.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/plot-schema.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/org/kdb/studio/KDBStudioPlotConfigComponent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/org/kdb/studio/chart/ChartConfigLoader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/org/kdb/studio/chart/ChartConfigurator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/org/kdb/studio/chart/PlotConfigManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/org/kdb/studio/chart/Plots.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/ChartType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/DomainAxis.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Font.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/FontAttributes.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Grid.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Label.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Legend.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/LineType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Margin.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Plot.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Position.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Range.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/RangeAxis.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Series.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Size.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Tick.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/TickUnit.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/org/kdb/studio/ui/LineChartForm.form" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/org/kdb/studio/ui/LineChartForm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/jcommon_1_0_16.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/jfreechart_1_0_13.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kdb-studio.iml" beforeDir="false" afterPath="$PROJECT_DIR$/kdb-studio.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/jcommon-1.0.16.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/jfreechart-1.0.13.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/META-INF/plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/resources/META-INF/plugin.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/kdb/studio/actions/ChartAction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/kdb/studio/actions/ChartAction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/org/kdb/studio/ui/LineChart.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/org/kdb/studio/ui/LineChart.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -15,30 +58,104 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="plugin.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/META-INF/plugin.xml">
+      <file leaf-file-name="ChartConfigurator.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/chart/ChartConfigurator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="137">
-              <caret line="31" column="28" selection-start-line="31" selection-start-column="28" selection-end-line="31" selection-end-column="28" />
+            <state relative-caret-position="153">
+              <caret line="24" column="26" selection-start-line="24" selection-start-column="26" selection-end-line="24" selection-end-column="26" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#7315#7316#0" expanded="true" />
+                <element signature="e#7357#7358#0" expanded="true" />
+                <element signature="method#toFont#0;class#ChartConfigurator#0" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor relative-caret-position="272">
-                <caret line="16" column="29" selection-start-line="16" selection-start-column="29" selection-end-line="16" selection-end-column="29" />
-              </first_editor>
-              <second_editor />
+      <file leaf-file-name="ChartType.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/chart/entity/ChartType.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="15" column="16" selection-start-line="15" selection-start-column="16" selection-end-line="15" selection-end-column="16" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="edit_connection.png" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/doc/edit_connection.png">
-          <provider selected="true" editor-type-id="images" />
+      <file leaf-file-name="LineType.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/chart/entity/LineType.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="20" column="86" selection-start-line="20" selection-start-column="86" selection-end-line="20" selection-end-column="86" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="default-plot.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/default-plot.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="490">
+              <caret line="43" column="6" selection-start-line="43" selection-start-column="6" selection-end-line="43" selection-end-column="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PlotConfigManager.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/chart/PlotConfigManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="575">
+              <caret line="39" selection-start-line="39" selection-end-line="39" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#312#313#0" expanded="true" />
+                <element signature="e#343#344#0" expanded="true" />
+                <element signature="e#860#861#0" expanded="true" />
+                <element signature="e#893#894#0" expanded="true" />
+                <element signature="method#defaultConfig#0;class#PlotConfigManager#0" />
+                <element signature="e#1504#1505#0" expanded="true" />
+                <element signature="e#1538#1539#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LineChart.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/ui/LineChart.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="229">
+              <caret line="42" column="8" selection-start-line="42" selection-start-column="8" selection-end-line="42" selection-end-column="8" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="method#couldBeShown#0;class#LineChart#0" />
+                <element signature="method#typeOf#0;class#LineChart#0" />
+                <element signature="method#convertToPeriod#0;class#LineChart#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LineChartForm.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/ui/LineChartForm.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="561">
+              <caret line="64" selection-start-line="64" selection-end-line="64" />
+              <folding>
+                <element signature="e#1831#1832#0" expanded="true" />
+                <element signature="e#1867#1868#0" expanded="true" />
+                <element signature="e#1943#1944#0" expanded="true" />
+                <element signature="e#1978#1979#0" expanded="true" />
+                <element signature="method#couldBeShown#0;class#LineChartForm#0" />
+                <element signature="method#typeOf#0;class#LineChartForm#0" />
+                <element signature="method#convertToPeriod#0;class#LineChartForm#0" />
+                <element signature="method#createDataset#0;class#LineChartForm#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="kdb-studio.iml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/kdb-studio.iml">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -46,88 +163,109 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Kotlin File" />
+        <option value="Enum" />
         <option value="Class" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>&quot;Run</find>
-      <find>validate</find>
+      <find>MainToo</find>
+      <find>Commit</find>
+      <find>VcsHistoryInternalGroup.Toolbar</find>
+      <find>VcsHistoryInternalGroup</find>
+      <find>CommittedChangesToolbar</find>
+      <find>Project st</find>
+      <find>Tool</find>
+      <find>MainToolbar</find>
+      <find>Toolbar</find>
+      <find>View</find>
+      <find>ViewToolBar</find>
+      <find>tableGroup</find>
+      <find>The serv</find>
+      <find>Test</find>
+      <find>ColorKey.</find>
       <find>MainToolBar</find>
-      <find>JTable</find>
-      <find>compom</find>
-      <find>loadSta</find>
-      <find>Edit Configurations</find>
-      <find>edit.configuration.action</find>
-      <find>edit</find>
-      <find>plugin</find>
-      <find>borrowObject</find>
-      <find>getColor</find>
-      <find>Table.ba</find>
-      <find>Label.font</find>
-      <find>e.pr</find>
-      <find>System.e</find>
-      <find>KDBStudio</find>
+      <find>view</find>
+      <find>brow</find>
+      <find>setSt</find>
+      <find>Chart properties</find>
+      <find>ITALIC</find>
+      <find>.setTickLabelPaint(</find>
+      <find>tick</find>
+      <find>tickUni</find>
+      <find>.setTickLabelPaint()</find>
+      <find>legend</find>
+      <find>addLe</find>
+      <find>scatter</find>
+      <find>double</find>
+      <find>JComboBox</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
+    <option name="UPDATE_TYPE" value="REBASE" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/kx/type/KBaseVector.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/KDBProjectComponent.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/KDBStudioProjectCompoment.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/FlipTableModel.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/DictTableModel.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/KTableModel.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/ScaledIcon.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/WidthAdjuster.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/QGridTable.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/TableHeaderRenderer.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/kx/QErrors.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/actions/ExecutionBarAction.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/QueryExecutor.form" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/QueryExecutor.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/kx/ConnectorNew.java" />
         <option value="$PROJECT_DIR$/src/org/kdb/studio/kx/ConnectorFactory.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/db/ConnectionManager.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/StateService.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/State.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/ConnectionsManagement.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/actions/RemoveConnectionAction.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/actions/AddConnectionAction.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/SettingPanel.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/KDBStudioProjectComponent.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/actions/ConnectionsBoxAction.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/actions/SelectActiveConnectionAction.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/actions/ConnectionSettingsAction.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/actions/ReRunAction.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/QGrid.form" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/ConnectionsManagement.form" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/actions/ChartAction.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/db/Connection.java" />
         <option value="$PROJECT_DIR$/src/org/kdb/studio/kx/Connector.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/CellRenderer.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/LineChart.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/ExcelExporter.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/TableGroupPanel.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/QGrid.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/actions/ExcelAction.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/actions/ExportAction.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/ConfigmDialog.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/ConfiRmDialog.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/ConfigmDialog.form" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/FileExporter.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/ConfirmDialog.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/actions/RunAllAction.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/db/Connection.java" />
         <option value="$PROJECT_DIR$/src/org/kdb/studio/actions/RunCodeAction.java" />
-        <option value="$PROJECT_DIR$/src/org/kdb/studio/KDBStudioApplicationComponent.java" />
-        <option value="$PROJECT_DIR$/resources/META-INF/licenses/jcommon-LICENSE.txt" />
-        <option value="$PROJECT_DIR$/resources/META-INF/plugin.xml" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/ConnectionsManagement.java" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/KDBColorSettingsPage.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/KDBStudioApplicationComponent.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/HTMLViewer.java" />
+        <option value="$USER_HOME$/Downloads/jfreechart-1.0.13/source/org/jfree/chart/ChartFactory.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/ExcelExporter.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/CellRenderer.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/kx/type/KBase.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/actions/ShowAsHTMLAction.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/QGrid.java" />
+        <option value="$PROJECT_DIR$/resources/plotconfig.yml" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/FontAttributes.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/ChartConfigurator.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/ChartType.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/chart/ChartConfigLoader.java" />
+        <option value="$PROJECT_DIR$/resources/plot.json.kt" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Axis.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Title.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Position.java" />
+        <option value="$PROJECT_DIR$/resources/plot.json" />
+        <option value="$PROJECT_DIR$/resources/META-INF/plugin.xml" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/KDBStudionPlotConfigComponent.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/LineChart.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/KDBStudioPlotConfigComponent.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Plot.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/DomainAxis.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Font.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Label.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Legend.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Margin.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Range.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/RangeAxis.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Series.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Size.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Tick.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/TickUnit.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/chart/Plots.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/LineChartForm.form" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/actions/ChartAction.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/LineType.java" />
+        <option value="$PROJECT_DIR$/resources/plot-schema.json" />
+        <option value="$PROJECT_DIR$/resources/default-plot.json" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Grid.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/chart/PlotConfigManager.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/chart/ChartConfigurator.java" />
+        <option value="$PROJECT_DIR$/src/org/kdb/studio/ui/LineChartForm.java" />
       </list>
     </option>
   </component>
@@ -141,16 +279,16 @@
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-10" />
     <option name="y" value="-10" />
-    <option name="width" value="1120" />
-    <option name="height" value="800" />
+    <option name="width" value="1400" />
+    <option name="height" value="1000" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -166,29 +304,54 @@
             <path>
               <item name="kdb-intellij-plugin" type="b2602c69:ProjectViewProjectNode" />
               <item name="kdb-intellij-plugin" type="462c0819:PsiDirectoryNode" />
-              <item name="doc" type="462c0819:PsiDirectoryNode" />
+              <item name=".idea" type="462c0819:PsiDirectoryNode" />
+              <item name="libraries" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="kdb-intellij-plugin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="kdb-intellij-plugin" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="kdb-intellij-plugin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="kdb-intellij-plugin" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="kdb-intellij-plugin" type="b2602c69:ProjectViewProjectNode" />
+              <item name="kdb-intellij-plugin" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="studio" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="AndroidView" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="Downloaded.Files.Path.Enabled" value="true" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="true" />
     <property name="UI_DESIGNER_EDITOR_MODE.PaletteManager.WIDTH" value="316" />
-    <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH" value="407" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH" value="433" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/resources/default-plot.json" />
+    <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="project.structure.side.proportion" value="0.39046746" />
+    <property name="settings.editor.selected.configurable" value="settings.json.schema" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="org.kdb.studio.chart" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="org.kdb.studio.ui" />
       <recent name="org.kdb.studio.kx" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\projects\kdb\kdb-intellij-plugin\resources\icons" />
       <recent name="D:\projects\kdb\kdb-studio\resources\META-INF\licenses" />
       <recent name="D:\projects\kdb\kdb-studio\resources\icons" />
       <recent name="D:\projects\kdb\kdb-studio\lib" />
@@ -252,7 +415,8 @@
     <configuration name="Plugin" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
       <module name="kdb-studio" />
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
-      <option name="PROGRAM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <alternative-path path="IntelliJ IDEA Community Edition IC-181.4445.78" alternative-path-enabled="true" />
       <predefined_log_file id="idea.log" enabled="true" />
     </configuration>
     <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
@@ -273,6 +437,91 @@
       <option name="presentableId" value="Default" />
       <updated>1529601999573</updated>
     </task>
+    <task id="LOCAL-00001" summary="wrap text in console output">
+      <created>1531477876210</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1531477876210</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Fixed TimeZone issue with jfreechart">
+      <created>1531732366942</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1531732366942</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Create View -&gt; KDB+ Studio Toolbar and make it auto-selected at installation">
+      <created>1531747301284</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1531747301284</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Width of the row number column should auto adjust for the largest number">
+      <created>1532342339542</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1532342339542</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Move 4 icons from the KDB Studio window to the toolbar">
+      <created>1532426368868</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1532426368868</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Sending a request to a busy q server blocks the GUI in 1.0.3">
+      <created>1532689515501</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1532689515501</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Update readme. &#10;Use background task in Connections Management window.">
+      <created>1532953239926</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1532953239926</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Add IDEA 2017.2.7 support">
+      <created>1532971290850</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1532971290850</updated>
+    </task>
+    <task id="LOCAL-00009" summary="enable plugin in all products">
+      <created>1534768564125</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1534768564126</updated>
+    </task>
+    <task id="LOCAL-00010" summary="remove &quot;stubs&quot; from code">
+      <created>1534779419644</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1534779419644</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Fixed issue with writer limited exception">
+      <created>1534938240437</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1534938240437</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Add license file. &#10;Handle all possible issues with grid query unblocking">
+      <created>1535387319974</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1535387319974</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TodoView">
@@ -285,40 +534,87 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3463687" />
       <window_info id="DB Browser" order="2" weight="0.32995737" />
-      <window_info anchor="bottom" id="Messages" order="7" weight="0.3240059" />
+      <window_info anchor="bottom" id="Messages" order="7" weight="0.32290503" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
       <window_info id="Image Layers" order="2" />
       <window_info anchor="bottom" id="DB Execution Console" order="7" />
       <window_info anchor="right" id="Capture Analysis" order="3" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50053304" side_tool="true" weight="0.22569832" />
       <window_info anchor="right" id="Maven Projects" order="3" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49946696" weight="0.22533137" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49946696" visible="true" weight="0.13072626" />
       <window_info anchor="bottom" id="Version Control" order="7" />
+      <window_info anchor="bottom" id="KDBStudio" order="8" weight="0.32960895" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32960895" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18120806" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18763326" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.40670392" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="2" />
       <window_info anchor="right" id="Theme Preview" order="3" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.41237113" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.59217876" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.42793295" />
     </layout>
+    <layout-to-restore>
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info id="Designer" order="2" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Capture Analysis" order="4" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49946696" visible="true" weight="0.13072626" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18763326" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="DB Execution Console" order="7" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.3463687" />
+      <window_info id="Favorites" order="3" side_tool="true" />
+      <window_info id="Image Layers" order="4" />
+      <window_info anchor="bottom" id="KDBStudio" order="12" weight="0.32960895" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info id="UI Designer" order="5" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.40670392" />
+      <window_info anchor="right" id="Theme Preview" order="5" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.59217876" />
+      <window_info anchor="right" id="Palette&#9;" order="6" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32960895" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.50053304" side_tool="true" weight="0.22569832" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Version Control" order="10" />
+      <window_info id="Capture Tool" order="6" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="bottom" id="Messages" order="11" weight="0.32290503" />
+      <window_info anchor="right" id="Maven Projects" order="7" />
+      <window_info id="DB Browser" order="7" weight="0.32995737" />
+    </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="wrap text in console output" />
+    <MESSAGE value="Fixed TimeZone issue with jfreechart" />
+    <MESSAGE value="Create View -&gt; KDB+ Studio Toolbar and make it auto-selected at installation" />
+    <MESSAGE value="Width of the row number column should auto adjust for the largest number" />
+    <MESSAGE value="Move 4 icons from the KDB Studio window to the toolbar" />
+    <MESSAGE value="Sending a request to a busy q server blocks the GUI in 1.0.3" />
+    <MESSAGE value="Update readme. &#10;Use background task in Connections Management window." />
+    <MESSAGE value="Add IDEA 2017.2.7 support" />
+    <MESSAGE value="enable plugin in all products" />
+    <MESSAGE value="remove &quot;stubs&quot; from code" />
+    <MESSAGE value="Fixed issue with writer limited exception" />
+    <MESSAGE value="Add license file. &#10;Handle all possible issues with grid query unblocking" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add license file. &#10;Handle all possible issues with grid query unblocking" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -348,18 +644,6 @@
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/org/kdb/studio/ui/SettingPanel.java</url>
-          <line>15</line>
-          <properties />
-          <option name="timeStamp" value="57" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/org/kdb/studio/kx/Connector.java</url>
-          <line>67</line>
-          <properties />
-          <option name="timeStamp" value="70" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/org/kdb/studio/ui/FileExporter.java</url>
           <line>295</line>
           <properties />
@@ -371,17 +655,83 @@
           <properties />
           <option name="timeStamp" value="75" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>jar://D:/software/bin/ideaIC-2017.3.5.win/lib/openapi.jar!/com/intellij/openapi/actionSystem/ToggleAction.class</url>
+          <line>24</line>
+          <properties />
+          <option name="timeStamp" value="78" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/org/kdb/studio/actions/ShowAsHTMLAction.java</url>
+          <line>42</line>
+          <properties />
+          <option name="timeStamp" value="92" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/org/kdb/studio/ui/LineChartForm.java</url>
+          <line>238</line>
+          <properties />
+          <option name="timeStamp" value="100" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/org/kdb/studio/chart/ChartConfigurator.java</url>
+          <line>111</line>
+          <properties />
+          <option name="timeStamp" value="102" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="76" />
+      <option name="time" value="103" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="#org.jetbrains.idea.devkit.run.PluginConfigurationType">
         <watch expression="socket.isClosed()" language="JAVA" />
+        <watch expression="KDBToolbarUIManager.getInstance()" language="JAVA" />
+        <watch expression="KDBToolbarUIManager.getInstance().isVisible()" language="JAVA" />
+        <watch expression="chart.getPlot().getClass()" language="JAVA" />
+        <watch expression="chart.getPlot().getBackgroundPaint()" language="JAVA" />
+        <watch expression="chart.getXYPlot().getDomainAxis()" language="JAVA" />
+        <watch expression="chart.getXYPlot().getDomainGridlinePaint()" language="JAVA" />
+        <watch expression="chart.getXYPlot().getDomainGridlineStroke()" language="JAVA" />
       </configuration>
     </watches-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="watch">
+      <expression>
+        <expression-string>chart.getXYPlot().getDomainGridlineStroke()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>chart.getXYPlot().getDomainGridlinePaint()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>chart.getXYPlot().getDomainAxis()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>chart.getPlot().getBackgroundPaint()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>chart.getPlot().getClass()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>KDBToolbarUIManager.getInstance().isVisible()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>KDBToolbarUIManager.getInstance()</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>socket.isClosed()</expression-string>
         <language-id>JAVA</language-id>
@@ -395,213 +745,504 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/resources/META-INF/plugin.xml">
+    <entry file="jar://$PROJECT_DIR$/lib/jfreechart-1.5.0-sources.jar!/org/jfree/chart/ui/RectangleEdge.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="31" column="28" selection-start-line="31" selection-start-column="28" selection-end-line="31" selection-end-column="28" />
+        <state relative-caret-position="-236">
+          <caret line="37" column="32" selection-start-line="37" selection-start-column="19" selection-end-line="37" selection-end-column="32" />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/meta-schema.json">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/META-INF/plugin.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
-          <caret line="31" column="28" lean-forward="true" selection-start-line="31" selection-start-column="28" selection-end-line="31" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://D:/software/bin/ideaIC-2017.3.5.win/lib/openapi.jar!/com/intellij/psi/PsiFile.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://D:/software/bin/ideaIC-2017.3.5.win/lib/openapi.jar!/com/intellij/ide/util/TreeFileChooser.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="20" column="27" selection-start-line="20" selection-start-column="27" selection-end-line="20" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://D:/software/bin/ideaIC-2017.3.5.win/lib/openapi.jar!/com/intellij/ide/util/TreeFileChooserFactory.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="24" column="141" selection-start-line="24" selection-start-column="141" selection-end-line="24" selection-end-column="141" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://D:/software/bin/jdk1.8.0/src.zip!/java/io/WinNTFileSystem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="193">
-          <caret line="41" column="23" selection-start-line="41" selection-start-column="23" selection-end-line="41" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://D:/software/bin/jdk1.8.0/src.zip!/java/io/FileSystem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="45" column="25" selection-start-line="45" selection-start-column="25" selection-end-line="45" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://D:/software/bin/jdk1.8.0/src.zip!/java/io/File.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="193">
-          <caret line="233" column="59" selection-start-line="233" selection-start-column="59" selection-end-line="233" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/actions/ExcelAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="41" column="15" lean-forward="true" selection-start-line="32" selection-start-column="12" selection-end-line="41" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://D:/software/bin/ideaIC-2017.3.5.win/lib/util.jar!/com/intellij/openapi/progress/ProcessCanceledException.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://D:/software/bin/ideaIC-2017.3.5.win/lib/openapi.jar!/com/intellij/openapi/progress/ProgressIndicator.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="52" column="46" selection-start-line="52" selection-start-column="46" selection-end-line="52" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/ui/ExcelExporter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-529">
-          <caret line="48" column="16" selection-start-line="48" selection-start-column="16" selection-end-line="48" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://D:/software/bin/ideaIC-2017.3.5.win/lib/openapi.jar!/com/intellij/openapi/ui/popup/JBPopup.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="40" column="9" selection-start-line="40" selection-start-column="9" selection-end-line="40" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/actions/ExportAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="23" column="26" lean-forward="true" selection-start-line="23" selection-start-column="26" selection-end-line="23" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://D:/software/bin/ideaIC-2017.3.5.win/lib/idea.jar!/com/intellij/ui/popup/PopupFactoryImpl.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="124" column="21" selection-start-line="124" selection-start-column="21" selection-end-line="124" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://D:/software/bin/ideaIC-2017.3.5.win/lib/openapi.jar!/com/intellij/openapi/ui/popup/JBPopupFactory.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="206">
-          <caret line="52" column="30" selection-start-line="52" selection-start-column="30" selection-end-line="52" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/ui/ConfirmOverwrite.java" />
-    <entry file="jar://D:/software/bin/ideaIC-2017.3.5.win/lib/openapi.jar!/com/intellij/openapi/ui/DialogWrapper.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="137" column="40" selection-start-line="137" selection-start-column="28" selection-end-line="137" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/ui/ConfirmDialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="36" selection-start-line="14" selection-start-column="36" selection-end-line="14" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://D:/software/bin/ideaIC-2017.3.5.win/lib/openapi.jar!/com/intellij/openapi/editor/Document.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="222">
-          <caret line="27" column="19" selection-start-line="27" selection-start-column="19" selection-end-line="27" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/ui/FileExporter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="147" column="134" lean-forward="true" selection-start-line="147" selection-start-column="17" selection-end-line="147" selection-end-column="134" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#exportAsXml#1;class#FileExporter#0" />
-            <element signature="method#exportAsDelimited#0;class#FileExporter#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/actions/ReRunAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="83" lean-forward="true" selection-start-line="15" selection-start-column="8" selection-end-line="16" selection-end-column="83" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/actions/RunAllAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="17" column="26" lean-forward="true" selection-start-line="17" selection-start-column="26" selection-end-line="17" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/actions/RunCodeAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="24" column="17" selection-start-line="24" selection-start-column="17" selection-end-line="24" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/META-INF/licenses/glgpl-2.1-LICENSE.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8517">
-          <caret line="501" column="26" selection-start-line="501" selection-start-column="26" selection-end-line="501" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/META-INF/licenses/apache-2.0-LICENSE.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="73" selection-start-line="16" selection-start-column="73" selection-end-line="16" selection-end-column="73" />
+        <state relative-caret-position="424">
+          <caret line="95" column="19" lean-forward="true" selection-start-line="95" selection-start-column="19" selection-end-line="95" selection-end-column="19" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/KDBStudioApplicationComponent.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
+        <state relative-caret-position="70">
+          <caret line="20" column="74" selection-start-line="20" selection-start-column="54" selection-end-line="20" selection-end-column="74" />
+          <folding>
+            <element signature="method#initComponent#0;class#KDBStudioApplicationComponent#0" />
+            <element signature="e#2984#2985#0" expanded="true" />
+            <element signature="e#3018#3019#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/State.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="8" column="10" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="10" />
+          <folding>
+            <element signature="method#equals#0;class#State#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/chart/entity/DomainAxis.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="10" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="10" />
+          <folding>
+            <element signature="e#485#486#0" expanded="true" />
+            <element signature="e#521#522#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Font.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="10" selection-start-line="10" selection-start-column="10" selection-end-line="10" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/chart/entity/FontAttributes.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="9" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Label.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="10" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="10" />
+          <folding>
+            <element signature="e#188#189#0" expanded="true" />
+            <element signature="e#215#216#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Legend.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="6" column="10" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="10" />
+          <folding>
+            <element signature="e#209#210#0" expanded="true" />
+            <element signature="e#236#237#0" expanded="true" />
+            <element signature="e#277#278#0" expanded="true" />
+            <element signature="e#309#310#0" expanded="true" />
+            <element signature="e#351#352#0" expanded="true" />
+            <element signature="e#389#390#0" expanded="true" />
+            <element signature="e#451#452#0" expanded="true" />
+            <element signature="e#505#506#0" expanded="true" />
+            <element signature="e#538#539#0" expanded="true" />
+            <element signature="e#567#568#0" expanded="true" />
+            <element signature="e#611#612#0" expanded="true" />
+            <element signature="e#647#648#0" expanded="true" />
+            <element signature="e#684#685#0" expanded="true" />
+            <element signature="e#715#716#0" expanded="true" />
+            <element signature="e#765#766#0" expanded="true" />
+            <element signature="e#805#806#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Margin.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="10" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Position.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Range.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="10" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/chart/entity/RangeAxis.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="10" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Series.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="10" selection-start-line="7" selection-start-column="10" selection-end-line="7" selection-end-column="10" />
+          <folding>
+            <element signature="e#736#737#0" expanded="true" />
+            <element signature="e#763#764#0" expanded="true" />
+            <element signature="e#804#805#0" expanded="true" />
+            <element signature="e#836#837#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Size.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="10" selection-start-line="4" selection-start-column="10" selection-end-line="4" selection-end-column="10" />
+          <folding>
+            <element signature="e#132#133#0" expanded="true" />
+            <element signature="e#160#161#0" expanded="true" />
+            <element signature="e#199#200#0" expanded="true" />
+            <element signature="e#233#234#0" expanded="true" />
+            <element signature="e#263#264#0" expanded="true" />
+            <element signature="e#292#293#0" expanded="true" />
+            <element signature="e#333#334#0" expanded="true" />
+            <element signature="e#369#370#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Tick.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="10" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="10" />
+          <folding>
+            <element signature="e#235#236#0" expanded="true" />
+            <element signature="e#272#273#0" expanded="true" />
+            <element signature="e#332#333#0" expanded="true" />
+            <element signature="e#384#385#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/chart/entity/TickUnit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="10" selection-start-line="4" selection-start-column="10" selection-end-line="4" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/software/bin/ideaIC-2017.2.7.win/lib/openapi.jar!/com/intellij/openapi/components/State.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="13" column="11" selection-start-line="13" selection-start-column="11" selection-end-line="13" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/KDBStudioPlotConfigComponent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="9" lean-forward="true" selection-start-line="9" selection-start-column="9" selection-end-line="9" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/chart/Plots.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="13" column="17" lean-forward="true" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#240#241#0" expanded="true" />
+            <element signature="e#268#269#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/ui/LineChartWrapper.form">
+      <provider selected="true" editor-type-id="ui-designer" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/ui/LineChartWrapper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/ui/ConfirmDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/ui/LineChartForm.form">
+      <provider selected="true" editor-type-id="ui-designer" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/ui/QGrid.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="84" column="15" lean-forward="true" selection-start-line="84" selection-start-column="15" selection-end-line="84" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/software/bin/ideaIC-2017.2.7.win/lib/openapi.jar!/com/intellij/ui/CollectionComboBoxModel.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-51">
+          <caret line="16" column="11" selection-start-line="16" selection-start-column="11" selection-end-line="16" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/ui/ConnectionsManagement.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="66" column="48" selection-start-line="66" selection-start-column="24" selection-end-line="66" selection-end-column="48" />
+          <folding>
+            <element signature="e#2209#2210#0" expanded="true" />
+            <element signature="e#2299#2300#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/ui/TableGroup.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="183">
+          <caret line="29" column="20" selection-start-line="29" selection-start-column="20" selection-end-line="29" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/software/bin/ideaIC-2017.2.7.win/lib/idea.jar!/com/intellij/ide/IdeEventQueue.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="849">
+          <caret line="808" selection-start-line="808" selection-end-line="808" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/actions/ChartAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="19" column="30" selection-start-line="19" selection-start-column="30" selection-end-line="19" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Plot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="75" selection-start-line="75" selection-end-line="75" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1637#1638#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/chart/ChartConfigLoader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/jfreechart-1.5.0-sources.jar!/org/jfree/chart/util/StrokeList.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="38" column="13" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/jfreechart-1.5.0-sources.jar!/org/jfree/chart/renderer/xy/XYLineAndShapeRenderer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-87">
+          <caret line="116" column="13" selection-start-line="116" selection-start-column="13" selection-end-line="116" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/jfreechart-1.5.0-sources.jar!/org/jfree/chart/renderer/xy/XYItemRenderer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="311" column="16" selection-start-line="311" selection-start-column="16" selection-end-line="311" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/jfreechart-1.5.0-sources.jar!/org/jfree/chart/renderer/AbstractRenderer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="401" column="50" selection-start-line="401" selection-start-column="50" selection-end-line="401" selection-end-column="50" />
+          <folding>
+            <element signature="e#19560#19561#0" expanded="true" />
+            <element signature="e#19615#19616#0" expanded="true" />
+            <element signature="e#23051#23052#0" expanded="true" />
+            <element signature="e#23123#23124#0" expanded="true" />
+            <element signature="e#41659#41660#0" expanded="true" />
+            <element signature="e#41715#41716#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/software/bin/jdk1.8.0/src.zip!/java/awt/BasicStroke.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="290">
+          <caret line="125" column="36" selection-start-line="125" selection-start-column="36" selection-end-line="125" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/plot-schema.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="388">
+          <caret line="224" column="28" selection-start-line="224" selection-start-column="9" selection-end-line="224" selection-end-column="28" />
+          <folding>
+            <element signature="n#!!block;n#ChartType#0;n#!!block;n#definitions#0;n#!!top" />
+            <element signature="n#!!block;n#LineType#0;n#!!block;n#definitions#0;n#!!top" />
+            <element signature="n#!!block;n#Label#0;n#!!block;n#definitions#0;n#!!top" />
+            <element signature="n#!!block;n#Range#0;n#!!block;n#definitions#0;n#!!top" />
+            <element signature="n#!!block;n#TickUnit#0;n#!!block;n#definitions#0;n#!!top" />
+            <element signature="n#!!block;n#Tick#0;n#!!block;n#definitions#0;n#!!top" />
+            <element signature="n#!!block;n#Font#0;n#!!block;n#definitions#0;n#!!top" />
+            <element signature="n#!!block;n#Position#0;n#!!block;n#definitions#0;n#!!top" />
+            <element signature="n#!!block;n#Margin#0;n#!!block;n#definitions#0;n#!!top" />
+            <element signature="n#!!block;n#Legend#0;n#!!block;n#definitions#0;n#!!top" />
+            <element signature="n#!!block;n#Size#0;n#!!block;n#definitions#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/chart/entity/Grid.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="588">
+          <caret line="48" column="42" selection-start-line="48" selection-start-column="42" selection-end-line="48" selection-end-column="42" />
+          <folding>
+            <element signature="e#738#739#0" expanded="true" />
+            <element signature="e#780#781#0" expanded="true" />
+            <element signature="e#850#851#0" expanded="true" />
+            <element signature="e#912#913#0" expanded="true" />
+            <element signature="e#956#957#0" expanded="true" />
+            <element signature="e#996#997#0" expanded="true" />
+            <element signature="e#1062#1063#0" expanded="true" />
+            <element signature="e#1120#1121#0" expanded="true" />
+            <element signature="e#1166#1167#0" expanded="true" />
+            <element signature="e#1208#1209#0" expanded="true" />
+            <element signature="e#1278#1279#0" expanded="true" />
+            <element signature="e#1340#1341#0" expanded="true" />
+            <element signature="e#1384#1385#0" expanded="true" />
+            <element signature="e#1424#1425#0" expanded="true" />
+            <element signature="e#1490#1491#0" expanded="true" />
+            <element signature="e#1548#1549#0" expanded="true" />
+            <element signature="e#1595#1596#0" expanded="true" />
+            <element signature="e#1636#1637#0" expanded="true" />
+            <element signature="e#1706#1707#0" expanded="true" />
+            <element signature="e#1766#1767#0" expanded="true" />
+            <element signature="e#1811#1812#0" expanded="true" />
+            <element signature="e#1850#1851#0" expanded="true" />
+            <element signature="e#1916#1917#0" expanded="true" />
+            <element signature="e#1972#1973#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/jfreechart-1.5.0-sources.jar!/org/jfree/chart/JFreeChart.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1381">
+          <caret line="906" column="18" selection-start-line="906" selection-start-column="18" selection-end-line="906" selection-end-column="18" />
+          <folding>
+            <element signature="e#31912#31913#0" expanded="true" />
+            <element signature="e#31953#31954#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/chart/entity/LineType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="20" column="86" selection-start-line="20" selection-start-column="86" selection-end-line="20" selection-end-column="86" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/jfreechart-1.5.0-sources.jar!/org/jfree/chart/ChartFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="1749" column="73" selection-start-line="1749" selection-start-column="33" selection-end-line="1749" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/chart/entity/ChartType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
           <caret line="15" column="16" selection-start-line="15" selection-start-column="16" selection-end-line="15" selection-end-column="16" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/META-INF/plugin.xml">
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/chart/PlotConfigManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
-          <caret line="31" column="28" selection-start-line="31" selection-start-column="28" selection-end-line="31" selection-end-column="28" />
+        <state relative-caret-position="575">
+          <caret line="39" selection-start-line="39" selection-end-line="39" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#312#313#0" expanded="true" />
+            <element signature="e#343#344#0" expanded="true" />
+            <element signature="e#860#861#0" expanded="true" />
+            <element signature="e#893#894#0" expanded="true" />
+            <element signature="method#defaultConfig#0;class#PlotConfigManager#0" />
+            <element signature="e#1504#1505#0" expanded="true" />
+            <element signature="e#1538#1539#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/doc/edit_connection.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="272">
-            <caret line="16" column="29" selection-start-line="16" selection-start-column="29" selection-end-line="16" selection-end-column="29" />
-          </first_editor>
-          <second_editor />
+    <entry file="file://$PROJECT_DIR$/resources/default-plot.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="490">
+          <caret line="43" column="6" selection-start-line="43" selection-start-column="6" selection-end-line="43" selection-end-column="6" />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/ui/LineChart.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="229">
+          <caret line="42" column="8" selection-start-line="42" selection-start-column="8" selection-end-line="42" selection-end-column="8" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#couldBeShown#0;class#LineChart#0" />
+            <element signature="method#typeOf#0;class#LineChart#0" />
+            <element signature="method#convertToPeriod#0;class#LineChart#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/jfreechart-1.5.0-sources.jar!/org/jfree/chart/ChartPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-289">
+          <caret line="263" column="13" selection-start-line="263" selection-start-column="13" selection-end-line="263" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/chart/ChartConfigurator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="24" column="26" selection-start-line="24" selection-start-column="26" selection-end-line="24" selection-end-column="26" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#7315#7316#0" expanded="true" />
+            <element signature="e#7357#7358#0" expanded="true" />
+            <element signature="method#toFont#0;class#ChartConfigurator#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/kdb/studio/ui/LineChartForm.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="561">
+          <caret line="64" selection-start-line="64" selection-end-line="64" />
+          <folding>
+            <element signature="e#1831#1832#0" expanded="true" />
+            <element signature="e#1867#1868#0" expanded="true" />
+            <element signature="e#1943#1944#0" expanded="true" />
+            <element signature="e#1978#1979#0" expanded="true" />
+            <element signature="method#couldBeShown#0;class#LineChartForm#0" />
+            <element signature="method#typeOf#0;class#LineChartForm#0" />
+            <element signature="method#convertToPeriod#0;class#LineChartForm#0" />
+            <element signature="method#createDataset#0;class#LineChartForm#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/kdb-studio.iml">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
   <component name="masterDetails">
@@ -643,11 +1284,11 @@
       </state>
       <state key="JdkListConfigurable.UI">
         <settings>
-          <last-edited>1.8</last-edited>
+          <last-edited>IntelliJ IDEA Community Edition IC-172.4574.19</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.39046746" />
               </list>
             </option>
           </splitter-proportions>
@@ -679,11 +1320,22 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>commons-pool2-2.5.0</last-edited>
+          <last-edited>com.fasterxml.jackson.core:jackson-databind:2.9.6</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.39046746" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.28964254" />
               </list>
             </option>
           </splitter-proportions>

@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="org.everit.json:org.everit.json.schema:1.5.1" type="repository">
+    <properties maven-id="org.everit.json:org.everit.json.schema:1.5.1" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/org.everit.json.schema-1.5.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/json-20160810.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/guava-19.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-validator-1.5.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-beanutils-1.9.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-digester-1.8.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-logging-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/commons-collections-3.2.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
