@@ -16,7 +16,8 @@ public class ConnectorFactory extends BasePooledObjectFactory<Connector> {
 
     @Override
     public Connector create() throws Exception {
-        String up = StringUtil.isEmptyOrSpaces(connection.getUsername()) ? "" : connection.getUsername() + ((connection.getPassword().length == 0) ? "" : ":" + new String(connection.getPassword()));
+        String password = connection.getEffectivePassword();
+        String up = StringUtil.isEmptyOrSpaces(connection.getUsername()) ? "" : connection.getUsername() + (StringUtil.isEmptyOrSpaces(password) ? "" : ":" + password);
         Connector connector = new Connector(connection.getHost(), connection.getPort(), up);
         return connector;
     }

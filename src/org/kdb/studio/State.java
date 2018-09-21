@@ -28,15 +28,21 @@ public class State {
 
         public String password;
 
+        public boolean usePasswordVariable;
+
+        public String passwordVariable;
+
         public Connection() {
         }
 
-        public Connection(String name, String host, int port, String username, char[] password) {
+        public Connection(String name, String host, int port, String username, char[] password, boolean usePasswordVariable, String passwordVariable) {
             this.name = name;
             this.host = host;
             this.port = port;
             this.username = username;
             this.password = new String(password);
+            this.usePasswordVariable = usePasswordVariable;
+            this.passwordVariable = passwordVariable;
         }
 
         @Override
@@ -48,13 +54,15 @@ public class State {
                     Objects.equals(name, that.name) &&
                     Objects.equals(host, that.host) &&
                     Objects.equals(username, that.username) &&
-                    Objects.equals(password, that.password);
+                    Objects.equals(password, that.password) &&
+                    Objects.equals(usePasswordVariable, that.usePasswordVariable) &&
+                    Objects.equals(passwordVariable, that.passwordVariable);
         }
 
         @Override
         public int hashCode() {
 
-            int result = Objects.hash(name, host, port, username, password);
+            int result = Objects.hash(name, host, port, username, password, usePasswordVariable, passwordVariable);
             return result;
         }
     }
@@ -106,7 +114,7 @@ public class State {
         state.setConnections(new LinkedList<>());
         Optional.ofNullable(connectionManager.getActiveConnection()).ifPresent(conn -> state.setActiveConnection(conn.getView()));
         for (org.kdb.studio.db.Connection conn : connectionManager.getConnections()) {
-            state.getConnections().add(new Connection(conn.getName(), conn.getHost(), conn.getPort(), conn.getUsername(), conn.getPassword()));
+            state.getConnections().add(new Connection(conn.getName(), conn.getHost(), conn.getPort(), conn.getUsername(), conn.getPassword(), conn.isUsePasswordVariable(), conn.getPasswordVariable()));
         }
         state.setToolbarEnabled(toolbarEnabled);
         state.styles.clear();
@@ -116,7 +124,7 @@ public class State {
 
     void apply(ConnectionManager connectionManager) {
         connectionManager.releaseAll();
-        connections.forEach(connection -> connectionManager.addOrUpdate(new org.kdb.studio.db.Connection(connection.name, connection.host, connection.port, connection.username, connection.password.toCharArray())));
+        connections.forEach(connection -> connectionManager.addOrUpdate(new org.kdb.studio.db.Connection(connection.name, connection.host, connection.port, connection.username, connection.password.toCharArray(), connection.usePasswordVariable, connection.passwordVariable)));
         connectionManager.setActiveConnection(connectionManager.getConnectionByName(activeConnection));
     }
 

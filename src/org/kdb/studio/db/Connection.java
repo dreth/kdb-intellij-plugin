@@ -1,5 +1,6 @@
 package org.kdb.studio.db;
 
+import com.intellij.openapi.util.text.StringUtil;
 import org.apache.commons.pool2.ObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
@@ -20,6 +21,10 @@ public class Connection {
 
     private char[] password;
 
+    private boolean usePasswordVariable;
+
+    private String passwordVariable;
+
     protected ObjectPool<Connector> connectorObjectPool;
 
     private final String SYNC = "SYNC";
@@ -27,12 +32,14 @@ public class Connection {
     public Connection() {
     }
 
-    public Connection(String name, String host, int port, String username, char[] password) {
+    public Connection(String name, String host, int port, String username, char[] password, boolean usePasswordVariable, String passwordVariable) {
         this.name = name;
         this.host = host;
         this.port = port;
         this.username = username;
         this.password = password;
+        this.usePasswordVariable = usePasswordVariable;
+        this.passwordVariable = passwordVariable;
     }
 
     public String getName() {
@@ -71,8 +78,33 @@ public class Connection {
         return password;
     }
 
+    public String getEffectivePassword() {
+        if (usePasswordVariable && !StringUtil.isEmptyOrSpaces(passwordVariable)) {
+            return System.getenv(passwordVariable);
+        } else if (password != null){
+            return new String(password);
+        }
+        return "";
+    }
+
     public void setPassword(char[] password) {
         this.password = password;
+    }
+
+    public boolean isUsePasswordVariable() {
+        return usePasswordVariable;
+    }
+
+    public void setUsePasswordVariable(boolean usePasswordVariable) {
+        this.usePasswordVariable = usePasswordVariable;
+    }
+
+    public String getPasswordVariable() {
+        return passwordVariable;
+    }
+
+    public void setPasswordVariable(String passwordVariable) {
+        this.passwordVariable = passwordVariable;
     }
 
     public String getView() {

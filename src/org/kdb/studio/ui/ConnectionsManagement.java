@@ -19,6 +19,7 @@ import org.kdb.studio.kx.type.KSymbolVector;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,6 +43,10 @@ public class ConnectionsManagement extends DialogWrapper {
     private JLabel succedValidationMessage;
     private JPanel leftPanel;
     private SettingPanel settingsPanel;
+    private JCheckBox useEnvCheckox;
+    private JTextField textVariable;
+    private JLabel labelVariable;
+    private JLabel labelPassword;
 
     private ConnectionManager connectionManager;
     private Project project;
@@ -65,6 +70,7 @@ public class ConnectionsManagement extends DialogWrapper {
             }
         });
         connectionsList.addListSelectionListener(e -> setAsCurrentValue(connectionManager.getConnectionByName((String) connectionsList.getSelectedValue())));
+        useEnvCheckox.addActionListener(e -> passwordVisible(!useEnvCheckox.isSelected()));
         setEmptyValue();
         init();
     }
@@ -110,7 +116,7 @@ public class ConnectionsManagement extends DialogWrapper {
     }
 
     protected void saveCurrentValues() {
-        Connection connection = new Connection(textName.getText(), textHost.getText(), Integer.parseInt(textPort.getText()), textUsername.getText(), passwordField1.getPassword());
+        Connection connection = new Connection(textName.getText(), textHost.getText(), Integer.parseInt(textPort.getText()), textUsername.getText(), passwordField1.getPassword(), useEnvCheckox.isSelected(), textVariable.getText());
         connectionManager.addOrUpdate(connection);
         connectionsList.updateUI();
         connectionsList.setSelectedValue(connection.getView(), true);
@@ -142,7 +148,7 @@ public class ConnectionsManagement extends DialogWrapper {
                 @Override
                 public void run(@NotNull ProgressIndicator progressIndicator) {
                     blockTest();
-                    Connection connection = new Connection(textName.getText(), textHost.getText(), Integer.parseInt(textPort.getText()), textUsername.getText(), passwordField1.getPassword());
+                    Connection connection = new Connection(textName.getText(), textHost.getText(), Integer.parseInt(textPort.getText()), textUsername.getText(), passwordField1.getPassword(), useEnvCheckox.isSelected(), textVariable.getText());
                     List<Connector> connectors = Collections.synchronizedList(new ArrayList<>());
                     succedValidationMessage.setText("");
                     validationMessage.setText("");
@@ -243,6 +249,9 @@ public class ConnectionsManagement extends DialogWrapper {
             textPort.setText(String.valueOf(connection.getPort()));
             textUsername.setText(connection.getUsername());
             passwordField1.setText(new String(connection.getPassword()));
+            textVariable.setText(connection.getPasswordVariable());
+            useEnvCheckox.setSelected(connection.isUsePasswordVariable());
+            passwordVisible(!connection.isUsePasswordVariable());
             validationMessage.setText("");
             succedValidationMessage.setText("");
         }
@@ -257,6 +266,15 @@ public class ConnectionsManagement extends DialogWrapper {
         connectionsList.setSelectedIndices(new int[]{});
         validationMessage.setText("");
         succedValidationMessage.setText("");
+        useEnvCheckox.setSelected(false);
+        passwordVisible(true);
+    }
+
+    private void passwordVisible(boolean usePasswordField) {
+        labelPassword.setEnabled(usePasswordField);
+        passwordField1.setEnabled(usePasswordField);
+        labelVariable.setEnabled(!usePasswordField);
+        textVariable.setEnabled(!usePasswordField);
     }
 
     @NotNull
