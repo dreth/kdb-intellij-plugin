@@ -8,14 +8,12 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.io.FileUtil;
+import org.kdb.studio.kx.LimitedWriter;
 import org.kdb.studio.ui.FlipTableModel;
 import org.kdb.studio.ui.QGrid;
 
 import javax.swing.*;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 public class ShowAsHTMLAction extends AnAction {
 
@@ -33,8 +31,8 @@ public class ShowAsHTMLAction extends AnAction {
                 if (state != null && state.error == null && !FlipTableModel.isTable(state.response)) {
                     try {
                         File file = FileUtil.createTempFile("kdb-plugin-console-view", ".html", true);
-                        try (FileOutputStream os = new FileOutputStream(file)) {
-                            state.response.serialise(os);
+                        try (FileOutputStream os = new FileOutputStream(file); Writer writer = new OutputStreamWriter(os)) {
+                            state.response.toString(new DelegatedLimitedWriter(writer), false);
                         }
                         BrowserUtil.browse(file);
                     } catch (IOException e) {
@@ -42,6 +40,25 @@ public class ShowAsHTMLAction extends AnAction {
                     }
                 }
             }
+        }
+    }
+
+    static class DelegatedLimitedWriter extends LimitedWriter {
+        private Writer writer;
+
+        public DelegatedLimitedWriter(Writer writer) {
+            super(-1);
+            this.writer = writer;
+        }
+
+        @Override
+        public void write(char c) throws IOException {
+            writer.write(c);
+        }
+
+        @Override
+        public void write(String s) throws IOException {
+            writer.write(s);
         }
     }
 }
