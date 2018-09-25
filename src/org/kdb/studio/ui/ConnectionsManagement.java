@@ -5,7 +5,6 @@ import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.util.text.StringUtil;
-import org.apache.commons.pool2.ObjectPool;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.kdb.studio.db.Connection;
@@ -19,11 +18,11 @@ import org.kdb.studio.kx.type.KSymbolVector;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -120,6 +119,32 @@ public class ConnectionsManagement extends DialogWrapper {
         connectionManager.addOrUpdate(connection);
         connectionsList.updateUI();
         connectionsList.setSelectedValue(connection.getView(), true);
+    }
+
+    public void cloneCurrentValue() {
+        String view = (String) connectionsList.getSelectedValue();
+        if (view != null) {
+            Optional.ofNullable(connectionManager.getConnectionByName(view)).ifPresent(connection -> {
+                Connection clone = connection.clone();
+                clone.setName(prepareCloneName(clone, 1));
+                connectionManager.addOrUpdate(clone);
+                connectionsList.updateUI();
+                connectionsList.setSelectedValue(clone.getView(), true);
+            });
+        }
+    }
+
+    private String prepareCloneName(Connection connection, int index) {
+        String name = "Clone ";
+        if (index > 1) {
+            name += index + " ";
+        }
+        name += "of " + connection.getName();
+        if (connectionManager.getConnectionByName(name) != null) {
+            return prepareCloneName(connection, ++index);
+        }
+        return name;
+
     }
 
     public void removeCurrentValue() {
