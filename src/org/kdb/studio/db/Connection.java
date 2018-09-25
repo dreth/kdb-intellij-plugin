@@ -81,10 +81,14 @@ public class Connection {
     public String getEffectivePassword() {
         if (usePasswordVariable && !StringUtil.isEmptyOrSpaces(passwordVariable)) {
             return System.getenv(passwordVariable);
-        } else if (password != null){
+        } else if (password != null) {
             return new String(password);
         }
         return "";
+    }
+
+    public Connection clone() {
+        return new Connection(name, host, port, username, password, usePasswordVariable, passwordVariable);
     }
 
     public void setPassword(char[] password) {
