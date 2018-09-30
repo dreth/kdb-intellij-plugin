@@ -1,5 +1,5 @@
 {
-  "type" : "SCATTER",
+  "type" : "LINE",
   "id": "<<DEFAULT>>",
   "title": {
     "show": true,
@@ -24,8 +24,8 @@
       "tickLabelColor": "#404040",
       "tickLabelFont": {
         "font": "Tahoma",
-        "size": 14,
-        "attributes": ["BOLD"]
+        "size": 12,
+        "attributes": ["PLAIN"]
       }
     }
   },
@@ -39,8 +39,8 @@
       "tickLabelColor": "#404040",
       "tickLabelFont": {
         "font": "Tahoma",
-        "size": 14,
-        "attributes": ["BOLD"]
+        "size": 12,
+        "attributes": ["PLAIN"]
       }
     },
     "range": {
@@ -75,7 +75,7 @@
 
   ],
   "size": {
-    "width": 500,
-    "height": 400
+    "width": 520,
+    "height": 340
   }
 }
