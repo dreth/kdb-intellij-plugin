@@ -34,18 +34,15 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class LineChartForm extends DialogWrapper {
+public class LineChartForm {
     private JComboBox plotConfig;
     private ChartPanel chartPanel;
     private JPanel centralPanel;
     private KTableModel table;
     private JFreeChart chart;
 
-    public LineChartForm(@Nullable Project project, KTableModel table) {
-        super(project);
+    public LineChartForm(KTableModel table) {
         this.table = table;
-        setModal(false);
-        setTitle("Chart");
         plotConfig.addItemListener(e -> {
             String item = (String) e.getItem();
             Plot config = null;
@@ -64,19 +61,9 @@ public class LineChartForm extends DialogWrapper {
             }
             chartPanel.setChart(chart);
         });
-
-        init();
     }
 
-    @NotNull
-    @Override
-    protected Action[] createActions() {
-        return new Action[0];
-    }
-
-    @Nullable
-    @Override
-    protected JComponent createCenterPanel() {
+    public JComponent createCenterPanel() {
         return centralPanel;
     }
 
