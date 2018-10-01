@@ -1,6 +1,6 @@
 package org.kdb.studio.chart.entity;
 
-public class Margin {
+public class RectangleInsets {
     public double top;
     public double bottom;
     public double left;
