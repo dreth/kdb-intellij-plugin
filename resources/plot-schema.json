@@ -39,6 +39,9 @@
         "$ref": "#/definitions/Series"
       }
     },
+    "padding": {
+      "$ref": "#/definitions/RectangleInsets"
+    },
     "size": {
       "$ref": "#/definitions/Size"
     }
@@ -257,7 +260,7 @@
         "RIGHT"
       ]
     },
-    "Margin": {
+    "RectangleInsets": {
       "type": "object",
       "properties": {
         "top": {
@@ -287,7 +290,7 @@
           "type": "boolean"
         },
         "margin": {
-          "$ref": "#/definitions/Margin"
+          "$ref": "#/definitions/RectangleInsets"
         },
         "position": {
           "$ref": "#/definitions/Position"

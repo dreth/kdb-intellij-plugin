@@ -28,6 +28,10 @@ public class ChartConfigurator {
         applyGrid(chart, plot.getGrid());
         applyAxis(chart, plot.getDomainAxis(), plot.getRangeAxis());
 
+        if (plot.getPadding() != null) {
+            chart.setPadding(new RectangleInsets(plot.getPadding().getTop(), plot.getPadding().getLeft(), plot.getPadding().getBottom(), plot.getPadding().getRight()));
+        }
+
         if (plot.getBackgroundColor() != null) {
             chart.setBackgroundPaint(toPaint(plot.getBackgroundColor()));
         }

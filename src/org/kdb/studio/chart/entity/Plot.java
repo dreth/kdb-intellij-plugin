@@ -15,6 +15,7 @@ public class Plot {
     public String plotBackgroundColor;
     public Legend legend;
     public List<Series> series;
+    public RectangleInsets padding;
     public Size size;
 
     public Plot() {
@@ -121,4 +122,11 @@ public class Plot {
         this.id = id;
     }
 
+    public RectangleInsets getPadding() {
+        return padding;
+    }
+
+    public void setPadding(RectangleInsets padding) {
+        this.padding = padding;
+    }
 }

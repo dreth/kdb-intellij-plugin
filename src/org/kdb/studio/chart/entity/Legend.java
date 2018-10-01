@@ -3,7 +3,7 @@ package org.kdb.studio.chart.entity;
 public class Legend {
     public boolean show;
     public String backgroundColor;
-    public Margin margin;
+    public RectangleInsets margin;
     public Position position;
 
     public boolean isShow() {
@@ -22,11 +22,11 @@ public class Legend {
         this.backgroundColor = backgroundColor;
     }
 
-    public Margin getMargin() {
+    public RectangleInsets getMargin() {
         return margin;
     }
 
-    public void setMargin(Margin margin) {
+    public void setMargin(RectangleInsets margin) {
         this.margin = margin;
     }
 
