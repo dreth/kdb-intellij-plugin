@@ -1,8 +1,5 @@
 package org.kdb.studio.ui;
 
-import com.intellij.openapi.editor.colors.EditorColorsManager;
-import com.intellij.openapi.editor.colors.EditorColorsScheme;
-import com.intellij.openapi.editor.colors.EditorFontType;
 import com.intellij.ui.SideBorder;
 
 import javax.swing.*;
@@ -100,6 +97,7 @@ public class TableRowHeader extends JList {
 
         public void updateStyle() {
             setFont(ColorAndFontManager.getInstance().getFont(ColorAndFontManager.TABLE_ROW_NUM_FONT));
+            setFixedCellHeight(table.getRowHeight());
         }
 
 
