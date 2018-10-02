@@ -6,7 +6,6 @@ import com.intellij.notification.Notifications;
 import com.intellij.openapi.editor.colors.EditorColorsListener;
 import com.intellij.openapi.editor.colors.EditorColorsManager;
 import com.intellij.openapi.editor.colors.EditorColorsScheme;
-import com.intellij.openapi.editor.colors.EditorFontType;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.table.JBTable;
@@ -21,6 +20,7 @@ import org.kdb.studio.kx.type.Dict;
 import org.kdb.studio.kx.type.Flip;
 import org.kdb.studio.kx.type.KBase;
 import org.kdb.studio.kx.type.UnaryPrimitive;
+import sun.swing.SwingUtilities2;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -112,10 +112,25 @@ public class QGrid implements EditorColorsListener {
 
         style = fontPrefs.toString();
         textPane.setForeground(fg);
-
+        Insets insets = table.getTableHeader().getInsets();
+        table.setRowHeight(getMaxFontHeight(table) - insets.bottom - insets.top);
         cellRenderer.updateStyles();
         trh.updateStyle();
         tableHeaderRenderer.updateStyles();
+        wa.resizeAllColumns();
+    }
+
+    protected int getMaxFontHeight(JComponent component) {
+        ColorAndFontManager manager = ColorAndFontManager.getInstance();
+        int[] height = new int[] {
+                SwingUtilities2.getFontMetrics(component, manager.getFont(ColorAndFontManager.TABLE_CONTENT_FONT)).getHeight(),
+                SwingUtilities2.getFontMetrics(component, manager.getFont(ColorAndFontManager.TABLE_ROW_NUM_FONT)).getHeight()
+        };
+        int i = Integer.MIN_VALUE;
+        for (int h: height) {
+            i = Math.max(i, h);
+        }
+        return i;
     }
 
     public void setState(State state) {

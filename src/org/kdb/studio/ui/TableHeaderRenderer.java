@@ -1,8 +1,5 @@
 package org.kdb.studio.ui;
 
-import com.intellij.openapi.editor.colors.EditorColorsManager;
-import com.intellij.openapi.editor.colors.EditorColorsScheme;
-import com.intellij.openapi.editor.colors.EditorFontType;
 import com.intellij.openapi.util.IconLoader;
 import org.kdb.studio.kx.type.KSymbolVector;
 
