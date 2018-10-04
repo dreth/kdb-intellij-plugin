@@ -58,8 +58,19 @@
           "type": "string",
           "format": "color"
         },
+        "fillColor": {
+          "type": "string",
+          "format": "color"
+        },
+        "outlineColor": {
+          "type": "string",
+          "format": "color"
+        },
         "lineType" : {
           "$ref": "#/definitions/LineType"
+        },
+        "marker" : {
+          "$ref": "#/definitions/Marker"
         },
         "visibleInLegend": {
           "type": "boolean"
@@ -314,6 +325,33 @@
           "type": "integer"
         }
       }
+    },
+    "Marker": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/MarkerType"
+        },
+        "size": {
+          "type": "integer"
+        }
+      },
+      "required": ["type", "size"]
+    },
+    "MarkerType": {
+      "type": "string",
+      "enum": [
+        "SQUARE",
+        "CIRCLE",
+        "ELLIPSE",
+        "TRIANGLE_UP_POINTING",
+        "TRIANGLE_DOWN_POINTING",
+        "TRIANGLE_RIGHT_POINTING",
+        "TRIANGLE_LEFT_POINTING",
+        "DIAMOND",
+        "RECTANGLE_HORIZONTAL",
+        "RECTANGLE_VERTICAL"
+      ]
     }
   }
 }

@@ -21,7 +21,6 @@ import java.util.Optional;
 
 public class ChartConfigurator {
 
-
     public void configureChart(Plot plot, JFreeChart chart) {
         applyLegend(chart, plot.getLegend());
         applyTitle(chart, plot.getTitle());
@@ -31,7 +30,6 @@ public class ChartConfigurator {
         if (plot.getPadding() != null) {
             chart.setPadding(new RectangleInsets(plot.getPadding().getTop(), plot.getPadding().getLeft(), plot.getPadding().getBottom(), plot.getPadding().getRight()));
         }
-
         if (plot.getBackgroundColor() != null) {
             chart.setBackgroundPaint(toPaint(plot.getBackgroundColor()));
         }
@@ -41,22 +39,42 @@ public class ChartConfigurator {
         XYItemRenderer renderer = chart.getXYPlot().getRenderer();
         if (renderer instanceof XYLineAndShapeRenderer) {
             Optional.ofNullable(plot.getType()).orElse(ChartType.LINE).apply(XYLineAndShapeRenderer.class.cast(renderer));
+            XYLineAndShapeRenderer.class.cast(renderer).setUseFillPaint(true);
+            XYLineAndShapeRenderer.class.cast(renderer).setUseOutlinePaint(true);
         }
         int i=0;
         for (Series series: plot.getSeries()) {
             renderer.setSeriesStroke(i, Optional.ofNullable(series.getLineType()).orElse(LineType.SOLID).toStroke(series.getLineWidth()));
             if (series.getShow() != null) {
-                renderer.setSeriesVisible(i, series.getShow());
+                renderer.setSeriesVisible(i, series.getShow(), false);
             }
             if (series.getColor() != null) {
-                renderer.setSeriesPaint(i, toPaint(series.getColor()));
+                renderer.setSeriesPaint(i, toPaint(series.getColor()), false);
+            }
+            if (series.getFillColor() != null) {
+                renderer.setSeriesFillPaint(i, toPaint(series.getFillColor()), false);
+            }
+            if (series.getOutlineColor() != null) {
+                renderer.setSeriesOutlinePaint(i, toPaint(series.getOutlineColor()), false);
             }
             if (series.getVisibleInLegend() != null) {
-                renderer.setSeriesVisibleInLegend(i, series.getVisibleInLegend());
+                renderer.setSeriesVisibleInLegend(i, series.getVisibleInLegend(), false);
+            }
+            if (series.getMarker() != null) {
+                renderer.setSeriesShape(i, series.getMarker().getType().toShape(series.getMarker().getSize()), false);
             }
             i++;
         }
-
+        int totalSeries = chart.getXYPlot().getSeriesCount();
+        for (i=0; i< totalSeries; i++) {
+            Paint paint = AbstractRenderer.class.cast(renderer).lookupSeriesPaint(i);
+            if (renderer.getSeriesFillPaint(i) == null) {
+                renderer.setSeriesFillPaint(i, paint, false);
+            }
+            if (renderer.getSeriesOutlinePaint(i) == null) {
+                renderer.setSeriesOutlinePaint(i, paint, false);
+            }
+        }
     }
 
     private void clearSeries(XYItemRenderer renderer) {
