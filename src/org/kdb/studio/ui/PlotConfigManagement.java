@@ -204,6 +204,7 @@ public class PlotConfigManagement extends DialogWrapper {
         }
 
         protected void addPlotConfig(Plot plot) {
+            PlotConfigManager.getInstance().getState().getPlots().remove(plot);
             PlotConfigManager.getInstance().getState().getPlots().add(plot);
             plotTable.updateUI();
         }

@@ -2,9 +2,12 @@ package org.kdb.studio.chart.entity;
 
 public class Series {
     public String color;
+    public String fillColor;
+    public String outlineColor;
     public LineType lineType;
     public Boolean visibleInLegend;
     public Boolean show;
+    public Marker marker;
     public float lineWidth = 1f;
 
     public String getColor() {
@@ -45,5 +48,29 @@ public class Series {
 
     public void setLineWidth(float lineWidth) {
         this.lineWidth = lineWidth;
+    }
+
+    public String getFillColor() {
+        return fillColor;
+    }
+
+    public void setFillColor(String fillColor) {
+        this.fillColor = fillColor;
+    }
+
+    public String getOutlineColor() {
+        return outlineColor;
+    }
+
+    public void setOutlineColor(String outlineColor) {
+        this.outlineColor = outlineColor;
+    }
+
+    public Marker getMarker() {
+        return marker;
+    }
+
+    public void setMarker(Marker marker) {
+        this.marker = marker;
     }
 }
