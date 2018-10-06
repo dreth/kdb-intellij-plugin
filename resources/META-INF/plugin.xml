@@ -115,6 +115,9 @@
     </extensions>
 
     <actions>
+        <group id="KDBToolbarActions" popup="false" class="org.kdb.studio.KDBToolbarActionGroup" text="KDB Toolbar Actions">
+            <add-to-group group-id="MainToolBar" />
+        </group>
         <!-- Add your actions here -->
     </actions>
 

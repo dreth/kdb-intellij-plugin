@@ -21,9 +21,6 @@ import java.util.Optional;
 )
 public class KDBStudioApplicationComponent implements ApplicationComponent, PersistentStateComponent<State> {
 
-
-    private DefaultActionGroup kdbActionGroup;
-
     boolean initialEnabled = false;
 
     @Override
@@ -37,8 +34,10 @@ public class KDBStudioApplicationComponent implements ApplicationComponent, Pers
         ChartAction chartAction = new ChartAction();
         PlotConfigManagementAction plotConfigManagementAction = new PlotConfigManagementAction();
 
+        KDBToolbarUIManager.initInstance(initialEnabled);
 
-        kdbActionGroup = new DefaultActionGroup("KDBToolbarActions", false);
+        ActionManager am = ActionManager.getInstance();
+        DefaultActionGroup kdbActionGroup = (DefaultActionGroup) am.getAction("KDBToolbarActions");
         kdbActionGroup.add(new ConnectionsBoxAction(connectionManager));
         kdbActionGroup.add(runCodeAction);
         kdbActionGroup.add(runAllAction);
@@ -49,9 +48,6 @@ public class KDBStudioApplicationComponent implements ApplicationComponent, Pers
         kdbActionGroup.add(exportAction);
         kdbActionGroup.add(chartAction);
 
-        KDBToolbarUIManager.initInstance(kdbActionGroup, initialEnabled);
-
-        ActionManager am = ActionManager.getInstance();
         am.registerAction("KDB_1_run_line", runCodeAction);
         am.registerAction("KDB_2_run_all", runAllAction);
         am.registerAction("KDB_3_run_refresh", reRunAction);
@@ -74,9 +70,6 @@ public class KDBStudioApplicationComponent implements ApplicationComponent, Pers
 
     @Override
     public void disposeComponent() {
-        ActionManager am = ActionManager.getInstance();
-        DefaultActionGroup windowM = (DefaultActionGroup) am.getAction("MainToolBar");
-        windowM.remove(kdbActionGroup);
         ConnectionManager.getInstance().releaseAll();
     }
 
