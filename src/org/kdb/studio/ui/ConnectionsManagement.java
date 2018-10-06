@@ -46,6 +46,7 @@ public class ConnectionsManagement extends DialogWrapper {
     private JTextField textVariable;
     private JLabel labelVariable;
     private JLabel labelPassword;
+    private JCheckBox multilineCommentSupport;
 
     private ConnectionManager connectionManager;
     private Project project;
@@ -115,7 +116,7 @@ public class ConnectionsManagement extends DialogWrapper {
     }
 
     protected void saveCurrentValues() {
-        Connection connection = new Connection(textName.getText(), textHost.getText(), Integer.parseInt(textPort.getText()), textUsername.getText(), passwordField1.getPassword(), useEnvCheckox.isSelected(), textVariable.getText());
+        Connection connection = new Connection(textName.getText(), textHost.getText(), Integer.parseInt(textPort.getText()), textUsername.getText(), passwordField1.getPassword(), useEnvCheckox.isSelected(), textVariable.getText(), multilineCommentSupport.isSelected());
         connectionManager.addOrUpdate(connection);
         connectionsList.updateUI();
         connectionsList.setSelectedValue(connection.getView(), true);
@@ -173,7 +174,7 @@ public class ConnectionsManagement extends DialogWrapper {
                 @Override
                 public void run(@NotNull ProgressIndicator progressIndicator) {
                     blockTest();
-                    Connection connection = new Connection(textName.getText(), textHost.getText(), Integer.parseInt(textPort.getText()), textUsername.getText(), passwordField1.getPassword(), useEnvCheckox.isSelected(), textVariable.getText());
+                    Connection connection = new Connection(textName.getText(), textHost.getText(), Integer.parseInt(textPort.getText()), textUsername.getText(), passwordField1.getPassword(), useEnvCheckox.isSelected(), textVariable.getText(), multilineCommentSupport.isSelected());
                     List<Connector> connectors = Collections.synchronizedList(new ArrayList<>());
                     succedValidationMessage.setText("");
                     validationMessage.setText("");
@@ -279,6 +280,7 @@ public class ConnectionsManagement extends DialogWrapper {
             passwordVisible(!connection.isUsePasswordVariable());
             validationMessage.setText("");
             succedValidationMessage.setText("");
+            multilineCommentSupport.setSelected(connection.isMultilineCommentSupport());
         }
     }
 
@@ -293,6 +295,7 @@ public class ConnectionsManagement extends DialogWrapper {
         succedValidationMessage.setText("");
         useEnvCheckox.setSelected(false);
         passwordVisible(true);
+        multilineCommentSupport.setSelected(false);
     }
 
     private void passwordVisible(boolean usePasswordField) {

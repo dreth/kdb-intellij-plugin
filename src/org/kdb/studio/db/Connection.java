@@ -25,6 +25,8 @@ public class Connection {
 
     private String passwordVariable;
 
+    private boolean multilineCommentSupport;
+
     protected ObjectPool<Connector> connectorObjectPool;
 
     private final String SYNC = "SYNC";
@@ -32,7 +34,7 @@ public class Connection {
     public Connection() {
     }
 
-    public Connection(String name, String host, int port, String username, char[] password, boolean usePasswordVariable, String passwordVariable) {
+    public Connection(String name, String host, int port, String username, char[] password, boolean usePasswordVariable, String passwordVariable, boolean multilineCommentSupport) {
         this.name = name;
         this.host = host;
         this.port = port;
@@ -40,6 +42,7 @@ public class Connection {
         this.password = password;
         this.usePasswordVariable = usePasswordVariable;
         this.passwordVariable = passwordVariable;
+        this.multilineCommentSupport = multilineCommentSupport;
     }
 
     public String getName() {
@@ -88,7 +91,7 @@ public class Connection {
     }
 
     public Connection clone() {
-        return new Connection(name, host, port, username, password, usePasswordVariable, passwordVariable);
+        return new Connection(name, host, port, username, password, usePasswordVariable, passwordVariable, multilineCommentSupport);
     }
 
     public void setPassword(char[] password) {
@@ -109,6 +112,14 @@ public class Connection {
 
     public void setPasswordVariable(String passwordVariable) {
         this.passwordVariable = passwordVariable;
+    }
+
+    public boolean isMultilineCommentSupport() {
+        return multilineCommentSupport;
+    }
+
+    public void setMultilineCommentSupport(boolean multilineCommentSupport) {
+        this.multilineCommentSupport = multilineCommentSupport;
     }
 
     public String getView() {

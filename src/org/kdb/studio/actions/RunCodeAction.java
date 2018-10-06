@@ -9,19 +9,17 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.SelectionModel;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.IconLoader;
 import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.util.containers.ConcurrentList;
 import org.apache.commons.pool2.ObjectPool;
 import org.jetbrains.annotations.NotNull;
 import org.kdb.studio.db.ConnectionManager;
 import org.kdb.studio.kx.Connector;
 import org.kdb.studio.kx.K4Exception;
+import org.kdb.studio.kx.QueryWrapper;
 import org.kdb.studio.kx.type.KBase;
-import org.kdb.studio.kx.type.KCharacterVector;
 import org.kdb.studio.ui.QGrid;
 
 import java.net.SocketException;
@@ -100,7 +98,7 @@ public class RunCodeAction extends AnAction {
                                 progressIndicator.setText("Establishing connection to the server...");
                                 Connector connector = connectorObjectPool.borrowObject();
                                 connectors.add(connector);
-                                connector.query(new KCharacterVector(query), KBase.class, progressIndicator, queue);
+                                connector.query(QueryWrapper.toRequest(query, connectionManager.getActiveConnection().isMultilineCommentSupport()), KBase.class, progressIndicator, queue);
                             } catch (Throwable e) {
                                 queue.add(e);
                             }
