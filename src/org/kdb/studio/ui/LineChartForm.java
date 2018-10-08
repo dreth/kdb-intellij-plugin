@@ -3,12 +3,9 @@ package org.kdb.studio.ui;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.ComboBox;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.ui.CollectionComboBoxModel;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import com.intellij.openapi.actionSystem.ActionManager;
+import com.intellij.openapi.actionSystem.ActionToolbar;
+import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -18,14 +15,12 @@ import org.jfree.data.time.*;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.kdb.studio.actions.PlotConfigBoxAction;
 import org.kdb.studio.chart.ChartConfigurator;
 import org.kdb.studio.chart.PlotConfigManager;
 import org.kdb.studio.chart.entity.Plot;
 import org.kdb.studio.kx.ToDouble;
 import org.kdb.studio.kx.type.*;
-import org.kdb.studio.kx.type.Minute;
-import org.kdb.studio.kx.type.Month;
-import org.kdb.studio.kx.type.Second;
 
 import javax.swing.*;
 import java.time.Instant;
@@ -35,7 +30,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 public class LineChartForm {
-    private JComboBox plotConfig;
+    private JComponent plotConfig;
     private ChartPanel chartPanel;
     private JPanel centralPanel;
     private KTableModel table;
@@ -43,57 +38,10 @@ public class LineChartForm {
 
     public LineChartForm(KTableModel table) {
         this.table = table;
-        plotConfig.addItemListener(e -> {
-            String item = (String) e.getItem();
-            Plot config = null;
-            chart = createDataset(table);
-            if (chart != null) {
-                try {
-                    config = PlotConfigManager.getInstance().byName(item);
-                    new ChartConfigurator().configureChart(config, chart);
-                } catch (Exception ignore) {
-                    Notifications.Bus.notify(new Notification("KDBStudio", "Apply chart config error.", ignore.toString(), NotificationType.ERROR));
-                    ignore.printStackTrace();
-                }
-                if (config != null && config.getSize() != null) {
-                    chartPanel.setPreferredSize(new java.awt.Dimension(config.getSize().getWidth(), config.getSize().getHeight()));
-                }
-            }
-            chartPanel.setChart(chart);
-        });
     }
 
     public JComponent createCenterPanel() {
         return centralPanel;
-    }
-
-    public static boolean couldBeShown(KTableModel table) {
-        if (table != null && table.getColumnCount() > 1) {
-            Class klass = table.getColumnClass(0);
-            return Arrays.asList(KTimestampVector.class, KTimespanVector.class, KDateVector.class, KTimeVector.class, KMonthVector.class, KMinuteVector.class, KSecondVector.class, KDatetimeVector.class, KDoubleVector.class, KFloatVector.class, KShortVector.class, KIntVector.class, KLongVector.class).contains(klass);
-        }
-        return false;
-    }
-
-    public static Class<? extends RegularTimePeriod> typeOf(Class kBaseVector) {
-        if (KDateVector.class == kBaseVector) {
-            return Day.class;
-        } else if (KTimeVector.class == kBaseVector) {
-            return Millisecond.class;
-        } else if (KTimestampVector.class == kBaseVector) {
-            return Day.class;
-        } else if (KTimespanVector.class == kBaseVector) {
-            return Millisecond.class;
-        } else if (KDatetimeVector.class == kBaseVector) {
-            return Millisecond.class;
-        } else if (KMonthVector.class == kBaseVector) {
-            return org.jfree.data.time.Month.class;
-        } else if (KSecondVector.class == kBaseVector) {
-            return org.jfree.data.time.Second.class;
-        } else if (KMinuteVector.class == kBaseVector) {
-            return org.jfree.data.time.Minute.class;
-        }
-        return null;
     }
 
     public static RegularTimePeriod convertToPeriod(KBase period, Class kBaseVector, TimeZone tz) {
@@ -223,25 +171,38 @@ public class LineChartForm {
     }
 
     private void createUIComponents() {
-        plotConfig = new ComboBox();
-        plotConfig.setModel(new CollectionComboBoxModel(PlotConfigManager.getInstance().listAllPlots()));
+        PlotConfigBoxAction plotConfigBoxAction = new PlotConfigBoxAction(PlotConfigManager.getInstance(), this);
+        DefaultActionGroup actionGroup = new DefaultActionGroup();
+        actionGroup.add(plotConfigBoxAction);
+        ActionManager actionManager = ActionManager.getInstance();
+        ActionToolbar toolbar = actionManager.createActionToolbar("KDBStudio.LineChartForm", actionGroup, true);
+
+        plotConfig = toolbar.getComponent();
+
+        chartPanel = new ChartPanel(chart);
+        chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
+
+        String configId = PlotConfigManager.getInstance().forModel(table).getId();
+        plotConfigBoxAction.setActiveConfig(configId);
+        applyConfig(configId);
+        chartPanel.setMouseZoomable(true, false);
+
+    }
+
+    public void applyConfig(String configId) {
         Plot config = null;
         chart = createDataset(table);
         if (chart != null) {
             try {
-                config = PlotConfigManager.getInstance().forModel(table);
-                plotConfig.setSelectedItem(config.getId());
+                config = PlotConfigManager.getInstance().byName(configId);
                 new ChartConfigurator().configureChart(config, chart);
-            } catch (Exception ignore) {
-                Notifications.Bus.notify(new Notification("KDBStudio", "Apply chart config error.", ignore.toString(), NotificationType.ERROR));
+            } catch (Exception e) {
+                Notifications.Bus.notify(new Notification("KDBStudio", "Apply chart config error.", e.toString(), NotificationType.ERROR));
             }
-            chartPanel = new ChartPanel(chart);
             if (config != null && config.getSize() != null) {
                 chartPanel.setPreferredSize(new java.awt.Dimension(config.getSize().getWidth(), config.getSize().getHeight()));
-            } else {
-                chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
             }
-            chartPanel.setMouseZoomable(true, false);
         }
+        chartPanel.setChart(chart);
     }
 }
