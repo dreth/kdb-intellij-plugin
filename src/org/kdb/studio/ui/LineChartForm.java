@@ -23,11 +23,10 @@ import org.kdb.studio.kx.ToDouble;
 import org.kdb.studio.kx.type.*;
 
 import javax.swing.*;
+import java.awt.*;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
+import java.util.List;
 
 public class LineChartForm {
     private JComponent plotConfig;
@@ -35,9 +34,16 @@ public class LineChartForm {
     private JPanel centralPanel;
     private KTableModel table;
     private JFreeChart chart;
+    private PlotConfigBoxAction plotConfigBoxAction;
+    private List<PreferredSizeChangeListener> listeners = new ArrayList<>();
 
     public LineChartForm(KTableModel table) {
         this.table = table;
+
+        String configId = PlotConfigManager.getInstance().forModel(table).getId();
+        plotConfigBoxAction.setActiveConfig(configId);
+        applyConfig(configId);
+        chartPanel.setMouseZoomable(true, false);
     }
 
     public JComponent createCenterPanel() {
@@ -171,7 +177,7 @@ public class LineChartForm {
     }
 
     private void createUIComponents() {
-        PlotConfigBoxAction plotConfigBoxAction = new PlotConfigBoxAction(PlotConfigManager.getInstance(), this);
+        plotConfigBoxAction = new PlotConfigBoxAction(PlotConfigManager.getInstance(), this);
         DefaultActionGroup actionGroup = new DefaultActionGroup();
         actionGroup.add(plotConfigBoxAction);
         ActionManager actionManager = ActionManager.getInstance();
@@ -181,12 +187,15 @@ public class LineChartForm {
 
         chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
+    }
 
-        String configId = PlotConfigManager.getInstance().forModel(table).getId();
-        plotConfigBoxAction.setActiveConfig(configId);
-        applyConfig(configId);
-        chartPanel.setMouseZoomable(true, false);
+    @FunctionalInterface
+    public interface PreferredSizeChangeListener {
+        void sizeChanged(Dimension dimension);
+    }
 
+    public void addPreferredSizeChangeListener(PreferredSizeChangeListener listener) {
+        listeners.add(listener);
     }
 
     public void applyConfig(String configId) {
@@ -200,7 +209,11 @@ public class LineChartForm {
                 Notifications.Bus.notify(new Notification("KDBStudio", "Apply chart config error.", e.toString(), NotificationType.ERROR));
             }
             if (config != null && config.getSize() != null) {
-                chartPanel.setPreferredSize(new java.awt.Dimension(config.getSize().getWidth(), config.getSize().getHeight()));
+                chartPanel.setPreferredSize(new Dimension(config.getSize().getWidth(), config.getSize().getHeight()));
+                if (centralPanel != null) {
+                    centralPanel.setPreferredSize(new Dimension(config.getSize().getWidth(), config.getSize().getHeight() + plotConfig.getHeight()));
+                    listeners.stream().forEach(listener -> listener.sizeChanged(centralPanel.getPreferredSize()));
+                }
             }
         }
         chartPanel.setChart(chart);
