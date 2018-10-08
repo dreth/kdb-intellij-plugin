@@ -66,7 +66,7 @@ public class ConnectionsManagement extends DialogWrapper {
 
             @Override
             public Object getElementAt(int index) {
-                return connectionManager.getConnections()[index].getView();
+                return connectionManager.getConnections(true)[index].getView();
             }
         });
         connectionsList.addListSelectionListener(e -> setAsCurrentValue(connectionManager.getConnectionByName((String) connectionsList.getSelectedValue())));

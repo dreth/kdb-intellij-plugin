@@ -1,6 +1,7 @@
 package org.kdb.studio.db;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ConnectionManager extends Observable {
 
@@ -19,6 +20,13 @@ public class ConnectionManager extends Observable {
     }
 
     public Connection[] getConnections() {
+        return getConnections(false);
+    }
+
+    public Connection[] getConnections(boolean sorted) {
+        if (sorted) {
+            return connections.values().stream().sorted(Comparator.comparing(Connection::getView)).toArray(Connection[]::new);
+        }
         return connections.values().toArray(new Connection[] {});
     }
 
