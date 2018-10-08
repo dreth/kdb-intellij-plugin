@@ -5,6 +5,7 @@ public class Legend {
     public String backgroundColor;
     public RectangleInsets margin;
     public Position position;
+    public Font font;
 
     public boolean isShow() {
         return show;
@@ -36,5 +37,13 @@ public class Legend {
 
     public void setPosition(Position position) {
         this.position = position;
+    }
+
+    public Font getFont() {
+        return font;
+    }
+
+    public void setFont(Font font) {
+        this.font = font;
     }
 }

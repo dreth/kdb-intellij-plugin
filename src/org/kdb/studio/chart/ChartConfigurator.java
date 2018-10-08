@@ -77,19 +77,6 @@ public class ChartConfigurator {
         }
     }
 
-    private void clearSeries(XYItemRenderer renderer) {
-        if (renderer instanceof AbstractRenderer) {
-            AbstractRenderer abstractRenderer = (AbstractRenderer) renderer;
-            abstractRenderer.clearSeriesPaints(true);
-            abstractRenderer.clearSeriesPaints(true);
-            for (int i=0; i< 255; i++) {
-                abstractRenderer.setSeriesVisible(i, true, false);
-                abstractRenderer.setSeriesVisibleInLegend(i, true, false);
-            }
-
-        }
-    }
-
     private void applyLegend(JFreeChart chart, Legend leg) {
         chart.clearSubtitles();
         if (leg != null && leg.isShow()) {
@@ -102,6 +89,9 @@ public class ChartConfigurator {
             }
             if (leg.getPosition() != null) {
                 legend.setPosition(leg.getPosition().getEdge());
+            }
+            if (leg.getFont() != null) {
+                legend.setItemFont(toFont(leg.getFont()));
             }
             chart.addLegend(legend);
         }
