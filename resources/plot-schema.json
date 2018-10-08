@@ -309,6 +309,9 @@
         "backgroundColor": {
           "type": "string",
           "format": "color"
+        },
+        "font": {
+          "$ref": "#/definitions/Font"
         }
       },
       "required": [
