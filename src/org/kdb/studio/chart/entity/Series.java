@@ -8,6 +8,7 @@ public class Series {
     public Boolean visibleInLegend;
     public Boolean show;
     public Marker marker;
+    public ChartType type;
     public float lineWidth = 1f;
 
     public String getColor() {
@@ -72,5 +73,13 @@ public class Series {
 
     public void setMarker(Marker marker) {
         this.marker = marker;
+    }
+
+    public ChartType getType() {
+        return type;
+    }
+
+    public void setType(ChartType type) {
+        this.type = type;
     }
 }

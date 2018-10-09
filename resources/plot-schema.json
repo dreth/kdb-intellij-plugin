@@ -16,6 +16,9 @@
     "type": {
       "$ref": "#/definitions/ChartType"
     },
+    "renderer": {
+      "$ref": "#/definitions/RendererType"
+    },
     "domainAxis": {
       "$ref": "#/definitions/DomainAxis"
     },
@@ -77,6 +80,9 @@
         },
         "show": {
           "type": "boolean"
+        },
+        "type": {
+          "$ref": "#/definitions/ChartType"
         }
       }
     },
@@ -84,7 +90,7 @@
       "type": "string",
       "enum": [
         "LINE",
-        "STAIRCASE",
+        "LINE_MARKER",
         "SCATTER"
       ]
     },
@@ -354,6 +360,14 @@
         "DIAMOND",
         "RECTANGLE_HORIZONTAL",
         "RECTANGLE_VERTICAL"
+      ]
+    },
+    "RendererType": {
+      "type": "string",
+      "enum": [
+        "LINE",
+        "SPLINE",
+        "STEP"
       ]
     }
   }
