@@ -36,7 +36,8 @@ public class ChartConfigurator {
         if (plot.getPlotBackgroundColor() != null) {
             chart.getPlot().setBackgroundPaint(toPaint(plot.getPlotBackgroundColor()));
         }
-        XYItemRenderer renderer = chart.getXYPlot().getRenderer();
+        XYItemRenderer renderer = Optional.ofNullable(plot.getRenderer()).orElse(RendererType.LINE).toXYItemRenderer();
+        chart.getXYPlot().setRenderer(renderer);
         if (renderer instanceof XYLineAndShapeRenderer) {
             Optional.ofNullable(plot.getType()).orElse(ChartType.LINE).apply(XYLineAndShapeRenderer.class.cast(renderer));
             XYLineAndShapeRenderer.class.cast(renderer).setUseFillPaint(true);
@@ -62,6 +63,9 @@ public class ChartConfigurator {
             }
             if (series.getMarker() != null) {
                 renderer.setSeriesShape(i, series.getMarker().getType().toShape(series.getMarker().getSize()), false);
+            }
+            if (series.getType() != null && renderer instanceof XYLineAndShapeRenderer) {
+                series.getType().applySeries(i, XYLineAndShapeRenderer.class.cast(renderer));
             }
             i++;
         }

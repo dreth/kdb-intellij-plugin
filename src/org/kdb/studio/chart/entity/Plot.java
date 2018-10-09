@@ -7,6 +7,7 @@ import java.util.Objects;
 public class Plot {
     public String id;
     public ChartType type;
+    public RendererType renderer;
     public Label title;
     public DomainAxis domainAxis;
     public RangeAxis rangeAxis;
@@ -128,5 +129,13 @@ public class Plot {
 
     public void setPadding(RectangleInsets padding) {
         this.padding = padding;
+    }
+
+    public RendererType getRenderer() {
+        return renderer;
+    }
+
+    public void setRenderer(RendererType renderer) {
+        this.renderer = renderer;
     }
 }
