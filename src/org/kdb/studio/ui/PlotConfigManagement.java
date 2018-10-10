@@ -1,5 +1,6 @@
 package org.kdb.studio.ui;
 
+import com.intellij.ide.BrowserUtil;
 import com.intellij.json.JsonFileType;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
@@ -32,6 +33,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class PlotConfigManagement extends DialogWrapper {
+
+    public static String helpURL = "https://gitlab.com/shupakabras/kdb-intellij-plugin/blob/master/README-Plot.md";
 
     private JTable plotTable;
     private JPanel panel;
@@ -122,12 +125,17 @@ public class PlotConfigManagement extends DialogWrapper {
     protected void createDefaultActions() {
         super.createDefaultActions();
         this.myOKAction.putValue("Name", "Exit");
-        this.myHelpAction.setEnabled(false);
+        this.myHelpAction.setEnabled(true);
+    }
+
+    @Override
+    protected void doHelpAction() {
+        BrowserUtil.browse(helpURL);
     }
 
     @NotNull
     protected Action[] createActions() {
-        return new Action[]{this.getOKAction()};
+        return new Action[]{this.getOKAction(), this.getHelpAction()};
     }
 
     @NotNull
