@@ -45,41 +45,39 @@ public class ChartConfigurator {
             XYLineAndShapeRenderer.class.cast(renderer).setUseFillPaint(true);
             XYLineAndShapeRenderer.class.cast(renderer).setUseOutlinePaint(true);
         }
-        int i=0;
-        for (Series series: plot.getSeries()) {
-            renderer.setSeriesStroke(i, Optional.ofNullable(series.getLineType()).orElse(LineType.SOLID).toStroke(series.getLineWidth()));
-            if (series.getShow() != null) {
-                renderer.setSeriesVisible(i, series.getShow(), false);
-            }
-            if (series.getColor() != null) {
-                renderer.setSeriesPaint(i, toPaint(series.getColor()), false);
-            }
-            if (series.getFillColor() != null) {
-                renderer.setSeriesFillPaint(i, toPaint(series.getFillColor()), false);
-            }
-            if (series.getOutlineColor() != null) {
-                renderer.setSeriesOutlinePaint(i, toPaint(series.getOutlineColor()), false);
-            }
-            if (series.getVisibleInLegend() != null) {
-                renderer.setSeriesVisibleInLegend(i, series.getVisibleInLegend(), false);
-            }
-            if (series.getMarker() != null) {
-                renderer.setSeriesShape(i, series.getMarker().getType().toShape(series.getMarker().getSize()), false);
-            }
-            if (series.getType() != null && renderer instanceof XYLineAndShapeRenderer) {
-                series.getType().applySeries(i, XYLineAndShapeRenderer.class.cast(renderer));
-            }
-            i++;
-        }
+
         int totalSeries = chart.getXYPlot().getSeriesCount();
-        for (i=0; i< totalSeries; i++) {
-            Paint paint = AbstractRenderer.class.cast(renderer).lookupSeriesPaint(i);
-            if (renderer.getSeriesFillPaint(i) == null) {
-                renderer.setSeriesFillPaint(i, paint, false);
+        int definedSeries = plot.getSeries().size();
+        if (definedSeries > 0) {
+            for (int i=0; i< totalSeries; i++) {
+                int k = i % definedSeries;
+                applySeries(plot.getSeries().get(k), renderer, i);
             }
-            if (renderer.getSeriesOutlinePaint(i) == null) {
-                renderer.setSeriesOutlinePaint(i, paint, false);
-            }
+        }
+    }
+
+    protected void applySeries(Series series, XYItemRenderer renderer, int i) {
+        renderer.setSeriesStroke(i, Optional.ofNullable(series.getLineType()).orElse(LineType.SOLID).toStroke(series.getLineWidth()));
+        if (series.getShow() != null) {
+            renderer.setSeriesVisible(i, series.getShow(), false);
+        }
+        if (series.getColor() != null) {
+            renderer.setSeriesPaint(i, toPaint(series.getColor()), false);
+        }
+        if (series.getFillColor() != null) {
+            renderer.setSeriesFillPaint(i, toPaint(series.getFillColor()), false);
+        }
+        if (series.getOutlineColor() != null) {
+            renderer.setSeriesOutlinePaint(i, toPaint(series.getOutlineColor()), false);
+        }
+        if (series.getVisibleInLegend() != null) {
+            renderer.setSeriesVisibleInLegend(i, series.getVisibleInLegend(), false);
+        }
+        if (series.getMarker() != null) {
+            renderer.setSeriesShape(i, series.getMarker().getType().toShape(series.getMarker().getSize()), false);
+        }
+        if (series.getType() != null && renderer instanceof XYLineAndShapeRenderer) {
+            series.getType().applySeries(i, XYLineAndShapeRenderer.class.cast(renderer));
         }
     }
 
