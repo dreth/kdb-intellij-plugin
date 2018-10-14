@@ -23,7 +23,7 @@ public class PlotConfigManager {
     private Plots plots = new Plots();
 
     public List<String> listAllPlots(boolean includeDefault) {
-        List<String> ids = Optional.ofNullable(plots).orElse(new Plots()).getPlots().stream().map(Plot::getId).collect(Collectors.toList());
+        List<String> ids = Optional.ofNullable(plots).orElse(new Plots()).getPlots().stream().map(Plot::getId).sorted().collect(Collectors.toList());
         if (includeDefault) {
             ids.add(DEFAULT_ID);
         }
