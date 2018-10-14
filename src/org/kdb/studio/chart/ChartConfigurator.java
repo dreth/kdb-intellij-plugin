@@ -4,6 +4,8 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.Axis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.NumberTickUnit;
+import org.jfree.chart.block.CenterArrangement;
+import org.jfree.chart.block.ColumnArrangement;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.AbstractRenderer;
@@ -84,7 +86,7 @@ public class ChartConfigurator {
     private void applyLegend(JFreeChart chart, Legend leg) {
         chart.clearSubtitles();
         if (leg != null && leg.isShow()) {
-            LegendTitle legend = new LegendTitle(chart.getPlot());
+            LegendTitle legend = new LegendTitle(chart.getPlot(), new CenteringFlowArrangement(), new ColumnArrangement());
             if (leg.getMargin() != null) {
                 legend.setMargin(new RectangleInsets(leg.getMargin().getTop(), leg.getMargin().getLeft(), leg.getMargin().getBottom(), leg.getMargin().getRight()));
             }
