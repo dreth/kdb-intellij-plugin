@@ -10,7 +10,7 @@ In opened window, you are able to manage all existing configurations: apply defa
 
 ![Configurations](doc/plot_2.png)     
  
- To add new configuration, you should select json file, which corresponds to the json schema, available in [project sources](https://gitlab.com/shupakabras/kdb-intellij-plugin/raw/master/resources/plot-schema.json). There are several sample configurations available in the [same folder](https://gitlab.com/shupakabras/kdb-intellij-plugin/raw/master/resources/): blue-eagle-lines.json, blue-eagle-scatter.json and first-class-lines.json.
+ To add new configuration, you should select json file, which corresponds to the json schema, available in [project sources](https://gitlab.com/shupakabras/kdb-intellij-plugin/raw/master/resources/plot-schema.json). There are several sample configurations available in the [same folder](https://gitlab.com/shupakabras/kdb-intellij-plugin/tree/master/resources): [blue-eagle-lines.json](https://gitlab.com/shupakabras/kdb-intellij-plugin/raw/master/resources/blue-eagle-lines.json), [blue-eagle-scatter.json](https://gitlab.com/shupakabras/kdb-intellij-plugin/raw/master/resources/blue-eagle-scatter.json) and [first-class-lines.json](https://gitlab.com/shupakabras/kdb-intellij-plugin/raw/master/resources/first-class-lines.json).
  
 ![Select path](doc/plot_3.png)
 
