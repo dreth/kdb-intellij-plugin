@@ -1,0 +1,200 @@
+{
+  "type" : "LINE",
+  "id": "First-Class Lines",
+  "title": {
+    "show": true,
+    "text": "",
+    "font": {
+      "font": "Amplitude",
+      "size": 16,
+      "attributes": [
+        "PLAIN"
+      ]
+    }
+  },
+  "backgroundColor": "#FFFFFF",
+  "plotBackgroundColor": "#FFFFFF",
+  "domainAxis": {
+    "label": {
+      "show": false
+    },
+    "ticks": {
+      "showTickLabels": true,
+      "showTickMarks": true,
+      "tickLabelColor": "#404040",
+      "tickLabelFont": {
+        "font": "Amplitude",
+        "size": 16,
+        "attributes": ["PLAIN"]
+      }
+    }
+  },
+  "rangeAxis": {
+    "label": {
+      "show": false
+    },
+    "ticks": {
+      "showTickLabels": true,
+      "showTickMarks": true,
+      "tickLabelColor": "#404040",
+      "tickLabelFont": {
+        "font": "Amplitude",
+        "size": 16,
+        "attributes": ["PLAIN"]
+      }
+    },
+    "range": {
+      "autoAdjust": true
+    },
+    "tickUnit": {
+      "autoSelection": true
+    }
+  },
+  "grid": {
+    "horizontal": false,
+    "vertical": false,
+    "horizontalLineColor": "#C0C0C0",
+    "verticalLineColor": "#C0C0C0",
+    "horizontalLineWidth": 0.5,
+    "verticalLineWidth": 0.5,
+    "horizontalLineType": "DASHED",
+    "verticalLineType": "DASHED"
+  },
+  "legend": {
+    "show": true,
+    "backgroundColor": "#FFFFFF",
+    "position": "BOTTOM",
+    "margin": {
+      "top": 2.0,
+      "bottom": 2.0,
+      "left": 2.0,
+      "right": 2.0
+    },
+    "font":{
+      "font": "Amplitude",
+      "size": 16,
+      "attributes": [
+        "PLAIN"
+      ]
+    }
+  },
+  "series": [
+    {
+      "lineWidth": 2,
+      "color": "#005394",
+      "lineType" : "SOLID",
+      "visibleInLegend": true,
+      "show": true
+    },
+    {
+      "lineWidth": 2,
+      "color": "#33261D",
+      "lineType" : "SOLID",
+      "visibleInLegend": true,
+      "show": true
+    },
+    {
+      "lineWidth": 2,
+      "color": "#AC0020",
+      "lineType" : "SOLID",
+      "visibleInLegend": true,
+      "show": true
+    },
+    {
+      "lineWidth": 3,
+      "color": "#7D7570",
+      "lineType" : "SOLID",
+      "visibleInLegend": true,
+      "show": true
+    },
+    {
+      "lineWidth": 1,
+      "color": "#4E5E28",
+      "lineType" : "SOLID",
+      "visibleInLegend": true,
+      "show": true
+    },
+    {
+      "lineWidth": 1,
+      "color": "#3E6C9F",
+      "lineType" : "SOLID",
+      "visibleInLegend": true,
+      "show": true
+    },
+    {
+      "lineWidth": 1,
+      "color": "#361F65",
+      "lineType" : "SOLID",
+      "visibleInLegend": true,
+      "show": true
+    },
+    {
+      "lineWidth": 3,
+      "color": "#B2C23D",
+      "lineType" : "SOLID",
+      "visibleInLegend": true,
+      "show": true
+    },
+
+    {
+      "lineWidth": 3,
+      "color": "#6693BE",
+      "lineType" : "SOLID",
+      "visibleInLegend": true,
+      "show": true
+    },
+    {
+      "lineWidth": 3,
+      "color": "#8E7DAA",
+      "lineType" : "SOLID",
+      "visibleInLegend": true,
+      "show": true
+    },
+    {
+      "lineWidth": 3,
+      "color": "#6E1547",
+      "lineType" : "SOLID",
+      "visibleInLegend": true,
+      "show": true
+    },
+    {
+      "lineWidth": 3,
+      "color": "#905A25",
+      "lineType" : "SOLID",
+      "visibleInLegend": true,
+      "show": true
+    },
+    {
+      "lineWidth": 3,
+      "color": "#DA749E",
+      "lineType" : "SOLID",
+      "visibleInLegend": true,
+      "show": true
+    },
+
+    {
+      "lineWidth": 3,
+      "color": "#E47A34",
+      "lineType" : "SOLID",
+      "visibleInLegend": true,
+      "show": true
+    },
+    {
+      "lineWidth": 3,
+      "color": "#CF2628",
+      "lineType" : "SOLID",
+      "visibleInLegend": true,
+      "show": true
+    }
+  ],
+  "padding": {
+    "top": 10,
+    "bottom": 10,
+    "left": 20,
+    "right": 20
+  },
+  "size": {
+    "width": 1000,
+    "height": 600
+  }
+}

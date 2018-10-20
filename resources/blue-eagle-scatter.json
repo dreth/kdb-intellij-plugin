@@ -1,0 +1,164 @@
+{
+  "type" : "SCATTER",
+  "id": "Blue Eagle Scatter",
+  "title": {
+    "show": true,
+    "text": ""
+  },
+  "backgroundColor": "#FFFFFF",
+  "plotBackgroundColor": "#FFFFFF",
+  "domainAxis": {
+    "label": {
+      "show": false
+    },
+    "ticks": {
+      "showTickLabels": true,
+      "showTickMarks": true,
+      "tickLabelColor": "#404040",
+      "tickLabelFont": {
+        "font": "Helvetica",
+        "size": 16,
+        "attributes": ["PLAIN"]
+      }
+    }
+  },
+  "rangeAxis": {
+    "label": {
+      "show": false
+    },
+    "ticks": {
+      "showTickLabels": true,
+      "showTickMarks": true,
+      "tickLabelColor": "#404040",
+      "tickLabelFont": {
+        "font": "Helvetica",
+        "size": 16,
+        "attributes": ["PLAIN"]
+      }
+    },
+    "range": {
+      "autoAdjust": true
+    },
+    "tickUnit": {
+      "autoSelection": true
+    }
+  },
+  "grid": {
+    "horizontal": true,
+    "vertical": true,
+    "horizontalLineColor": "#C0C0C0",
+    "verticalLineColor": "#C0C0C0",
+    "horizontalLineWidth": 0.5,
+    "verticalLineWidth": 0.5,
+    "horizontalLineType": "DASHED",
+    "verticalLineType": "DASHED"
+  },
+  "legend": {
+    "show": true,
+    "backgroundColor": "#FFFFFF",
+    "position": "BOTTOM",
+    "margin": {
+      "top": 2.0,
+      "bottom": 2.0,
+      "left": 2.0,
+      "right": 2.0
+    },
+    "font":{
+      "font": "Helvetica",
+      "size": 16,
+      "attributes": [
+        "PLAIN"
+      ]
+    }
+  },
+  "series": [
+    {
+      "color": "#00A9F2",
+      "visibleInLegend": true,
+      "show": true,
+      "fillColor": "#00A9F2",
+      "outlineColor": "#00A9F2"
+    },
+    {
+      "color": "#0B2B4C",
+      "visibleInLegend": true,
+      "show": true,
+      "fillColor": "#0B2B4C",
+      "outlineColor": "#0B2B4C"
+    },
+    {
+      "color": "#85152D",
+      "lineType" : "SOLID",
+      "show": true,
+      "fillColor": "#85152D",
+      "outlineColor": "#85152D"
+    },
+    {
+      "color": "#49740D",
+      "lineType" : "SOLID",
+      "show": true,
+      "fillColor": "#49740D",
+      "outlineColor": "#49740D"
+    },
+    {
+      "color": "#40C9F7",
+      "lineType" : "SOLID",
+      "show": true,
+      "fillColor": "#40C9F7",
+      "outlineColor": "#40C9F7"
+    },
+    {
+      "color": "#445F7C",
+      "visibleInLegend": true,
+      "show": true,
+      "fillColor": "#445F7C",
+      "outlineColor": "#445F7C"
+    },
+    {
+      "color": "#FEB200",
+      "visibleInLegend": true,
+      "show": true,
+      "fillColor": "#FEB200",
+      "outlineColor": "#FEB200"
+    },
+    {
+      "color": "#C7787F",
+      "lineType" : "SOLID",
+      "show": true,
+      "fillColor": "#C7787F",
+      "outlineColor": "#C7787F"
+    },
+    {
+      "color": "#9AB46F",
+      "visibleInLegend": true,
+      "show": true,
+      "fillColor": "#9AB46F",
+      "outlineColor": "#9AB46F"
+    },
+
+    {
+      "color": "#98E3FB",
+      "visibleInLegend": true,
+      "show": true,
+      "fillColor": "#98E3FB",
+      "outlineColor": "#98E3FB"
+    },
+    {
+      "color": "#91A1B5",
+      "visibleInLegend": true,
+      "show": true,
+      "fillColor": "#91A1B5",
+      "outlineColor": "#91A1B5"
+    }
+  ],
+  "padding": {
+    "top": 10,
+    "bottom": 10,
+    "left": 20,
+    "right": 20
+  },
+  "size": {
+    "width": 1000,
+    "height": 600
+  }
+}
