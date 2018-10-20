@@ -4,12 +4,14 @@
 
 #### Toolbar visibility 
  To control KDB+ Studio Toolbar visibility, use corresponding submenu in View menu:
+ 
  ![Menu](doc/howto_1.png) 
  
  Also note, disabling View->Toolbar will also hide the Studio Toolbar.
 
 #### Toolbar action group   
  Once you have enabled the Studio Toolbar, it would appear inside of the IDE view toolbar:
+ 
  ![Toolbar](doc/howto_2.png)
 
 #### Connection management
