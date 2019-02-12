@@ -5,6 +5,8 @@ import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.ui.ColorPanel;
+import com.intellij.ui.components.JBCheckBox;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.kdb.studio.db.Connection;
@@ -17,6 +19,7 @@ import org.kdb.studio.kx.type.KCharacterVector;
 import org.kdb.studio.kx.type.KSymbolVector;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.net.SocketException;
 import java.util.ArrayList;
@@ -47,6 +50,8 @@ public class ConnectionsManagement extends DialogWrapper {
     private JLabel labelVariable;
     private JLabel labelPassword;
     private JCheckBox multilineCommentSupport;
+    private JBCheckBox bgColorEnabled;
+    private ColorPanel bgColor;
 
     private ConnectionManager connectionManager;
     private Project project;
@@ -71,6 +76,7 @@ public class ConnectionsManagement extends DialogWrapper {
         });
         connectionsList.addListSelectionListener(e -> setAsCurrentValue(connectionManager.getConnectionByName((String) connectionsList.getSelectedValue())));
         useEnvCheckox.addActionListener(e -> passwordVisible(!useEnvCheckox.isSelected()));
+        bgColorEnabled.addActionListener(e -> bgColor.setEnabled(bgColorEnabled.isSelected()));
         setEmptyValue();
         init();
     }
@@ -116,7 +122,7 @@ public class ConnectionsManagement extends DialogWrapper {
     }
 
     protected void saveCurrentValues() {
-        Connection connection = new Connection(textName.getText(), textHost.getText(), Integer.parseInt(textPort.getText()), textUsername.getText(), passwordField1.getPassword(), useEnvCheckox.isSelected(), textVariable.getText(), multilineCommentSupport.isSelected());
+        Connection connection = new Connection(textName.getText(), textHost.getText(), Integer.parseInt(textPort.getText()), textUsername.getText(), passwordField1.getPassword(), useEnvCheckox.isSelected(), textVariable.getText(), multilineCommentSupport.isSelected(), getCurrentBgColor());
         connectionManager.addOrUpdate(connection);
         connectionsList.updateUI();
         connectionsList.setSelectedValue(connection.getView(), true);
@@ -174,7 +180,7 @@ public class ConnectionsManagement extends DialogWrapper {
                 @Override
                 public void run(@NotNull ProgressIndicator progressIndicator) {
                     blockTest();
-                    Connection connection = new Connection(textName.getText(), textHost.getText(), Integer.parseInt(textPort.getText()), textUsername.getText(), passwordField1.getPassword(), useEnvCheckox.isSelected(), textVariable.getText(), multilineCommentSupport.isSelected());
+                    Connection connection = new Connection(textName.getText(), textHost.getText(), Integer.parseInt(textPort.getText()), textUsername.getText(), passwordField1.getPassword(), useEnvCheckox.isSelected(), textVariable.getText(), multilineCommentSupport.isSelected(), getCurrentBgColor());
                     List<Connector> connectors = Collections.synchronizedList(new ArrayList<>());
                     succedValidationMessage.setText("");
                     validationMessage.setText("");
@@ -281,6 +287,19 @@ public class ConnectionsManagement extends DialogWrapper {
             validationMessage.setText("");
             succedValidationMessage.setText("");
             multilineCommentSupport.setSelected(connection.isMultilineCommentSupport());
+
+            try {
+                if (connection.getBgColor() != null) {
+                    Color color = Color.decode(connection.getBgColor());
+                    bgColorEnabled.setSelected(true);
+                    bgColor.setSelectedColor(color);
+                    bgColor.setEnabled(true);
+                } else {
+                    setEmptyBgColor();
+                }
+            } catch (Exception ignore) {
+                setEmptyBgColor();
+            }
         }
     }
 
@@ -296,6 +315,24 @@ public class ConnectionsManagement extends DialogWrapper {
         useEnvCheckox.setSelected(false);
         passwordVisible(true);
         multilineCommentSupport.setSelected(false);
+        setEmptyBgColor();
+    }
+
+    protected void setEmptyBgColor() {
+        bgColorEnabled.setSelected(false);
+        bgColor.setSelectedColor(null);
+        bgColor.setEnabled(false);
+
+    }
+
+    protected String getCurrentBgColor() {
+        if (bgColorEnabled.isSelected()) {
+            Color color = bgColor.getSelectedColor();
+            if (color != null) {
+                return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+            }
+        }
+        return null;
     }
 
     private void passwordVisible(boolean usePasswordField) {
