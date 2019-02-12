@@ -37,7 +37,7 @@ public class ConnectionsBoxAction extends ComboBoxAction {
     @Override
     protected DefaultActionGroup createPopupActionGroup(JComponent jComponent) {
         DefaultActionGroup actionGroup = new DefaultActionGroup();
-        for (Connection connection : connectionManager.getConnections()) {
+        for (Connection connection : connectionManager.getConnections(true)) {
             actionGroup.add(new SelectActiveConnectionAction(connection, connectionManager));
         }
         actionGroup.addSeparator();
