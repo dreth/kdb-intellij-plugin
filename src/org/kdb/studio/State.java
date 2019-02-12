@@ -34,10 +34,12 @@ public class State {
 
         public boolean multilineCommentSupport;
 
+        public String bgColor;
+
         public Connection() {
         }
 
-        public Connection(String name, String host, int port, String username, char[] password, boolean usePasswordVariable, String passwordVariable, boolean multilineCommentSupport) {
+        public Connection(String name, String host, int port, String username, char[] password, boolean usePasswordVariable, String passwordVariable, boolean multilineCommentSupport, String bgColor) {
             this.name = name;
             this.host = host;
             this.port = port;
@@ -46,6 +48,7 @@ public class State {
             this.usePasswordVariable = usePasswordVariable;
             this.passwordVariable = passwordVariable;
             this.multilineCommentSupport = multilineCommentSupport;
+            this.bgColor = bgColor;
         }
 
         @Override
@@ -60,13 +63,14 @@ public class State {
                     Objects.equals(password, that.password) &&
                     Objects.equals(usePasswordVariable, that.usePasswordVariable) &&
                     Objects.equals(passwordVariable, that.passwordVariable) &&
-                    Objects.equals(multilineCommentSupport, this.multilineCommentSupport);
+                    Objects.equals(multilineCommentSupport, that.multilineCommentSupport) &&
+                    Objects.equals(bgColor, that.bgColor);
         }
 
         @Override
         public int hashCode() {
 
-            int result = Objects.hash(name, host, port, username, password, usePasswordVariable, passwordVariable, multilineCommentSupport);
+            int result = Objects.hash(name, host, port, username, password, usePasswordVariable, passwordVariable, multilineCommentSupport, bgColor);
             return result;
         }
     }
@@ -118,7 +122,7 @@ public class State {
         state.setConnections(new LinkedList<>());
         Optional.ofNullable(connectionManager.getActiveConnection()).ifPresent(conn -> state.setActiveConnection(conn.getView()));
         for (org.kdb.studio.db.Connection conn : connectionManager.getConnections()) {
-            state.getConnections().add(new Connection(conn.getName(), conn.getHost(), conn.getPort(), conn.getUsername(), conn.getPassword(), conn.isUsePasswordVariable(), conn.getPasswordVariable(), conn.isMultilineCommentSupport()));
+            state.getConnections().add(new Connection(conn.getName(), conn.getHost(), conn.getPort(), conn.getUsername(), conn.getPassword(), conn.isUsePasswordVariable(), conn.getPasswordVariable(), conn.isMultilineCommentSupport(), conn.getBgColor()));
         }
         state.setToolbarEnabled(toolbarEnabled);
         state.styles.clear();
@@ -128,7 +132,7 @@ public class State {
 
     void apply(ConnectionManager connectionManager) {
         connectionManager.releaseAll();
-        connections.forEach(connection -> connectionManager.addOrUpdate(new org.kdb.studio.db.Connection(connection.name, connection.host, connection.port, connection.username, connection.password.toCharArray(), connection.usePasswordVariable, connection.passwordVariable, connection.multilineCommentSupport)));
+        connections.forEach(connection -> connectionManager.addOrUpdate(new org.kdb.studio.db.Connection(connection.name, connection.host, connection.port, connection.username, connection.password.toCharArray(), connection.usePasswordVariable, connection.passwordVariable, connection.multilineCommentSupport, connection.bgColor)));
         connectionManager.setActiveConnection(connectionManager.getConnectionByName(activeConnection));
     }
 

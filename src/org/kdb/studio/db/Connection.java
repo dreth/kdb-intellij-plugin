@@ -27,6 +27,8 @@ public class Connection {
 
     private boolean multilineCommentSupport;
 
+    private String bgColor;
+
     protected ObjectPool<Connector> connectorObjectPool;
 
     private final String SYNC = "SYNC";
@@ -34,7 +36,7 @@ public class Connection {
     public Connection() {
     }
 
-    public Connection(String name, String host, int port, String username, char[] password, boolean usePasswordVariable, String passwordVariable, boolean multilineCommentSupport) {
+    public Connection(String name, String host, int port, String username, char[] password, boolean usePasswordVariable, String passwordVariable, boolean multilineCommentSupport, String bgColor) {
         this.name = name;
         this.host = host;
         this.port = port;
@@ -43,6 +45,7 @@ public class Connection {
         this.usePasswordVariable = usePasswordVariable;
         this.passwordVariable = passwordVariable;
         this.multilineCommentSupport = multilineCommentSupport;
+        this.bgColor = bgColor;
     }
 
     public String getName() {
@@ -91,7 +94,7 @@ public class Connection {
     }
 
     public Connection clone() {
-        return new Connection(name, host, port, username, password, usePasswordVariable, passwordVariable, multilineCommentSupport);
+        return new Connection(name, host, port, username, password, usePasswordVariable, passwordVariable, multilineCommentSupport, bgColor);
     }
 
     public void setPassword(char[] password) {
@@ -120,6 +123,14 @@ public class Connection {
 
     public void setMultilineCommentSupport(boolean multilineCommentSupport) {
         this.multilineCommentSupport = multilineCommentSupport;
+    }
+
+    public String getBgColor() {
+        return bgColor;
+    }
+
+    public void setBgColor(String bgColor) {
+        this.bgColor = bgColor;
     }
 
     public String getView() {

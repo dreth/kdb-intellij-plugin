@@ -10,10 +10,15 @@ import org.kdb.studio.db.Connection;
 import org.kdb.studio.db.ConnectionManager;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class ConnectionsBoxAction extends ComboBoxAction {
 
     private ConnectionManager connectionManager;
+
+    private ComboBoxButton btn;
+
+    private Color defaultBg;
 
     public ConnectionsBoxAction(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
@@ -30,7 +35,21 @@ public class ConnectionsBoxAction extends ComboBoxAction {
         } else {
             presentation.setIcon(IconLoader.findIcon("/icons/kx-kdb-logo.png"));
             presentation.setText(connection.getView());
+            if (btn != null) {
+                if  (connection.getBgColor() != null) {
+                    btn.setBackground(Color.decode(connection.getBgColor()));
+                } else {
+                    btn.setBackground(defaultBg);
+                }
+            }
         }
+    }
+
+    @Override
+    protected ComboBoxButton createComboBoxButton(Presentation presentation) {
+        this.btn = super.createComboBoxButton(presentation);
+        this.defaultBg = this.btn.getBackground();
+        return this.btn;
     }
 
     @NotNull
