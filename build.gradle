@@ -1,18 +1,31 @@
-<idea-plugin>
-    <id>org.kdb.studio</id>
-    <name>KDB+ Studio Plugin</name>
-    <version>1.1.5</version>
-    <vendor email="shupakabras@gmail.com">Andrii Borovyk</vendor>
+plugins {
+    id 'java'
+    id 'org.jetbrains.intellij' version '0.4.7'
+}
 
-    <description><![CDATA[
-      Open source IntelliJ IDEA plugin for sending queries to a q database, and showing the query results to the user.
-      <br/>
-      Based on open source "Studio for kdb+" application, described at <a href="https://code.kx.com/wiki/StudioForKdb%2B">https://code.kx.com/wiki/StudioForKdb+</a>.
-      <br/>
-      Source code of this plugin is available at <a href="https://gitlab.com/shupakabras/kdb-intellij-plugin">https://gitlab.com/shupakabras/kdb-intellij-plugin</a>
-    ]]></description>
+group 'org.kdb.studio'
+version '1.1.5'
 
-    <change-notes><![CDATA[
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.apache.commons', name: 'commons-pool2', version: '2.5.0'
+    compile group: 'org.jfree', name: 'jfreechart', version: '1.5.0'
+    compile group: 'org.jfree', name: 'jfreesvg', version: '3.3'
+    compile group: 'com.orsonpdf', name: 'orsonpdf', version: '1.8'
+    compile group: 'org.everit.json', name: 'org.everit.json.schema', version: '1.5.1'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+intellij {
+    version '2017.2.7'
+}
+patchPluginXml {
+    changeNotes """
       <h3>1.1.5</h3>
       <br/>
       <h3>1.1.4</h3>
@@ -103,44 +116,5 @@
         <li>view response in table/console mode</li>
         <li>export response data</li>
         <li>show data as a chart</li>
-      </ul>
-    ]]>
-    </change-notes>
-
-    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="172.0"/>
-
-    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-         on how to target different products -->
-
-    <depends>com.intellij.modules.lang</depends>
-
-    <application-components>
-        <component>
-            <implementation-class>org.kdb.studio.KDBStudioApplicationComponent</implementation-class>
-        </component>
-        <component>
-            <implementation-class>org.kdb.studio.KDBStudioPlotConfigComponent</implementation-class>
-        </component>
-    </application-components>
-
-    <project-components>
-        <component>
-            <implementation-class>org.kdb.studio.KDBStudioProjectComponent</implementation-class>
-        </component>
-    </project-components>
-
-    <extensions defaultExtensionNs="com.intellij">
-        <keymapExtension implementation="org.kdb.studio.KDBKeymapExtension"/>
-        <colorSettingsPage implementation="org.kdb.studio.ui.KDBColorSettingsPage" />
-        <!-- Add your extensions here -->
-    </extensions>
-
-    <actions>
-        <group id="KDBToolbarActions" popup="false" class="org.kdb.studio.KDBToolbarActionGroup" text="KDB Toolbar Actions">
-            <add-to-group group-id="MainToolBar" />
-        </group>
-        <!-- Add your actions here -->
-    </actions>
-
-</idea-plugin>
+      </ul>"""
+}

@@ -19,60 +19,48 @@ import java.io.*;
 
 public class FileExporter {
 
-    FileFilter csvFilter =
+    private FileFilter csvFilter =
             new FileFilter() {
                 public String getDescription() {
                     return "csv (Comma delimited)";
                 }
 
                 public boolean accept(File file) {
-                    if (file.isDirectory() || file.getName().endsWith(".csv"))
-                        return true;
-                    else
-                        return false;
+                    return file.isDirectory() || file.getName().endsWith(".csv");
                 }
             };
 
-    FileFilter txtFilter =
+    private FileFilter txtFilter =
             new FileFilter() {
                 public String getDescription() {
                     return "txt (Tab delimited)";
                 }
 
                 public boolean accept(File file) {
-                    if (file.isDirectory() || file.getName().endsWith(".txt"))
-                        return true;
-                    else
-                        return false;
+                    return file.isDirectory() || file.getName().endsWith(".txt");
                 }
             };
 
-    FileFilter xmlFilter =
+    private FileFilter xmlFilter =
             new FileFilter() {
                 public String getDescription() {
                     return "xml";
                 }
 
                 public boolean accept(File file) {
-                    if (file.isDirectory() || file.getName().endsWith(".xml"))
-                        return true;
-                    else
-                        return false;
+                    return file.isDirectory() || file.getName().endsWith(".xml");
                 }
             };
 
 
-    FileFilter xlsFilter =
+    private FileFilter xlsFilter =
             new FileFilter() {
                 public String getDescription() {
                     return "xls (Microsoft Excel)";
                 }
 
                 public boolean accept(File file) {
-                    if (file.isDirectory() || file.getName().endsWith(".xls"))
-                        return true;
-                    else
-                        return false;
+                    return file.isDirectory() || file.getName().endsWith(".xls");
                 }
             };
 
@@ -216,7 +204,7 @@ public class FileExporter {
         if (filename != null) {
             String lineSeparator = java.security.AccessController.doPrivileged(new sun.security.action.GetPropertyAction("line.separator"));
 
-            BufferedWriter fw = null;
+            BufferedWriter fw;
 
             try {
                 fw = new BufferedWriter(new FileWriter(filename));
@@ -245,7 +233,7 @@ public class FileExporter {
 
                     progressIndicator.checkCanceled();
                     progressIndicator.setText("" + (100 * r) / maxRow + "% complete");
-                    progressIndicator.setFraction(r / maxRow);
+                    progressIndicator.setFraction((double)r / maxRow);
                 }
                 fw.write("</R>");
 
@@ -258,7 +246,7 @@ public class FileExporter {
     }
 
     private void exportAsDelimited(ProgressIndicator progressIndicator, final TableModel model, final String filename, final char delimiter) {
-        String lineSeparator = java.security.AccessController.doPrivileged(new sun.security.action.GetPropertyAction("line.separator"));
+        String lineSeparator = System.lineSeparator();
 
         BufferedWriter fw;
 
@@ -287,7 +275,7 @@ public class FileExporter {
 
                 progressIndicator.checkCanceled();
                 progressIndicator.setText("" + (100 * r) / maxRow + "% complete");
-                progressIndicator.setFraction(r / maxRow);
+                progressIndicator.setFraction((double)r / maxRow);
             }
 
             fw.close();

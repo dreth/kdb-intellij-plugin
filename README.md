@@ -1,5 +1,10 @@
 # KDB+ Studio plugin for IntelliJ IDEA
 
+To build the project, use
+``bash
+    .\gradlew buildPlugin
+``
+
 ### Usage instruction
 
 #### Toolbar visibility 

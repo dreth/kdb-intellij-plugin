@@ -1,0 +1,51 @@
+<idea-plugin>
+    <id>org.kdb.studio</id>
+    <name>KDB+ Studio Plugin</name>
+    <version>1.1.5</version>
+    <vendor email="shupakabras@gmail.com">Andrii Borovyk</vendor>
+
+    <description><![CDATA[
+      Open source IntelliJ IDEA plugin for sending queries to a q database, and showing the query results to the user.
+      <br/>
+      Based on open source "Studio for kdb+" application, described at <a href="https://code.kx.com/wiki/StudioForKdb%2B">https://code.kx.com/wiki/StudioForKdb+</a>.
+      <br/>
+      Source code of this plugin is available at <a href="https://gitlab.com/shupakabras/kdb-intellij-plugin">https://gitlab.com/shupakabras/kdb-intellij-plugin</a>
+    ]]></description>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+    <idea-version since-build="172.0"/>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+
+    <depends>com.intellij.modules.lang</depends>
+
+    <application-components>
+        <component>
+            <implementation-class>org.kdb.studio.KDBStudioApplicationComponent</implementation-class>
+        </component>
+        <component>
+            <implementation-class>org.kdb.studio.KDBStudioPlotConfigComponent</implementation-class>
+        </component>
+    </application-components>
+
+    <project-components>
+        <component>
+            <implementation-class>org.kdb.studio.KDBStudioProjectComponent</implementation-class>
+        </component>
+    </project-components>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <keymapExtension implementation="org.kdb.studio.KDBKeymapExtension"/>
+        <colorSettingsPage implementation="org.kdb.studio.ui.KDBColorSettingsPage" />
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <actions>
+        <group id="KDBToolbarActions" popup="false" class="org.kdb.studio.KDBToolbarActionGroup" text="KDB Toolbar Actions">
+            <add-to-group group-id="MainToolBar" />
+        </group>
+        <!-- Add your actions here -->
+    </actions>
+
+</idea-plugin>
