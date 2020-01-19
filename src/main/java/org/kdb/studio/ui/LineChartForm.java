@@ -25,6 +25,9 @@ import org.kdb.studio.kx.type.*;
 import javax.swing.*;
 import java.awt.*;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.List;
 
@@ -36,6 +39,8 @@ public class LineChartForm {
     private JFreeChart chart;
     private PlotConfigBoxAction plotConfigBoxAction;
     private List<PreferredSizeChangeListener> listeners = new ArrayList<>();
+
+    private static ZonedDateTime kdbEpochStart = ZonedDateTime.of(2001, 1, 1, 0, 0, 0, 0, ZoneId.of("UTC"));
 
     public LineChartForm(KTableModel table) {
         this.table = table;
@@ -74,10 +79,12 @@ public class LineChartForm {
             return new org.jfree.data.time.Month(m, y);
         } else if (KSecondVector.class == kBaseVector) {
             org.kdb.studio.kx.type.Second time = (org.kdb.studio.kx.type.Second) period;
-            return new org.jfree.data.time.Second(time.i % 60, time.i / 60, 0, 1, 1, 2001);
+            ZonedDateTime dateTime = kdbEpochStart.plus(time.i, ChronoUnit.SECONDS);
+            return new org.jfree.data.time.Second(dateTime.getSecond(), dateTime.getMinute(), dateTime.getHour(), dateTime.getDayOfMonth(), dateTime.getMonthValue(), dateTime.getYear());
         } else if (KMinuteVector.class == kBaseVector) {
             org.kdb.studio.kx.type.Minute time = (org.kdb.studio.kx.type.Minute) period;
-            return new org.jfree.data.time.Minute(time.i % 60, time.i / 60, 1, 1, 2001);
+            ZonedDateTime dateTime = kdbEpochStart.plus(time.i, ChronoUnit.MINUTES);
+            return new org.jfree.data.time.Minute(dateTime.getMinute(), dateTime.getHour(), dateTime.getDayOfMonth(), dateTime.getMonthValue(), dateTime.getYear());
         }
         return null;
     }
