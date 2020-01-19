@@ -28,7 +28,7 @@
         </properties>
         <border type="none"/>
         <children>
-          <grid id="deac9" binding="leftPanel" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="deac9" binding="leftPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <splitpane position="left"/>
@@ -47,27 +47,37 @@
             <children>
               <component id="a604a" class="org.kdb.studio.ui.SettingPanel" binding="settingsPanel" custom-create="true">
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="7" anchor="1" fill="1" indent="0" use-parent-layout="false">
-                    <minimum-size width="25" height="-1"/>
-                    <preferred-size width="25" height="-1"/>
-                    <maximum-size width="-1" height="25"/>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="1" fill="1" indent="0" use-parent-layout="false">
+                    <preferred-size width="164" height="19"/>
                   </grid>
                 </constraints>
                 <properties/>
               </component>
-              <component id="b0a06" class="javax.swing.JList" binding="connectionsList">
+              <scrollpane id="8885d">
                 <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="2" vsize-policy="6" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="150"/>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                    <preferred-size width="164" height="128"/>
                   </grid>
                 </constraints>
                 <properties>
-                  <selectionMode value="0"/>
+                  <horizontalScrollBarPolicy value="30"/>
                 </properties>
-              </component>
+                <clientProperties>
+                  <html.disable class="java.lang.Boolean" value="true"/>
+                </clientProperties>
+                <border type="none"/>
+                <children>
+                  <component id="b0a06" class="javax.swing.JList" binding="connectionsList">
+                    <constraints/>
+                    <properties>
+                      <selectionMode value="0"/>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
             </children>
           </grid>
-          <grid id="ce0be" layout-manager="GridLayoutManager" row-count="1" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="ce0be" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="10" left="10" bottom="10" right="10"/>
             <constraints>
               <splitpane position="right"/>
@@ -101,7 +111,7 @@
                 <rowspec value="center:d:grow"/>
                 <colspec value="fill:d:grow"/>
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
                 <border type="none"/>
