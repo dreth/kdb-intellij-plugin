@@ -10,6 +10,8 @@
       Based on open source "Studio for kdb+" application, described at <a href="https://code.kx.com/wiki/StudioForKdb%2B">https://code.kx.com/wiki/StudioForKdb+</a>.
       <br/>
       Source code of this plugin is available at <a href="https://gitlab.com/shupakabras/kdb-intellij-plugin">https://gitlab.com/shupakabras/kdb-intellij-plugin</a>
+      <br/>
+      This plugin does not provide q/k4 language syntax highlighting/checking. If you need this functionality, you could use existent q plugin <a href="https://plugins.jetbrains.com/plugin/7925-q/">https://plugins.jetbrains.com/plugin/7925-q/</a>
     ]]></description>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
