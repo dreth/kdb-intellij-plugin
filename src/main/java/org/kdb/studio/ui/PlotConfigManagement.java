@@ -15,10 +15,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.ui.table.JBTable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.kdb.studio.chart.ChartConfigLoader;
-import org.kdb.studio.chart.JsonSchemaValidator;
-import org.kdb.studio.chart.PlotConfigManager;
-import org.kdb.studio.chart.PlotDefaultType;
+import org.kdb.studio.chart.*;
 import org.kdb.studio.chart.entity.Plot;
 
 import javax.swing.*;
@@ -33,6 +30,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class PlotConfigManagement extends DialogWrapper {
+
+    private static String[] defaults = {"/blue-eagle-lines.json", "/blue-eagle-scatter.json", "/first-class-lines.json"};
 
     public static String helpURL = "https://gitlab.com/shupakabras/kdb-intellij-plugin/blob/master/README-Plot.md";
 
@@ -141,7 +140,7 @@ public class PlotConfigManagement extends DialogWrapper {
     @NotNull
     @Override
     protected Action[] createLeftSideActions() {
-        return new Action[]{new RemoveSelected(), new AddNew()};
+        return new Action[]{new RemoveSelected(), new AddNew(), new ImportDefaults()};
     }
 
     protected class RemoveSelected extends DialogWrapper.DialogWrapperAction {
@@ -180,23 +179,23 @@ public class PlotConfigManagement extends DialogWrapper {
                 try {
                     List<String> problems = JsonSchemaValidator.validate(files[0].getInputStream());
                     if (!problems.isEmpty()) {
-                        Messages.showIdeaMessageDialog(project, problems.stream().collect(Collectors.joining("\n")), "Invalid incoming data format", new String[] {Messages.OK_BUTTON}, 0, null, null );
+                        Messages.showIdeaMessageDialog(project, problems.stream().collect(Collectors.joining("\n")), "Invalid incoming data format", new String[]{Messages.OK_BUTTON}, 0, null, null);
                         return;
                     }
 
                 } catch (IOException e) {
-                    Messages.showIdeaMessageDialog(project, Optional.ofNullable(e.getMessage()).orElse(e.toString()), "Data import error.", new String[] {Messages.OK_BUTTON}, 0, null, null );
+                    Messages.showIdeaMessageDialog(project, Optional.ofNullable(e.getMessage()).orElse(e.toString()), "Data import error.", new String[]{Messages.OK_BUTTON}, 0, null, null);
                     return;
                 }
                 try (InputStream is = files[0].getInputStream()) {
                     Plot plot = ChartConfigLoader.load(is);
                     PlotConfigManager configManager = PlotConfigManager.getInstance();
                     if (PlotConfigManager.DEFAULT_ID.equals(plot.getId())) {
-                        Messages.showIdeaMessageDialog(project, "Plot id <<DEFAULT>> is not allowed (internally reserved)", "Invalid incoming data.", new String[] {Messages.OK_BUTTON}, 0, null, null );
+                        Messages.showIdeaMessageDialog(project, "Plot id <<DEFAULT>> is not allowed (internally reserved)", "Invalid incoming data.", new String[]{Messages.OK_BUTTON}, 0, null, null);
                         return;
                     }
                     if (configManager.listAllPlots(false).contains(plot.getId())) {
-                        ConfirmDialog dialog = new ConfirmDialog(project, "Plot configuration with id "+ plot.getId() + " already exists. Overwrite?", "Confirm overwrite");
+                        ConfirmDialog dialog = new ConfirmDialog(project, "Plot configuration with id " + plot.getId() + " already exists. Overwrite?", "Confirm overwrite");
                         dialog.show();
                         if (DialogWrapper.OK_EXIT_CODE == dialog.getExitCode()) {
                             addPlotConfig(plot);
@@ -214,6 +213,38 @@ public class PlotConfigManagement extends DialogWrapper {
         protected void addPlotConfig(Plot plot) {
             PlotConfigManager.getInstance().getState().getPlots().remove(plot);
             PlotConfigManager.getInstance().getState().getPlots().add(plot);
+            plotTable.updateUI();
+        }
+    }
+
+    protected class ImportDefaults extends DialogWrapper.DialogWrapperAction {
+        private ImportDefaults() {
+            super("Import Defaults");
+        }
+
+        @Override
+        protected void doAction(ActionEvent e) {
+            Plots state = PlotConfigManager.getInstance().getState();
+            for (String defConfig : defaults) {
+                try {
+                    Plot plot = ChartConfigLoader.load(PlotConfigManager.class.getResourceAsStream(defConfig));
+                    if (state.getPlots().contains(plot)) {
+                        ConfirmDialog dialog = new ConfirmDialog(project, "Plot configuration with id " + plot.getId() + " already exists. Overwrite?", "Confirm overwrite");
+                        dialog.show();
+                        if (DialogWrapper.OK_EXIT_CODE == dialog.getExitCode()) {
+                            addPlotConfig(plot, state);
+                        }
+                    } else {
+                        addPlotConfig(plot, state);
+                    }
+                } catch (Exception ignore) {
+                    Notifications.Bus.notify(new Notification("KDBStudio", "Defaults import error.", ignore.getMessage(), NotificationType.ERROR));
+                }
+            }
+        }
+        protected void addPlotConfig(Plot plot, Plots state) {
+            state.getPlots().remove(plot);
+            state.getPlots().add(plot);
             plotTable.updateUI();
         }
     }
