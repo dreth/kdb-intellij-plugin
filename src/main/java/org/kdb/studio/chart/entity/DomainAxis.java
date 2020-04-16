@@ -1,6 +1,6 @@
 package org.kdb.studio.chart.entity;
 
-public class DomainAxis {
+public class DomainAxis<T extends DomainAxis> implements Overridable<T> {
     public Label label;
     public Tick ticks;
     public String axisLineColor;
@@ -36,5 +36,10 @@ public class DomainAxis {
 
     public void setTickMarkColor(String tickMarkColor) {
         this.tickMarkColor = tickMarkColor;
+    }
+
+    @Override
+    public void override(T obj) {
+        Overridable.overrideObject(this, obj);
     }
 }

@@ -21,7 +21,7 @@ public class ChartAction extends QGridAction {
         Project project = anActionEvent.getProject();
         if (isAvailable(anActionEvent) && getTableGroup(anActionEvent).getCurrentTableModel() != null) {
 
-            LineChartForm lineChartForm = new LineChartForm(getTableGroup(anActionEvent).getCurrentTableModel());
+            LineChartForm lineChartForm = new LineChartForm(getTableGroup(anActionEvent).getCurrentTableModel(), project);
             WindowWrapper wrapper = new WindowWrapperBuilder(WindowWrapper.Mode.FRAME, lineChartForm.createCenterPanel())
                     .setProject(project).setTitle("Chart").build();
             wrapper.getWindow().setSize(wrapper.getComponent().getPreferredSize());

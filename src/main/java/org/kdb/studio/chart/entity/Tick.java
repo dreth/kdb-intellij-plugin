@@ -1,6 +1,6 @@
 package org.kdb.studio.chart.entity;
 
-public class Tick {
+public class Tick implements Overridable<Tick> {
     public boolean showTickLabels;
     public boolean showTickMarks;
     public Font tickLabelFont;
@@ -36,5 +36,10 @@ public class Tick {
 
     public void setTickLabelFont(Font tickLabelFont) {
         this.tickLabelFont = tickLabelFont;
+    }
+
+    @Override
+    public void override(Tick obj) {
+        Overridable.overrideObject(this, obj);
     }
 }

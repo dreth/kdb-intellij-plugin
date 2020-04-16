@@ -6,6 +6,7 @@ import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionToolbar;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import com.intellij.openapi.project.Project;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -16,9 +17,11 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.kdb.studio.actions.PlotConfigBoxAction;
+import org.kdb.studio.actions.PlotOverrideAction;
 import org.kdb.studio.chart.ChartConfigurator;
 import org.kdb.studio.chart.PlotConfigManager;
 import org.kdb.studio.chart.entity.Plot;
+import org.kdb.studio.chart.entity.PlotOverride;
 import org.kdb.studio.kx.ToDouble;
 import org.kdb.studio.kx.type.*;
 
@@ -32,19 +35,21 @@ import java.util.*;
 import java.util.List;
 
 public class LineChartForm {
+    private Project project;
     private JComponent plotConfig;
     private ChartPanel chartPanel;
     private JPanel centralPanel;
     private KTableModel table;
     private JFreeChart chart;
     private PlotConfigBoxAction plotConfigBoxAction;
+    private PlotOverrideAction plotOverrideAction;
     private List<PreferredSizeChangeListener> listeners = new ArrayList<>();
 
     private static ZonedDateTime kdbEpochStart = ZonedDateTime.of(2001, 1, 1, 0, 0, 0, 0, ZoneId.of("UTC"));
 
-    public LineChartForm(KTableModel table) {
+    public LineChartForm(KTableModel table, Project project) {
         this.table = table;
-
+        this.project = project;
         String configId = PlotConfigManager.getInstance().forModel(table).getId();
         plotConfigBoxAction.setActiveConfig(configId);
         applyConfig(configId);
@@ -185,7 +190,9 @@ public class LineChartForm {
 
     private void createUIComponents() {
         plotConfigBoxAction = new PlotConfigBoxAction(PlotConfigManager.getInstance(), this);
+        plotOverrideAction = new PlotOverrideAction();
         DefaultActionGroup actionGroup = new DefaultActionGroup();
+        actionGroup.add(plotOverrideAction);
         actionGroup.add(plotConfigBoxAction);
         ActionManager actionManager = ActionManager.getInstance();
         ActionToolbar toolbar = actionManager.createActionToolbar("KDBStudio.LineChartForm", actionGroup, true);
@@ -211,6 +218,8 @@ public class LineChartForm {
         if (chart != null) {
             try {
                 config = PlotConfigManager.getInstance().byName(configId);
+                PlotOverride override = QGrid.getInstance(project, false).applyPlotConfigOverride(config);
+                plotOverrideAction.setPlotOverride(override);
                 new ChartConfigurator().configureChart(config, chart);
             } catch (Exception e) {
                 Notifications.Bus.notify(new Notification("KDBStudio", "Apply chart config error.", e.toString(), NotificationType.ERROR));

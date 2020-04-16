@@ -1,0 +1,9 @@
+/
+{"title": {"text": "A fancy plot", "font": {"size": 20}},
+     "domainAxis": {"label”:
+          { "show": true, "text": "Price"}}}
+\
+//some message which is not a json
+// {"title": {"text": "A fancy plot", "font": {"size": 22}}, "domainAxis": {"label": { "show": true, "text": Price"}}}
+// here is new example of text
+([] date: 2020.04.05 2020.04.06; price: 100 120)

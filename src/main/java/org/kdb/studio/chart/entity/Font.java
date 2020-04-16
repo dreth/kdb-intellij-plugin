@@ -3,7 +3,7 @@ package org.kdb.studio.chart.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Font {
+public class Font implements Overridable<Font>{
 
     public int size;
 
@@ -59,5 +59,13 @@ public class Font {
             style |= java.awt.Font.ITALIC;
         }
         return new java.awt.Font(dto.getFont(), style, dto.getSize());
+    }
+
+    @Override
+    public void override(Font obj) {
+        Overridable.overrideObject(this, obj);
+        if (obj.attributes != null) {
+            setAttributes(obj.attributes);
+        }
     }
 }
