@@ -1,6 +1,6 @@
 package org.kdb.studio.chart.entity;
 
-public class Legend {
+public class Legend implements Overridable<Legend>{
     public boolean show;
     public String backgroundColor;
     public RectangleInsets margin;
@@ -45,5 +45,10 @@ public class Legend {
 
     public void setFont(Font font) {
         this.font = font;
+    }
+
+    @Override
+    public void override(Legend obj) {
+        Overridable.overrideObject(this, obj);
     }
 }

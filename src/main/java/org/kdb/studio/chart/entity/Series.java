@@ -1,6 +1,6 @@
 package org.kdb.studio.chart.entity;
 
-public class Series {
+public class Series implements Overridable<Series> {
     public String color;
     public String fillColor;
     public String outlineColor;
@@ -81,5 +81,10 @@ public class Series {
 
     public void setType(ChartType type) {
         this.type = type;
+    }
+
+    @Override
+    public void override(Series obj) {
+        Overridable.overrideObject(this, obj);
     }
 }

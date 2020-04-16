@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Plot {
+public class Plot implements Overridable<Plot> {
     public String id;
     public ChartType type;
     public RendererType renderer;
@@ -137,5 +137,23 @@ public class Plot {
 
     public void setRenderer(RendererType renderer) {
         this.renderer = renderer;
+    }
+
+    @Override
+    public void override(Plot obj) {
+        Overridable.overrideObject(this, obj);
+        if (obj.series != null) {
+            for (int i=0; i<obj.series.size(); i++) {
+                Series curr = obj.series.get(i);
+                if (curr != null) {
+                    if (getSeries().size() > i) {
+                        getSeries().get(i).override(curr);
+                    } else {
+                        getSeries().set(i, curr);
+                    }
+                }
+            }
+        }
+
     }
 }

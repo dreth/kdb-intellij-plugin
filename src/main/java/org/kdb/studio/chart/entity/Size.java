@@ -1,6 +1,6 @@
 package org.kdb.studio.chart.entity;
 
-public class Size {
+public class Size implements Overridable<Size> {
     public int width;
     public int height;
 
@@ -18,5 +18,10 @@ public class Size {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    @Override
+    public void override(Size obj) {
+        Overridable.overrideObject(this, obj);
     }
 }

@@ -1,6 +1,6 @@
 package org.kdb.studio.chart.entity;
 
-public class RectangleInsets {
+public class RectangleInsets implements Overridable<RectangleInsets> {
     public double top;
     public double bottom;
     public double left;
@@ -36,5 +36,10 @@ public class RectangleInsets {
 
     public void setRight(double right) {
         this.right = right;
+    }
+
+    @Override
+    public void override(RectangleInsets obj) {
+        Overridable.overrideObject(this, obj);
     }
 }

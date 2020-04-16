@@ -1,7 +1,7 @@
 package org.kdb.studio.chart.entity;
 
-public class Label {
-    public boolean show;
+public class Label implements Overridable<Label>{
+    public Boolean show = false;
     public String text;
     public Font font;
     public String color;
@@ -36,5 +36,10 @@ public class Label {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    @Override
+    public void override(Label obj) {
+        Overridable.overrideObject(this, obj);
     }
 }

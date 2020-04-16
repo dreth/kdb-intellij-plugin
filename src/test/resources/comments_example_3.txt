@@ -1,0 +1,6 @@
+/
+{"title": {"text": "A fancy plot", "font": {"size": 20}},
+     "domainAxis": {"label”:
+          { "show": true, "text": "Price"}}}
+\
+([] date: 2020.04.05 2020.04.06; price: 100 120)

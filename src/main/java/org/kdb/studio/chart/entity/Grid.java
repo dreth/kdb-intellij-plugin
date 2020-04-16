@@ -1,6 +1,6 @@
 package org.kdb.studio.chart.entity;
 
-public class Grid {
+public class Grid implements Overridable<Grid> {
 
     public boolean horizontal;
 
@@ -80,5 +80,10 @@ public class Grid {
 
     public void setVerticalLineType(LineType verticalLineType) {
         this.verticalLineType = verticalLineType;
+    }
+
+    @Override
+    public void override(Grid obj) {
+        Overridable.overrideObject(this, obj);
     }
 }

@@ -1,6 +1,6 @@
 package org.kdb.studio.chart.entity;
 
-public class RangeAxis extends DomainAxis {
+public class RangeAxis extends DomainAxis<RangeAxis> {
     public Range range;
     public TickUnit tickUnit;
     public Range getRange() {
@@ -19,4 +19,9 @@ public class RangeAxis extends DomainAxis {
         this.tickUnit = tickUnit;
     }
 
+    @Override
+    public void override(RangeAxis obj) {
+        super.override(obj);
+        Overridable.overrideObject(this, obj);
+    }
 }

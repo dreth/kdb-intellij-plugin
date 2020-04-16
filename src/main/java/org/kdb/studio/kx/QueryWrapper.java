@@ -49,4 +49,34 @@ public class QueryWrapper {
         }
         return wrapperQuery.toString();
     }
+
+    public static String toComments(String query) {
+        StringBuilder comments = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new StringReader(query))) {
+            String line;
+            boolean insideMultiLineComment = false;
+            boolean commentsToEnd = false;
+            while ((line = br.readLine()) != null) {
+                if (line.startsWith("/") && line.trim().length() == 1) {
+                    insideMultiLineComment = true;
+                    continue;
+                } else if (line.startsWith("\\") && line.trim().length() == 1) {
+                    if (insideMultiLineComment) {
+                        insideMultiLineComment = false;
+                    } else {
+                        commentsToEnd = true;
+                    }
+                }
+                if (insideMultiLineComment || commentsToEnd) {
+                    comments.append(line.trim()).append(" ");
+                }
+                if (line.trim().startsWith("//")) {
+                    comments.append(line.trim().substring(2)).append(" ");
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return comments.toString();
+    }
 }

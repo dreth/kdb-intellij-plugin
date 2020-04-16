@@ -1,5 +1,7 @@
 package org.kdb.studio.ui;
 
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.stream.MalformedJsonException;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
@@ -7,15 +9,17 @@ import com.intellij.openapi.editor.colors.EditorColorsListener;
 import com.intellij.openapi.editor.colors.EditorColorsManager;
 import com.intellij.openapi.editor.colors.EditorColorsScheme;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.table.JBTable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.kdb.studio.KDBResourceBundle;
+import org.kdb.studio.chart.entity.Plot;
+import org.kdb.studio.chart.entity.PlotOverride;
 import org.kdb.studio.db.Connection;
 import org.kdb.studio.db.ConnectionManager;
-import org.kdb.studio.kx.K4Exception;
-import org.kdb.studio.kx.LimitedWriter;
-import org.kdb.studio.kx.QErrors;
+import org.kdb.studio.kx.*;
 import org.kdb.studio.kx.type.Dict;
 import org.kdb.studio.kx.type.Flip;
 import org.kdb.studio.kx.type.KBase;
@@ -238,59 +242,61 @@ public class QGrid implements EditorColorsListener {
         }
     }
 
+    /**
+     * Apply plot override from query comment, and return results
+     * @param config
+     * @return
+     */
+    public PlotOverride applyPlotConfigOverride(Plot config) {
+        String comments = QueryWrapper.toComments(getTableGroup().getCurrentQuery());
+        if (!comments.isEmpty()) {
+            try {
+                Plot plot = JsonParserUtil.loadLastJsonAsPlot(comments);
+                if (plot == null) {
+                    return new PlotOverride(MessageType.INFO, KDBResourceBundle.message("plot.override.info.message"));
+                }
+                config.override(plot);
+            } catch (JsonSyntaxException e) {
+                String err = e.getMessage();
+                if (e.getCause() != null) {
+                    err = e.getCause().getMessage();
+                }
+                return new PlotOverride(MessageType.WARNING, KDBResourceBundle.message("plot.override.warn.message", err));
+            }
+        }
+        return new PlotOverride(null, null);
+    }
+
     public void showError(Throwable e) {
         ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
         toolWindowManager.getToolWindow("KDBStudio").show(null);
         Connection conn = ConnectionManager.getInstance().getActiveConnection();
-
+        String host = "";
+        if (conn != null) {
+            host = new StringBuilder(conn.getHost()).append(":").append(conn.getPort()).toString();
+        }
         try {
             throw e;
         } catch (IOException ex) {
-            StringBuilder sb = new StringBuilder("<span style=\"color:red\">");
-            sb.append("A communications error occurred while sending the query ");
-            if (conn != null) {
-                sb.append(" to ").append(conn.getHost()).append(":").append(conn.getPort());
-            }
-            sb.append("</span><br/>Please check that the server is running on ")
-                    .append("<br/>")
-                    .append("Error detail is").append("<br/>")
-                    .append(ex.getMessage())
-                    .append("<br/>");
-            showConsole(sb.toString());
-
+            showConsole(KDBResourceBundle.message("query.execution.error.message.io", host, ex.getMessage()));
         } catch (K4Exception ex) {
             StringBuilder sb = new StringBuilder();
             String hint = QErrors.lookup(ex.getMessage());
-            sb.append("<span style=\"color:red\">")
-                    .append("An error occurred during execution of the query.</span><br/> The server sent the response: ")
-                    .append(ex.getMessage());
-            if (hint != null) {
-                sb.append("<br/><span style=\"color:green\">")
-                        .append("Hint: Possibly this error refers to " + hint)
-                        .append("</span>");
-            }
 
+            sb.append(KDBResourceBundle.message("query.execution.error.message.k4", ex.getMessage()));
+            if (hint != null) {
+                sb.append(KDBResourceBundle.message("query.execution.error.message.k4.hint", hint));
+            }
             showConsole(sb.toString());
         } catch (java.lang.OutOfMemoryError ex) {
-            StringBuilder sb = new StringBuilder("<span style=\"color:red\">Out of memory while communicating with server ");
-            if (conn != null) {
-                sb.append(conn.getHost()).append(":").append(conn.getPort());
-            }
-            sb.append("</span><br/>The result set is probably too large.<br/>Try increasing the memory available to Intellij IDEA");
-            showConsole(sb.toString());
+            showConsole(KDBResourceBundle.message("query.execution.error.message.oom", host));
         } catch (Throwable ex) {
 
             String message = ex.getMessage();
             if ((message == null) || (message.length() == 0)) {
-                message = "No message with exception. Exception is " + ex.toString();
+                message = KDBResourceBundle.message("query.execution.error.message.gen.nomsg", ex.toString());
             }
-
-            StringBuilder sb = new StringBuilder("<span style=\"color:red\">An unexpected error occurred whilst communicating with server ");
-            if (conn != null) {
-                sb.append(conn.getHost()).append(":").append(conn.getPort());
-            }
-            sb.append("</span><br/>Error detail is<br/>").append(message);
-            showConsole(sb.toString());
+            showConsole(KDBResourceBundle.message("query.execution.error.message.gen", host, message));
         }
 
     }
