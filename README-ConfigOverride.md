@@ -35,8 +35,8 @@ OR
 The overridden config still applied if user changes the graph style (for example, moving from a line based chart to a scatterplot).
 ![Style changed](doc/override_config_2.png) 
 
-If there are problems with the JSON format, a warning icon would be displayed in the plot window. 
+If there are problems with the JSON format, a warning icon will be displayed in the plot window. 
 ![Error whileparsing](doc/override_config_3.png)
 
-Clicking on that warning icon, user is able to see which errors happened.
+Clicking on that warning icon, user can see which errors happened.
 ![Description balloon](doc/override_config_4.png)

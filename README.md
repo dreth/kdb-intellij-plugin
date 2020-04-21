@@ -12,10 +12,10 @@ To build the project, use
  
  ![Menu](doc/howto_1.png) 
  
- Also note, disabling View->Toolbar will also hide the Studio Toolbar.
+Also note that disabling View->Toolbar will also hide the Studio Toolbar.
 
 #### Toolbar action group   
- Once you have enabled the Studio Toolbar, it would appear inside of the IDE view toolbar:
+ Once you have enabled the Studio Toolbar, it will appear inside of the IDE view toolbar:
  
  ![Toolbar](doc/howto_2.png)
 
@@ -26,16 +26,16 @@ To build the project, use
  
  ![Edit connections](doc/howto_3.png)
  
- In opened editor window, fill all required fields (name, host and port) and click "Apply" or "Ok" button.
+ In this editor window, fill all required fields (name, host and port) and click "Apply" or "Ok" button.
  
  ![Connection editor](doc/hotwo_4.png)
  
- You could also click on "Test" button, in order to verify connection settings.
+ You can also click on "Test" button in order to verify connection settings.
  
  ![Check connection](doc/hotwo_5.png)
  
 #### Execute query
- In opened editor, type a query and push the "Run selected or line" button:
+ In open editor, type a query and push the "Run selected or line" button:
  
  ![Run button](doc/howto_6.png)
  
