@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'org.kdb.studio'
-version '1.1.7'
+version '1.1.8'
 
 sourceCompatibility = 1.8
 
@@ -46,106 +46,8 @@ patchPluginXml {
     sinceBuild(172.0)
     untilBuild(null)
     changeNotes """
-      <h3>1.1.7</h3>
-      <ul>
-        <li>Plot configuration override from comments</li>
-        <li>Basic code reformat support</li>
-      </ul>
-      <br/>
-      <h3>1.1.6</h3>
-      <ul>
-       <li>Number of issues fixed</li>
-      </ul>
-      <br/>
-      <h3>1.1.5</h3>
-      <br/>
-      <h3>1.1.4</h3>
-      <ul>
-       <li>Number of issues fixed</li>
-      </ul>
-      <br/>
-      <h3>1.1.3</h3>
-      <ul>
-       <li>Extend plot type configuration</li>
-       <li>Add docs</li>
-       <li>Number of issues fixed</li>
-      </ul>
-      <br/>
-      <h3>1.1.2</h3>
-      <ul>
-       <li>Extend font plot configuration</li>
-       <li>Add multiline syntax support according to the https://code.kx.com/q/ref/syntax/#comments</li>
-       <li>Number of issues fixed</li>
-      </ul>
-      <br/>
-      <h3>1.1.1</h3>
-      <ul>
-       <li>Font configuration page</li>
-       <li>Number of issues fixed</li>
-      </ul>
-      <br/>
-      <h3>1.1.0</h3>
-      <ul>
-        <li>Initial support of Configurable plotting</li>
-      </ul>
-      <br/>
-      <h3>1.0.8</h3>
-      <ul>
-        <li>Unblock query executor just after last execution complete</li>
-      </ul>
-      <br/>
-      <h3>1.0.7</h3>
-      <ul>
-        <li>Handle all errors with LimitException (console output is too big)</li>
-      </ul>
-      <br/>
-      <h3>1.0.6</h3>
-      <br/>
-      <ul>
-        <li>Extend support of this plugin to other IntelliJ applications</li>
-        <li>Add "Show console output as HTML" action (could be bind using Settings -> Keymap -> KDB Studio plugin)</li>
-      </ul>
-      <h3>1.0.5</h3>
-      <br/>
-      <ul>
-        <li>Fixed connection test in Connection Management window</li>
-        <li>Add 2017.2.7 support</li>
-      </ul>
-      <br/>
-      <h3>1.0.4</h3>
-      <br/>
-      <ul>
-        <li>Fixed issues with queries to busy server</li>
-        <li>Fixed number of UI issues</li>
-      </ul>
-      <br/>
-      <h3>1.0.3</h3>
-      <br/>
-      <ul>
-        <li>Add menu "View -> KDB+ Studio Toolbar" to control toolbar visibility</li>
-        <li>Execute query in background mode. Possible to interrupt wait response from server.</li>
-        <li>Chart window in not modal any more</li>
-        <li>Fixed chart displayed time (Time Zone issues.)</li>
-      </ul>
-      <br/>
-      <h3>1.0.2</h3>
-      <br/>
-      <ul>
-        <li>Plugin color settings page in Editor->Color Scheme menu.</li>
-      </ul>
-      <br/>
-      <h3>1.0.1</h3>
-      <br/>
-      <ul>
+      <h3>1.1.8</h3>
+           <ul>
         <li>bug fixes</li>
-      </ul>
-      <br/>
-      <h3>1.0 functionality</h3>
-      <ul>
-        <li>Create/Edit connections</li>
-        <li>execute a query</li>
-        <li>view response in table/console mode</li>
-        <li>export response data</li>
-        <li>show data as a chart</li>
       </ul>"""
 }

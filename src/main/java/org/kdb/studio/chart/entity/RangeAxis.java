@@ -21,7 +21,7 @@ public class RangeAxis extends DomainAxis<RangeAxis> {
 
     @Override
     public void override(RangeAxis obj) {
-        super.override(obj);
+        Overridable.overrideObject(DomainAxis.class, this, obj);
         Overridable.overrideObject(this, obj);
     }
 }
