@@ -46,6 +46,7 @@ public class QFormattingModelBuilder implements FormattingModelBuilder {
 
     static SpacingBuilder createQSQLExpressionSpacingBuilder(CodeStyleSettings settings) {
         return new SpacingBuilder(settings, KLanguage.INSTANCE)
+        .before(KTypes.NEWLINE).spacing(0,0,0,false,0)
         .betweenInside(KTypes.PRIMITIVE_VERB, KTypes.USER_ID, KTypes.EXPRESSION).spacing(1, 1, 0, false, 0)
         .betweenInside(KTypes.PRIMITIVE_VERB, KTypes.EXPRESSION, KTypes.EXPRESSION).spacing(1, 1, 0, false, 0);
 
@@ -53,7 +54,8 @@ public class QFormattingModelBuilder implements FormattingModelBuilder {
 
     static SpacingBuilder createConditionalEvaluationArgsSpacingBuilder(CodeStyleSettings settings) {
         return new SpacingBuilder(settings, KLanguage.INSTANCE)
-        .between(PARAMS_LEFT, PARAMS_RIGHT).spacing(0, 0, 0, false, 0);
+            .before(KTypes.NEWLINE).spacing(0,0,0,false,0)
+            .between(PARAMS_LEFT, PARAMS_RIGHT).spacing(0, 0, 0, false, 0);
     }
 
     static SpacingBuilder createSemicolonSpacingBuilder(CodeStyleSettings settings) {
@@ -65,6 +67,7 @@ public class QFormattingModelBuilder implements FormattingModelBuilder {
 
     static SpacingBuilder baseSpacingBuilder(CodeStyleSettings settings) {
         return new SpacingBuilder(settings, KLanguage.INSTANCE)
+                .before(KTypes.NEWLINE).spacing(0,0,0,false,0)
                 .betweenInside(PRIMITIVE_VERB, PRIMITIVE_VERB_EXPRESSION, KTypes.EXPRESSION).spacing(0, 0, 0, false, 0)
                 .betweenInside(KTypes.EXPRESSION, KTypes.CLOSE_PAREN, KTypes.GROUP_OR_LIST).spacing(0, 0, 0, true, 0)
                 .betweenInside(KTypes.CLOSE_PAREN, KTypes.EXPRESSION, KTypes.GROUP_OR_LIST).spacing(0, 0, 0, true, 0)

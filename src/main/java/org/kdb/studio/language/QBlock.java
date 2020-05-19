@@ -26,8 +26,6 @@ public class QBlock extends AbstractBlock {
 
     private Indent myIndent;
 
-
-
     static TokenSet LAMBDA_DEF = TokenSet.create(KTypes.OPEN_BRACE, KTypes.LAMBDA_PARAMS, KTypes.SEMICOLON);
     static TokenSet CONTROL_DEF = TokenSet.create(KTypes.CONTROL, KTypes.ARGS, KTypes.SEMICOLON);
     static TokenSet CONDITIONAL_DEF = TokenSet.create(KTypes.OPEN_BRACKET, KTypes.CLOSE_BRACKET, KTypes.SEMICOLON);
@@ -63,14 +61,14 @@ public class QBlock extends AbstractBlock {
 
     }
 
-    protected boolean isNodeOfType(ASTNode node, Class<? extends PsiElement> type) {
+    protected static boolean isNodeOfType(ASTNode node, Class<? extends PsiElement> type) {
         if (node != null && node.getPsi() != null) {
             return type.isInstance(node.getPsi());
         }
         return false;
     }
 
-    protected boolean isNodeOfElementType(ASTNode node, IElementType type) {
+    protected static boolean isNodeOfElementType(ASTNode node, IElementType type) {
         if (node != null && node.getElementType() != null) {
             return type == node.getElementType();
         }
@@ -173,6 +171,10 @@ public class QBlock extends AbstractBlock {
             wrap = Wrap.createWrap(WrapType.NONE, false);
 //            spacingBuilder = conditionalSpacingBuilder;
         }
+        if (isNodeOfElementType(myNode, KTypes.NEWLINE)) {
+            wrap = Wrap.createWrap(WrapType.NONE, false);
+            indent = Indent.getNoneIndent();
+        }
         return new QBlock(this, childNode, wrap, myAlignment, indent, mySettings, spacingBuilder);
     }
 
@@ -201,7 +203,7 @@ public class QBlock extends AbstractBlock {
     }
 
     private static boolean isWhitespaceOrEmpty(ASTNode node) {
-        return node.getElementType() == TokenType.WHITE_SPACE || node.getElementType() == KTypes.NEWLINE || node.getTextLength() == 0;
+        return node.getElementType() == TokenType.WHITE_SPACE  || node.getTextLength() == 0;
     }
 
     @Nullable

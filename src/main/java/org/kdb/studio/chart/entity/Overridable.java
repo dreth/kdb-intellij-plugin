@@ -10,7 +10,10 @@ public interface Overridable<T> {
     Set<Class> primitiveNumbers = new HashSet<>(Arrays.asList(byte.class, short.class, int.class, long.class, double.class, float.class));
 
     static void overrideObject(Object origin, Object overriden) {
-        for (Field field : origin.getClass().getDeclaredFields()) {
+        overrideObject(origin.getClass(), origin, overriden);
+    }
+    static void overrideObject(Class<?> type, Object origin, Object overriden) {
+        for (Field field : type.getDeclaredFields()) {
             try {
                 Object newValue = field.get(overriden);
                 if (newValue != null) {
@@ -22,7 +25,7 @@ public interface Overridable<T> {
                             //field.set(origin, newValue);
                         }
                     } else if (Collection.class.isAssignableFrom(field.getType())) {
-                        System.out.println("Ignoring " + field.getName() + " " + field.getType().getSimpleName());
+                        //System.out.println("Ignoring " + field.getName() + " " + field.getType().getSimpleName());
                     } else {
                         if (!primitiveNumbers.contains(field.getType()) || Number.class.cast(newValue).floatValue() > 0) {
                             field.set(origin, newValue);
