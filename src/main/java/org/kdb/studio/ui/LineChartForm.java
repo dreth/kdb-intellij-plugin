@@ -18,6 +18,7 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.kdb.studio.actions.PlotConfigBoxAction;
 import org.kdb.studio.actions.PlotOverrideAction;
+import org.kdb.studio.chart.ChartConfigLoader;
 import org.kdb.studio.chart.ChartConfigurator;
 import org.kdb.studio.chart.PlotConfigManager;
 import org.kdb.studio.chart.entity.Plot;
@@ -198,7 +199,7 @@ public class LineChartForm {
         ActionToolbar toolbar = actionManager.createActionToolbar("KDBStudio.LineChartForm", actionGroup, true);
 
         plotConfig = toolbar.getComponent();
-
+        plotOverrideAction.setComponent(plotConfig);
         chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
     }
@@ -218,6 +219,7 @@ public class LineChartForm {
         if (chart != null) {
             try {
                 config = PlotConfigManager.getInstance().byName(configId);
+                config = ChartConfigLoader.clone(config);
                 PlotOverride override = QGrid.getInstance(project, false).applyPlotConfigOverride(config);
                 plotOverrideAction.setPlotOverride(override);
                 new ChartConfigurator().configureChart(config, chart);
