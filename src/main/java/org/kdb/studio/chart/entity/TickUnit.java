@@ -1,8 +1,13 @@
 package org.kdb.studio.chart.entity;
 
-public class TickUnit {
+public class TickUnit implements Overridable<TickUnit> {
     public boolean autoSelection;
     public double tickUnitValue;
+
+    @Override
+    public void override(TickUnit obj) {
+        Overridable.overrideObject(this, obj);
+    }
 
     public boolean isAutoSelection() {
         return autoSelection;

@@ -20,6 +20,11 @@ public class PlotOverrideAction extends AnAction {
 
     private PlotOverride lastState;
 
+    private Component component;
+
+    public void setComponent(Component component) {
+        this.component = component;
+    }
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
@@ -30,7 +35,7 @@ public class PlotOverrideAction extends AnAction {
                     .setAnimationCycle(200)
                     .setBorderInsets(new Insets(5, 5, 5, 5))
                     .createBalloon()
-                    .show(JBPopupFactory.getInstance().guessBestPopupLocation(anActionEvent.getDataContext()), Balloon.Position.atLeft);
+                    .show(new RelativePoint(component, new Point(15, 15)), Balloon.Position.below);
         }
     }
 
@@ -46,6 +51,7 @@ public class PlotOverrideAction extends AnAction {
             getTemplatePresentation().setIcon(AllIcons.General.BalloonWarning);
             return;
         }
+        getTemplatePresentation().setIcon(null);
         getTemplatePresentation().setVisible(false);
     }
 }

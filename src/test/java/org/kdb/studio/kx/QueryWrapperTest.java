@@ -13,7 +13,7 @@ public class QueryWrapperTest {
     public void parseQueryComments() throws Exception {
         try (InputStream is = QueryWrapperTest.class.getResourceAsStream("/comments_example_1.txt")) {
             String query = StreamUtil.readText(is, StandardCharsets.UTF_8);
-            Assert.assertEquals(" {\"title\": {\"text\": \"A fancy plot\", \"font\": {\"size\": 20}}, \"domainAxis\": {\"label\": { \"show\": true, \"text\": Price\"}}} ", QueryWrapper.toComments(query));
+            Assert.assertEquals(" {\"title\": {\"show\": true, \"text\": \"A fancy plot\", \"font\": {\"size\": 20}}, \"domainAxis\": {\"label\": { \"show\": true, \"text\": \"Price\"}}} ", QueryWrapper.toComments(query));
         }
         try (InputStream is = QueryWrapperTest.class.getResourceAsStream("/comments_example_2.txt")) {
             String query = StreamUtil.readText(is, StandardCharsets.UTF_8);

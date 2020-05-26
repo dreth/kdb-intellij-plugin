@@ -32,7 +32,6 @@ public class Plot implements Overridable<Plot> {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id);
     }
 
@@ -149,7 +148,7 @@ public class Plot implements Overridable<Plot> {
                     if (getSeries().size() > i) {
                         getSeries().get(i).override(curr);
                     } else {
-                        getSeries().set(i, curr);
+                        getSeries().add(curr);
                     }
                 }
             }
