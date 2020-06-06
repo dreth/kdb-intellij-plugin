@@ -102,7 +102,7 @@ public class QBlock extends AbstractBlock {
     }
 
     private Block makeSubBlock(@NotNull ASTNode childNode) {
-        Indent indent = Indent.getNoneIndent();
+        Indent indent = null;
         Wrap wrap = null;
         SpacingBuilder spacingBuilder = mySpacingBuilder;
         if (isNodeOfType(myNode, KFile.class)) {
