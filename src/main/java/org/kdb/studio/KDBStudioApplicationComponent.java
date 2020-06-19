@@ -8,6 +8,7 @@ import com.intellij.openapi.components.Storage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.kdb.studio.actions.*;
+import org.kdb.studio.db.AuthenticationDriverManager;
 import org.kdb.studio.db.ConnectionManager;
 import org.kdb.studio.ui.ColorAndFontManager;
 import org.kdb.studio.ui.KDBToolbarUIManager;
@@ -26,6 +27,7 @@ public class KDBStudioApplicationComponent implements ApplicationComponent, Pers
     @Override
     public void initComponent() {
         ConnectionManager connectionManager = ConnectionManager.getInstance();
+        AuthenticationDriverManager authenticationDriverManager = AuthenticationDriverManager.getInstance();
         RunCodeAction runCodeAction = new RunCodeAction(connectionManager);
         RunAllAction runAllAction = new RunAllAction(connectionManager);
         ReRunAction reRunAction = new ReRunAction(connectionManager);
@@ -38,7 +40,7 @@ public class KDBStudioApplicationComponent implements ApplicationComponent, Pers
 
         ActionManager am = ActionManager.getInstance();
         DefaultActionGroup kdbActionGroup = (DefaultActionGroup) am.getAction("KDBToolbarActions");
-        kdbActionGroup.add(new ConnectionsBoxAction(connectionManager));
+        kdbActionGroup.add(new ConnectionsBoxAction(connectionManager, authenticationDriverManager));
         kdbActionGroup.add(runCodeAction);
         kdbActionGroup.add(runAllAction);
         kdbActionGroup.addSeparator();
@@ -81,11 +83,11 @@ public class KDBStudioApplicationComponent implements ApplicationComponent, Pers
 
     @Nullable
     public State getState() {
-        return State.create(ConnectionManager.getInstance(), ColorAndFontManager.getInstance(), KDBToolbarUIManager.getInstance() != null ? KDBToolbarUIManager.getInstance().isVisible() : initialEnabled);
+        return State.create(ConnectionManager.getInstance(), AuthenticationDriverManager.getInstance(), ColorAndFontManager.getInstance(), KDBToolbarUIManager.getInstance() != null ? KDBToolbarUIManager.getInstance().isVisible() : initialEnabled);
     }
 
     public void loadState(State state) {
-        state.apply(ConnectionManager.getInstance());
+        state.apply(ConnectionManager.getInstance(), AuthenticationDriverManager.getInstance());
         state.apply(ColorAndFontManager.getInstance());
         if (KDBToolbarUIManager.getInstance() == null) {
             initialEnabled = Optional.ofNullable(state.getToolbarEnabled()).orElse(true);

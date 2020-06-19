@@ -6,6 +6,7 @@ import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.actionSystem.ex.ComboBoxAction;
 import com.intellij.openapi.util.IconLoader;
 import org.jetbrains.annotations.NotNull;
+import org.kdb.studio.db.AuthenticationDriverManager;
 import org.kdb.studio.db.Connection;
 import org.kdb.studio.db.ConnectionManager;
 
@@ -16,12 +17,15 @@ public class ConnectionsBoxAction extends ComboBoxAction {
 
     private ConnectionManager connectionManager;
 
+    private AuthenticationDriverManager authenticationDriverManager;
+
     private ComboBoxButton btn;
 
     private Color defaultBg;
 
-    public ConnectionsBoxAction(ConnectionManager connectionManager) {
+    public ConnectionsBoxAction(ConnectionManager connectionManager, AuthenticationDriverManager authenticationDriverManager) {
         this.connectionManager = connectionManager;
+        this.authenticationDriverManager = authenticationDriverManager;
     }
 
     @Override
@@ -60,7 +64,7 @@ public class ConnectionsBoxAction extends ComboBoxAction {
             actionGroup.add(new SelectActiveConnectionAction(connection, connectionManager));
         }
         actionGroup.addSeparator();
-        actionGroup.add(new ConnectionSettingsAction(connectionManager));
+        actionGroup.add(new ConnectionSettingsAction(connectionManager, authenticationDriverManager));
         return actionGroup;
     }
 }
