@@ -29,6 +29,8 @@ public class Connection {
 
     private String bgColor;
 
+    private String authType;
+
     protected ObjectPool<Connector> connectorObjectPool;
 
     private final String SYNC = "SYNC";
@@ -36,7 +38,7 @@ public class Connection {
     public Connection() {
     }
 
-    public Connection(String name, String host, int port, String username, char[] password, boolean usePasswordVariable, String passwordVariable, boolean multilineCommentSupport, String bgColor) {
+    public Connection(String name, String host, int port, String username, char[] password, boolean usePasswordVariable, String passwordVariable, boolean multilineCommentSupport, String bgColor, String authType) {
         this.name = name;
         this.host = host;
         this.port = port;
@@ -46,6 +48,7 @@ public class Connection {
         this.passwordVariable = passwordVariable;
         this.multilineCommentSupport = multilineCommentSupport;
         this.bgColor = bgColor;
+        this.authType = authType;
     }
 
     public String getName() {
@@ -94,7 +97,7 @@ public class Connection {
     }
 
     public Connection clone() {
-        return new Connection(name, host, port, username, password, usePasswordVariable, passwordVariable, multilineCommentSupport, bgColor);
+        return new Connection(name, host, port, username, password, usePasswordVariable, passwordVariable, multilineCommentSupport, bgColor, authType);
     }
 
     public void setPassword(char[] password) {
@@ -135,6 +138,14 @@ public class Connection {
 
     public String getView() {
         return name;
+    }
+
+    public String getAuthType() {
+        return authType;
+    }
+
+    public void setAuthType(String authType) {
+        this.authType = authType;
     }
 
     public ObjectPool<Connector> getConnectorPool() {

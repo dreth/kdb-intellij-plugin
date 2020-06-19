@@ -3,12 +3,16 @@ package org.kdb.studio.ui;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.ui.ColorPanel;
+import com.intellij.ui.MutableCollectionComboBoxModel;
 import com.intellij.ui.components.JBCheckBox;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.kdb.studio.db.AuthenticationDriver;
+import org.kdb.studio.db.AuthenticationDriverManager;
 import org.kdb.studio.db.Connection;
 import org.kdb.studio.db.ConnectionManager;
 import org.kdb.studio.kx.Connector;
@@ -22,15 +26,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class ConnectionsManagement extends DialogWrapper {
+
+    public static final String EDIT = "<Edit...>";
+    public static final String BASIC = "<Basic>";
 
     private JPanel centralPanel;
     private JList connectionsList;
@@ -45,22 +51,26 @@ public class ConnectionsManagement extends DialogWrapper {
     private JLabel succedValidationMessage;
     private JPanel leftPanel;
     private SettingPanel settingsPanel;
-    private JCheckBox useEnvCheckox;
+    private JCheckBox useEnvCheckbox;
     private JTextField textVariable;
     private JLabel labelVariable;
     private JLabel labelPassword;
     private JCheckBox multilineCommentSupport;
     private JBCheckBox bgColorEnabled;
     private ColorPanel bgColor;
+    private ComboBox authType;
+    private MutableCollectionComboBoxModel<String> authTypeModel;
 
     private ConnectionManager connectionManager;
+    private AuthenticationDriverManager authenticationDriverManager;
     private Project project;
     protected boolean testBlocked = false;
 
-    public ConnectionsManagement(@Nullable Project project, ConnectionManager connectionManager) {
+    public ConnectionsManagement(@Nullable Project project, ConnectionManager connectionManager, AuthenticationDriverManager authenticationDriverManager) {
         super(project);
         this.project = project;
         this.connectionManager = connectionManager;
+        this.authenticationDriverManager = authenticationDriverManager;
         setTitle("Available connections");
 
         connectionsList.setModel(new AbstractListModel() {
@@ -75,10 +85,27 @@ public class ConnectionsManagement extends DialogWrapper {
             }
         });
         connectionsList.addListSelectionListener(e -> setAsCurrentValue(connectionManager.getConnectionByName((String) connectionsList.getSelectedValue())));
-        useEnvCheckox.addActionListener(e -> passwordVisible(!useEnvCheckox.isSelected()));
+        useEnvCheckbox.addActionListener(e -> passwordVisible(!useEnvCheckbox.isSelected()));
         bgColorEnabled.addActionListener(e -> bgColor.setEnabled(bgColorEnabled.isSelected()));
         setEmptyValue();
+        authTypeModel = new MutableCollectionComboBoxModel<>();
+        authType.setModel(authTypeModel);
+        updateUI();
+        authType.addActionListener(e -> {
+            if (authType.getSelectedItem() == EDIT) {
+                new AuthenticationDriverDialog(this.project, authenticationDriverManager).show();
+                updateUI();
+            }
+        });
         init();
+    }
+
+    protected void updateUI() {
+        List<String> drivers = Arrays.stream(authenticationDriverManager.getAuthenticationDrivers()).map(AuthenticationDriver::getName).collect(Collectors.toList());
+        drivers.add(0, BASIC);
+        drivers.add(EDIT);
+        authTypeModel.update(drivers);
+        authType.setSelectedItem(BASIC);
     }
 
     @Nullable
@@ -122,7 +149,7 @@ public class ConnectionsManagement extends DialogWrapper {
     }
 
     protected void saveCurrentValues() {
-        Connection connection = new Connection(textName.getText(), textHost.getText(), Integer.parseInt(textPort.getText()), textUsername.getText(), passwordField1.getPassword(), useEnvCheckox.isSelected(), textVariable.getText(), multilineCommentSupport.isSelected(), getCurrentBgColor());
+        Connection connection = new Connection(textName.getText(), textHost.getText(), Integer.parseInt(textPort.getText()), textUsername.getText(), passwordField1.getPassword(), useEnvCheckbox.isSelected(), textVariable.getText(), multilineCommentSupport.isSelected(), getCurrentBgColor(), getAuthType());
         connectionManager.addOrUpdate(connection);
         connectionsList.updateUI();
         connectionsList.setSelectedValue(connection.getView(), true);
@@ -171,6 +198,21 @@ public class ConnectionsManagement extends DialogWrapper {
         this.testBlocked = false;
     }
 
+    protected String getAuthType() {
+        if (authType.getSelectedItem() == BASIC || authType.getSelectedItem() == EDIT) {
+            return null;
+        } else {
+            return (String) authType.getSelectedItem();
+        }
+    }
+
+    protected void setAuthType(String type) {
+        authType.setSelectedItem(BASIC);
+        if (!StringUtil.isEmptyOrSpaces(type)) {
+            authType.setSelectedItem(type);
+        }
+    }
+
     protected void testCurrentValues() {
         if (testBlocked) {
             return;
@@ -180,7 +222,7 @@ public class ConnectionsManagement extends DialogWrapper {
                 @Override
                 public void run(@NotNull ProgressIndicator progressIndicator) {
                     blockTest();
-                    Connection connection = new Connection(textName.getText(), textHost.getText(), Integer.parseInt(textPort.getText()), textUsername.getText(), passwordField1.getPassword(), useEnvCheckox.isSelected(), textVariable.getText(), multilineCommentSupport.isSelected(), getCurrentBgColor());
+                    Connection connection = new Connection(textName.getText(), textHost.getText(), Integer.parseInt(textPort.getText()), textUsername.getText(), passwordField1.getPassword(), useEnvCheckbox.isSelected(), textVariable.getText(), multilineCommentSupport.isSelected(), getCurrentBgColor(), getAuthType());
                     List<Connector> connectors = Collections.synchronizedList(new ArrayList<>());
                     succedValidationMessage.setText("");
                     validationMessage.setText("");
@@ -282,11 +324,12 @@ public class ConnectionsManagement extends DialogWrapper {
             textUsername.setText(connection.getUsername());
             passwordField1.setText(new String(connection.getPassword()));
             textVariable.setText(connection.getPasswordVariable());
-            useEnvCheckox.setSelected(connection.isUsePasswordVariable());
+            useEnvCheckbox.setSelected(connection.isUsePasswordVariable());
             passwordVisible(!connection.isUsePasswordVariable());
             validationMessage.setText("");
             succedValidationMessage.setText("");
             multilineCommentSupport.setSelected(connection.isMultilineCommentSupport());
+            setAuthType(connection.getAuthType());
 
             try {
                 if (connection.getBgColor() != null) {
@@ -312,9 +355,10 @@ public class ConnectionsManagement extends DialogWrapper {
         connectionsList.setSelectedIndices(new int[]{});
         validationMessage.setText("");
         succedValidationMessage.setText("");
-        useEnvCheckox.setSelected(false);
+        useEnvCheckbox.setSelected(false);
         passwordVisible(true);
         multilineCommentSupport.setSelected(false);
+        authType.setSelectedItem(BASIC);
         setEmptyBgColor();
     }
 
@@ -349,7 +393,6 @@ public class ConnectionsManagement extends DialogWrapper {
     }
 
     private void createUIComponents() {
-        // TODO: place custom component creation code here
         settingsPanel = new SettingPanel(this);
     }
 
