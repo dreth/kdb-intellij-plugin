@@ -106,7 +106,7 @@ public class AuthenticationDriverDialog extends DialogWrapper {
             return failMessage("Driver class required.");
         }
         try {
-            getAuthenticationDriver().newAuthenticator().apply("user:password@host:port");
+            getAuthenticationDriver().createAuthenticationFunction().apply("user:password@host:port");
             return successMessage("success");
         } catch (RuntimeException e) {
             return failMessage(e.getMessage());
@@ -137,9 +137,9 @@ public class AuthenticationDriverDialog extends DialogWrapper {
 
     public void reset(AuthenticationDriver driver) {
         driverName.setText(driver.getName());
-        driverClass.setText(driver.getClassName());
+        driverClass.setText(driver.getClazz());
         getJarsModel().removeAll();
-        getJarsModel().addAll(0, driver.getJars());
+        driver.getJarFiles().stream().forEach(getJarsModel()::add);
     }
 
     private CollectionListModel<String> getJarsModel() {

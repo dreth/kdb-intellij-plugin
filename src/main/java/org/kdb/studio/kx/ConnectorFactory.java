@@ -22,12 +22,12 @@ public class ConnectorFactory extends BasePooledObjectFactory<Connector> {
     }
 
     @Override
-    public Connector create() throws Exception {
+    public Connector create() {
         String password = connection.getEffectivePassword();
         authenticationDriverManager.validateAuthenticationDriverByName(connection.getAuthType());
-        Function<String, String> authenticator = authenticationDriverManager.getAuthenticationDriverByName(connection.getAuthType())
-                .map(AuthenticationDriver::newAuthenticator).orElseGet(AuthenticationDriver::getBasicAuthenticator);
-        String up = authenticator.apply(String.format("%s:%s@%s:%d", connection.getUsername() , password, connection.getHost(), connection.getPort()));
+        Function<String, String> authenticationFunction = authenticationDriverManager.getAuthenticationDriverByName(connection.getAuthType())
+                .map(AuthenticationDriver::createAuthenticationFunction).orElseGet(AuthenticationDriver::createBasicAuthenticationFunction);
+        String up = authenticationFunction.apply(String.format("%s:%s@%s:%d", connection.getUsername() , password, connection.getHost(), connection.getPort()));
         Connector connector = new Connector(connection.getHost(), connection.getPort(), up);
         return connector;
     }

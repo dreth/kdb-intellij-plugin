@@ -1,118 +1,94 @@
 package org.kdb.studio.db;
 
-import org.jetbrains.annotations.NotNull;
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
+import com.intellij.openapi.util.text.StringUtil;
+import com.intellij.util.lang.UrlClassLoader;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class AuthenticationDriver {
-    private String name;
-    private String className;
-    private List<String> jars;
 
-    @SuppressWarnings("unused") // required for serialization
+    private static Pattern pattern = Pattern.compile("(.*?):(.*?)@(.*?):(.*?)");
+
+    private String name;
+
+    private String clazz;
+
+    private Set<String> jarFiles;
+
     public AuthenticationDriver() {
-        jars = new ArrayList<>();
+        this.jarFiles = new HashSet<>();
     }
 
-    public AuthenticationDriver(String name, String className, List<String> jars) {
-        this.name = Objects.requireNonNull(name);
-        this.className = Objects.requireNonNull(className);
-        this.jars = Objects.requireNonNull(jars);
+    public AuthenticationDriver(String name, String clazz, Collection<String> jarFiles) {
+        this.name = name;
+        this.clazz = clazz;
+        this.jarFiles = new HashSet<>(jarFiles);
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getClazz() {
+        return clazz;
     }
 
-    public String getClassName() {
-        return className;
+    public Set<String> getJarFiles() {
+        return jarFiles;
     }
 
-    public void setClassName(String className) {
-        this.className = className;
+    public Function<String, String> createAuthenticationFunction() {
+        if (!StringUtil.isEmptyOrSpaces(clazz)) {
+            try {
+                Class<?> function = urlClassLoader().loadClass(clazz);
+                return Optional.ofNullable(function.newInstance()).filter(Function.class::isInstance).map(Function.class::cast).get();
+            } catch (Exception e) {
+                Notifications.Bus.notify(new Notification("KDBStudio", "Failed to instantiate authentication function", e.toString(), NotificationType.WARNING));
+            }
+        }
+        return null;
+
     }
 
-    public List<String> getJars() {
-        return jars;
+    public static Function<String, String> createBasicAuthenticationFunction() {
+        return (s) -> {
+            Matcher matcher = pattern.matcher(s);
+            if (matcher.matches()) {
+                return matcher.group(1) + ":" + matcher.group(2);
+            }
+            throw new RuntimeException(String.format("Unexpected format [%s]", s));
+        };
     }
 
-    public void setJars(List<String> jars) {
-        this.jars = jars;
+    private UrlClassLoader urlClassLoader() {
+        return UrlClassLoader.build().useCache().urls(jarFiles.stream().map(Paths::get).map(Path::toUri).map(uri -> {
+            try {
+                return uri.toURL();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }).collect(Collectors.toList())).get();
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        AuthenticationDriver that = (AuthenticationDriver)o;
-        return Objects.equals(name, that.name) && Objects.equals(className, that.className) && Objects.equals(jars, that.jars);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AuthenticationDriver that = (AuthenticationDriver) o;
+        return name.equals(that.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(className, jars);
-    }
-
-    private static final Map<String[],ClassLoader> classLoaders = new HashMap<>();
-
-    public Function<String, String> newAuthenticator() {
-        String[] jarPaths = getJars().toArray(new String[0]);
-        ClassLoader classLoader = classLoaders.computeIfAbsent(jarPaths, p->createClassLoader(jarPaths));
-        try {
-            Class<?> clazz = classLoader.loadClass(getClassName());
-            // noinspection unchecked
-            return (Function<String, String>) clazz.newInstance();
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @NotNull
-    private ClassLoader createClassLoader(String[] jarPaths) {
-        try {
-            URL[] urls = new URL[jarPaths.length];
-            for (int i = 0; i < urls.length; ++i) {
-                urls[i] = new File(jarPaths[i]).toURI().toURL();
-            }
-            return  new URLClassLoader(urls);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public String toString() {
-        return getName() + " (" + getClassName() + ")";
-    }
-
-    public static Function<String, String> getBasicAuthenticator() {
-        return (connectionString) -> {
-            String[] userHost = connectionString.split("@", -1);
-            if (userHost.length != 2)
-                throw newInvalidConnectionStringFormatException();
-
-            String[] userPassword = userHost[0].split(":", -1);
-            if (userPassword.length != 2)
-                throw newInvalidConnectionStringFormatException();
-
-            return userHost[0];
-        };
-    }
-
-    private static  RuntimeException newInvalidConnectionStringFormatException() {
-        return new RuntimeException("Connection string must be in the format user:password@host:port");
+        return Objects.hash(name);
     }
 }

@@ -1,7 +1,6 @@
 package org.kdb.studio;
 
 import org.kdb.studio.chart.entity.Font;
-import org.kdb.studio.db.AuthenticationDriver;
 import org.kdb.studio.db.AuthenticationDriverManager;
 import org.kdb.studio.db.ConnectionManager;
 import org.kdb.studio.ui.ColorAndFontManager;
@@ -173,7 +172,7 @@ public class State {
             state.getConnections().add(new Connection(conn.getName(), conn.getHost(), conn.getPort(), conn.getUsername(), conn.getPassword(), conn.isUsePasswordVariable(), conn.getPasswordVariable(), conn.isMultilineCommentSupport(), conn.getBgColor(), conn.getAuthType()));
         }
         for (org.kdb.studio.db.AuthenticationDriver driver: authenticationDriverManager.getAuthenticationDrivers()) {
-            state.getAuthenticationDrivers().add(new AuthenticationDriver(driver.getName(), driver.getClassName(), driver.getJars()));
+            state.getAuthenticationDrivers().add(new AuthenticationDriver(driver.getName(), driver.getClazz(), driver.getJarFiles()));
         }
         state.setToolbarEnabled(toolbarEnabled);
         state.styles.clear();
@@ -184,7 +183,7 @@ public class State {
     void apply(ConnectionManager connectionManager, AuthenticationDriverManager authenticationDriverManager) {
         connectionManager.releaseAll();
         connections.forEach(connection -> connectionManager.addOrUpdate(new org.kdb.studio.db.Connection(connection.name, connection.host, connection.port, connection.username, connection.password.toCharArray(), connection.usePasswordVariable, connection.passwordVariable, connection.multilineCommentSupport, connection.bgColor, connection.authType)));
-        authenticationDrivers.forEach(driver -> authenticationDriverManager.addOrUpdate(new org.kdb.studio.db.AuthenticationDriver(driver.name, driver.className, new ArrayList<>(driver.jars))));
+        authenticationDrivers.forEach(driver -> authenticationDriverManager.addOrUpdate(new org.kdb.studio.db.AuthenticationDriver(driver.name, driver.className, new HashSet<>(driver.jars))));
         connectionManager.setActiveConnection(connectionManager.getConnectionByName(activeConnection));
     }
 
