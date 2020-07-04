@@ -90,7 +90,10 @@ public class AuthenticationDriverDialog extends DialogWrapper {
                 new DialogWrapperAction("Test") {
                     @Override
                     protected void doAction(ActionEvent event) {
-                        validateInput();
+                        if (validateInput()) {
+                            testDriver();
+                        }
+
                     }
                 }};
     }
@@ -105,6 +108,10 @@ public class AuthenticationDriverDialog extends DialogWrapper {
         if (StringUtil.isEmptyOrSpaces(driverClass.getText())) {
             return failMessage("Driver class required.");
         }
+        return successMessage("");
+    }
+
+    protected boolean testDriver() {
         try {
             getAuthenticationDriver().createAuthenticationFunction().apply("user:password@host:port");
             return successMessage("success");
