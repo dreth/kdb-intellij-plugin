@@ -53,7 +53,7 @@ public class KDBToolbarUIManager {
             if (!viewToolbar.isSelected(event)) {
                 viewToolbar.setSelected(event, true);
             }
-        } catch (Exception ignore) {
+        } catch (Throwable ignore) {
 
         }
         visible = true;
