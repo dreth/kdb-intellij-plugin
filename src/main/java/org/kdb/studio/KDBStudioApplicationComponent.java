@@ -65,6 +65,7 @@ public class KDBStudioApplicationComponent implements ApplicationComponent, Pers
         DefaultActionGroup kdbStudioGroup = new DefaultActionGroup("KDB+ Studio Config", true);
         kdbStudioGroup.add(plotConfigManagementAction);
         kdbStudioGroup.add(new FontConfigManagementAction());
+        kdbStudioGroup.add(new EnableFormattingSupportAction(ColorAndFontManager.getInstance()));
 
         DefaultActionGroup viewMenuGroup = (DefaultActionGroup) am.getAction("ViewMenu");
         viewMenuGroup.add(kdbStudioGroup);

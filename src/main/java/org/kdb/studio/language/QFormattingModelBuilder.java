@@ -13,9 +13,15 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.codeStyle.CommonCodeStyleSettings;
+import com.intellij.psi.formatter.DocumentBasedFormattingModel;
+import com.intellij.psi.formatter.common.AbstractBlock;
 import com.intellij.psi.tree.TokenSet;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.kdb.studio.ui.ColorAndFontManager;
+
+import java.util.Collections;
+import java.util.List;
 
 import static com.intellij.json.JsonElementTypes.*;
 import static com.intellij.json.JsonElementTypes.COMMA;
@@ -30,10 +36,27 @@ public class QFormattingModelBuilder implements FormattingModelBuilder {
 
     static TokenSet PARENTS = TokenSet.create(KTypes.OPEN_PAREN, KTypes.CLOSE_PAREN);
 
+    private ColorAndFontManager manager = ColorAndFontManager.getInstance();
 
     @NotNull
     @Override
     public FormattingModel createModel(PsiElement element, CodeStyleSettings settings) {
+        if (!manager.getFormattingEnabled()) {
+            PsiFile file = element.getContainingFile();
+            return new DocumentBasedFormattingModel(new AbstractBlock(element.getNode(), Wrap.createWrap(WrapType.NONE, false), Alignment.createAlignment()) {
+                protected List<Block> buildChildren() {
+                    return Collections.emptyList();
+                }
+
+                public Spacing getSpacing(Block child1, @NotNull Block child2) {
+                    return Spacing.getReadOnlySpacing();
+                }
+
+                public boolean isLeaf() {
+                    return true;
+                }
+            }, element.getProject(), settings, file.getFileType(), file);
+        }
         final QBlock block = new QBlock(null, element.getNode(), null, null, Indent.getNoneIndent(), settings,createDefaultSpacingBuilder(settings));
         return FormattingModelProvider.createFormattingModelForPsiFile(element.getContainingFile(), block, settings);
     }

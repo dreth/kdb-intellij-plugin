@@ -17,6 +17,8 @@ public class State {
 
     public Boolean toolbarEnabled;
 
+    public Boolean formattingSupportEnabled;
+
     public Map<String, Font> styles = new LinkedHashMap<>();
 
     public static class Connection {
@@ -147,6 +149,14 @@ public class State {
         this.toolbarEnabled = toolbarEnabled;
     }
 
+    public Boolean getFormattingSupportEnabled() {
+        return formattingSupportEnabled;
+    }
+
+    public void setFormattingSupportEnabled(Boolean formattingSupportEnabled) {
+        this.formattingSupportEnabled = formattingSupportEnabled;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -155,12 +165,13 @@ public class State {
         return Objects.equals(connections, state.connections) &&
                 Objects.equals(authenticationDrivers, state.authenticationDrivers) &&
                 Objects.equals(activeConnection, state.activeConnection) &&
-                Objects.equals(toolbarEnabled, state.toolbarEnabled);
+                Objects.equals(toolbarEnabled, state.toolbarEnabled) &&
+                Objects.equals(formattingSupportEnabled, state.formattingSupportEnabled);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(connections, authenticationDrivers, activeConnection, toolbarEnabled);
+        return Objects.hash(connections, authenticationDrivers, activeConnection, toolbarEnabled, formattingSupportEnabled);
     }
 
     static State create(ConnectionManager connectionManager, AuthenticationDriverManager authenticationDriverManager, ColorAndFontManager colorAndFontManager, boolean toolbarEnabled) {
@@ -176,6 +187,7 @@ public class State {
         }
         state.setToolbarEnabled(toolbarEnabled);
         state.styles.clear();
+        state.setFormattingSupportEnabled(colorAndFontManager.getFormattingEnabled());
         colorAndFontManager.getFontMap().forEach((key, font) -> state.styles.put(key, Font.fromAwtFont(font)));
         return state;
     }
@@ -190,5 +202,6 @@ public class State {
     void apply(ColorAndFontManager colorAndFontManager) {
         colorAndFontManager.getFontMap().clear();
         styles.forEach((key, font) -> colorAndFontManager.getFontMap().put(key, Font.toAwtFont(font)));
+        colorAndFontManager.setFormattingEnabled(Optional.ofNullable(formattingSupportEnabled).orElse(true));
     }
 }

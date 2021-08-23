@@ -44,6 +44,8 @@ public class ColorAndFontManager {
 
     private Map<String, Font> fontMap;
 
+    private boolean formattingEnabled = true;
+
     private ColorAndFontManager() {
         scheme = EditorColorsManager.getInstance().getGlobalScheme();
         fontMap = new LinkedHashMap<>();
@@ -100,5 +102,13 @@ public class ColorAndFontManager {
 
     public Map<String, Font> getFontMap() {
         return fontMap;
+    }
+
+    public boolean getFormattingEnabled() {
+        return formattingEnabled;
+    }
+
+    public void setFormattingEnabled(boolean formattingEnabled) {
+        this.formattingEnabled = formattingEnabled;
     }
 }

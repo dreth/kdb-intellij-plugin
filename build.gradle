@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'org.kdb.studio'
-version '1.1.12'
+version '1.1.13'
 
 sourceCompatibility = 1.8
 
@@ -46,5 +46,6 @@ patchPluginXml {
     sinceBuild(172.0)
     untilBuild(null)
     changeNotes """
+        Make optional support of Q-language formatting
     """
 }
