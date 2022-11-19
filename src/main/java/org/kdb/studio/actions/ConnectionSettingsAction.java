@@ -16,7 +16,7 @@ public class ConnectionSettingsAction extends AnAction {
 
     public ConnectionSettingsAction(ConnectionManager connectionManager, AuthenticationDriverManager authenticationDriverManager) {
         super("Edit connections...");
-        getTemplatePresentation().setIcon(IconLoader.findIcon("/icons/editSource.png"));
+        getTemplatePresentation().setIcon(IconLoader.findIcon("/icons/editSource.png", this.getClass().getClassLoader()));
         this.connectionManager = connectionManager;
         this.authenticationDriverManager = authenticationDriverManager;
     }

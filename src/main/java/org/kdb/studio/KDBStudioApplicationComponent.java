@@ -1,10 +1,12 @@
 package org.kdb.studio;
 
+import com.intellij.ide.util.RunOnceUtil;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
-import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.Storage;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManagerListener;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.kdb.studio.actions.*;
@@ -18,13 +20,17 @@ import java.util.Optional;
 @com.intellij.openapi.components.State(
         name = "KDBStudio",
         storages = {@Storage("kdbstudio.xml")},
-        additionalExportFile = "kdbstudio"
+        additionalExportDirectory = "kdbstudio"
 )
-public class KDBStudioApplicationComponent implements ApplicationComponent, PersistentStateComponent<State> {
+public class KDBStudioApplicationComponent implements ProjectManagerListener, PersistentStateComponent<State> {
 
     boolean initialEnabled = false;
 
     @Override
+    public void projectOpened(@NotNull Project project) {
+        RunOnceUtil.runOnceForApp("KDBStudio", this::initComponent);
+    }
+
     public void initComponent() {
         ConnectionManager connectionManager = ConnectionManager.getInstance();
         AuthenticationDriverManager authenticationDriverManager = AuthenticationDriverManager.getInstance();
@@ -71,16 +77,6 @@ public class KDBStudioApplicationComponent implements ApplicationComponent, Pers
         viewMenuGroup.add(kdbStudioGroup);
     }
 
-    @Override
-    public void disposeComponent() {
-        ConnectionManager.getInstance().releaseAll();
-    }
-
-    @NotNull
-    @Override
-    public String getComponentName() {
-        return "KDBStudio";
-    }
 
     @Nullable
     public State getState() {

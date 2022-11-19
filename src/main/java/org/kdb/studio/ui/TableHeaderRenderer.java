@@ -34,19 +34,19 @@ public class TableHeaderRenderer extends DefaultTableCellRenderer {
             if (ktm.isSortedDesc()) {
                 if (column == ktm.getSortByColumn())
                     if (ktm.getColumnClass(column) == KSymbolVector.class)
-                        icon = new ScaledIcon(IconLoader.findIcon("/icons/sort_az_ascending.png"), targetHeight);
+                        icon = new ScaledIcon(IconLoader.findIcon("/icons/sort_az_ascending.png", this.getClass().getClassLoader()), targetHeight);
                     else
-                        icon = new ScaledIcon(IconLoader.findIcon("/icons/sort_descending.png"), targetHeight);
+                        icon = new ScaledIcon(IconLoader.findIcon("/icons/sort_descending.png", this.getClass().getClassLoader()), targetHeight);
             } else if (ktm.isSortedAsc())
                 if (column == ktm.getSortByColumn())
                     if (ktm.getColumnClass(column) == KSymbolVector.class)
-                        icon = new ScaledIcon(IconLoader.findIcon("/icons/sort_az_descending.png"), targetHeight);
+                        icon = new ScaledIcon(IconLoader.findIcon("/icons/sort_az_descending.png", this.getClass().getClassLoader()), targetHeight);
                     else
-                        icon = new ScaledIcon(IconLoader.findIcon("/icons/sort_ascending.png"), targetHeight);
+                        icon = new ScaledIcon(IconLoader.findIcon("/icons/sort_ascending.png", this.getClass().getClassLoader()), targetHeight);
             if (icon != null)
                 setIcon(icon);
             else {
-                icon = new ScaledIcon(IconLoader.findIcon("/icons/sort_ascending.png"), targetHeight);
+                icon = new ScaledIcon(IconLoader.findIcon("/icons/sort_ascending.png", this.getClass().getClassLoader()), targetHeight);
                 setIcon(new BlankIcon(icon));
             }
         }

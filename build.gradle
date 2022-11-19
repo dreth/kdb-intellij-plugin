@@ -1,12 +1,14 @@
 plugins {
-    id 'java'
-    id 'org.jetbrains.intellij' version '0.4.7'
+    id("java")
+    id("org.jetbrains.intellij") version "1.10.0"
 }
 
 group 'org.kdb.studio'
-version '1.1.13'
+version '1.2.0'
 
-sourceCompatibility = 1.8
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+}
 
 repositories {
     mavenCentral()
@@ -16,36 +18,26 @@ repositories {
 }
 
 dependencies {
-    compile group: 'org.apache.commons', name: 'commons-pool2', version: '2.5.0'
-    compile group: 'org.jfree', name: 'jfreechart', version: '1.5.0'
-    compile group: 'org.jfree', name: 'jfreesvg', version: '3.3'
-    compile group: 'com.orsonpdf', name: 'orsonpdf', version: '1.8'
-    compile group: 'org.everit.json', name: 'org.everit.json.schema', version: '1.5.1'
+    implementation group: 'org.apache.commons', name: 'commons-pool2', version: '2.5.0'
+    implementation group: 'org.jfree', name: 'jfreechart', version: '1.5.0'
+    implementation group: 'org.jfree', name: 'jfreesvg', version: '3.3'
+    implementation group: 'com.orsonpdf', name: 'orsonpdf', version: '1.8'
+    implementation group: 'com.github.erosb', name: 'everit-json-schema', version: '1.14.1'
 
     compileOnly name: 'q-intellij-plugin', version: '1.9'
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
 }
 
 intellij {
-    version '2017.2.7'
-    /*
-    prepareSandbox {
-        doLast {
-            copy {
-                from 'optional-dependencies/q-intellij-plugin-1.9.jar'
-                into 'build/idea-sandbox/plugins/'
-                rename { String fileName ->
-                    fileName.replace("-1.9", "")
-                }
-            }
-        }
-    }
-     */
+    version.set("2022.1")
 }
-patchPluginXml {
-    sinceBuild(172.0)
-    untilBuild(null)
-    changeNotes """
-        Make optional support of Q-language formatting
-    """
+
+tasks {
+
+    patchPluginXml {
+        sinceBuild.set("221")
+        untilBuild.set(null)
+        changeNotes.set("Upgrade to support 2022.1 (and above) ")
+    }
+
 }

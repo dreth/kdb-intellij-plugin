@@ -11,18 +11,18 @@ import com.intellij.openapi.util.Condition;
 import com.intellij.openapi.util.IconLoader;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
+import java.util.List;
 
 public class KDBKeymapExtension implements KeymapExtension {
     @Nullable
     @Override
-    public KeymapGroup createGroup(Condition<AnAction> condition, @Nullable Project project) {
+    public KeymapGroup createGroup(Condition<? super AnAction> condition, @Nullable Project project) {
 
-        final KeymapGroup result = KeymapGroupFactory.getInstance().createGroup("KDB Studio plugin", IconLoader.findIcon("/icons/kx-kdb-logo.png"));
+        final KeymapGroup result = KeymapGroupFactory.getInstance().createGroup("KDB Studio plugin", IconLoader.findIcon("/icons/kx-kdb-logo.png", this.getClass().getClassLoader()));
 
         final ActionManagerEx actionManager = ActionManagerEx.getInstanceEx();
-        final String[] ids = actionManager.getActionIds("KDB_");
-        Arrays.sort(ids);
+        final List<String> ids = actionManager.getActionIdList("KDB_");
+        ids.sort(String::compareTo);
 
         if (project != null) {
             ApplicationManager.getApplication().runReadAction(() -> {

@@ -37,7 +37,7 @@ public class ConnectionsBoxAction extends ComboBoxAction {
         if (connection == null) {
             presentation.setText("<Select Connection>");
         } else {
-            presentation.setIcon(IconLoader.findIcon("/icons/kx-kdb-logo.png"));
+            presentation.setIcon(IconLoader.findIcon("/icons/kx-kdb-logo.png", this.getClass().getClassLoader()));
             presentation.setText(connection.getView());
             if (btn != null) {
                 if  (connection.getBgColor() != null) {

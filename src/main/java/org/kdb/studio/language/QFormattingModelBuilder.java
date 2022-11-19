@@ -1,18 +1,13 @@
 package org.kdb.studio.language;
 
 import com.appian.intellij.k.KLanguage;
-import com.appian.intellij.k.psi.KExpression;
 import com.appian.intellij.k.psi.KTypes;
 import com.intellij.formatting.*;
-import com.intellij.json.JsonLanguage;
-import com.intellij.json.formatter.JsonBlock;
-import com.intellij.json.formatter.JsonCodeStyleSettings;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
-import com.intellij.psi.codeStyle.CommonCodeStyleSettings;
 import com.intellij.psi.formatter.DocumentBasedFormattingModel;
 import com.intellij.psi.formatter.common.AbstractBlock;
 import com.intellij.psi.tree.TokenSet;
@@ -22,9 +17,6 @@ import org.kdb.studio.ui.ColorAndFontManager;
 
 import java.util.Collections;
 import java.util.List;
-
-import static com.intellij.json.JsonElementTypes.*;
-import static com.intellij.json.JsonElementTypes.COMMA;
 
 public class QFormattingModelBuilder implements FormattingModelBuilder {
 
@@ -38,9 +30,10 @@ public class QFormattingModelBuilder implements FormattingModelBuilder {
 
     private ColorAndFontManager manager = ColorAndFontManager.getInstance();
 
-    @NotNull
     @Override
-    public FormattingModel createModel(PsiElement element, CodeStyleSettings settings) {
+    public @NotNull FormattingModel createModel(@NotNull FormattingContext formattingContext) {
+        PsiElement element = formattingContext.getPsiElement();
+        CodeStyleSettings settings = formattingContext.getCodeStyleSettings();
         if (!manager.getFormattingEnabled()) {
             PsiFile file = element.getContainingFile();
             return new DocumentBasedFormattingModel(new AbstractBlock(element.getNode(), Wrap.createWrap(WrapType.NONE, false), Alignment.createAlignment()) {

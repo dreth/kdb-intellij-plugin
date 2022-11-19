@@ -12,7 +12,7 @@ public class AddConnectionAction extends AnAction {
     public AddConnectionAction(ConnectionsManagement connectionsManagement) {
         super("Add connection");
         this.connectionsManagement = connectionsManagement;
-        getTemplatePresentation().setIcon(IconLoader.findIcon("/icons/add.png"));
+        getTemplatePresentation().setIcon(IconLoader.findIcon("/icons/add.png", this.getClass().getClassLoader()));
     }
 
     @Override

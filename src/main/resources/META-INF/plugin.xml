@@ -15,7 +15,7 @@
     ]]></description>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="172.0"/>
+    <idea-version since-build="221"/>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
@@ -23,24 +23,38 @@
     <depends>com.intellij.modules.lang</depends>
     <depends optional="true" config-file="withQLanguage.xml">idea.k</depends>
 
-    <application-components>
-        <component>
-            <implementation-class>org.kdb.studio.KDBStudioApplicationComponent</implementation-class>
-        </component>
-        <component>
-            <implementation-class>org.kdb.studio.KDBStudioPlotConfigComponent</implementation-class>
-        </component>
-    </application-components>
+    <applicationListeners>
+        <listener class="org.kdb.studio.KDBStudioApplicationComponent"
+                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
+    </applicationListeners>
 
-    <project-components>
-        <component>
-            <implementation-class>org.kdb.studio.KDBStudioProjectComponent</implementation-class>
-        </component>
-    </project-components>
+<!--    <application-components>-->
+<!--        <component>-->
+<!--            <implementation-class>org.kdb.studio.KDBStudioApplicationComponent</implementation-class>-->
+<!--        </component>-->
+<!--        <component>-->
+<!--            <implementation-class>org.kdb.studio.KDBStudioPlotConfigComponent</implementation-class>-->
+<!--        </component>-->
+<!--    </application-components>-->
+
+<!--    <project-components>-->
+<!--        <component>-->
+<!--            <implementation-class>org.kdb.studio.KDBStudioProjectComponent</implementation-class>-->
+<!--        </component>-->
+<!--    </project-components>-->
 
     <extensions defaultExtensionNs="com.intellij">
         <keymapExtension implementation="org.kdb.studio.KDBKeymapExtension"/>
         <colorSettingsPage implementation="org.kdb.studio.ui.KDBColorSettingsPage" />
+
+        <applicationService serviceImplementation="org.kdb.studio.KDBStudioPlotConfigComponent"/>
+        <applicationService serviceImplementation="org.kdb.studio.KDBStudioApplicationComponent"/>
+
+        <toolWindow id="KDBStudio" secondary="true"  anchor="bottom"
+                    factoryClass="org.kdb.studio.KDBStudioToolWindowFactory"/>
+
+        <notificationGroup id="KDBStudio"
+                           displayType="BALLOON" />
         <!-- Add your extensions here -->
     </extensions>
 

@@ -44,7 +44,7 @@ public class PlotConfigBoxAction extends ComboBoxAction {
             actionGroup.add(new SelectPlotConfigAction(plot, this, lineChartForm));
         }
         actionGroup.addSeparator();
-        actionGroup.add(new PlotConfigManagementAction("Plot configuration...", IconLoader.findIcon("/icons/editSource.png")));
+        actionGroup.add(new PlotConfigManagementAction("Plot configuration...", IconLoader.findIcon("/icons/editSource.png", this.getClass().getClassLoader())));
         return actionGroup;
     }
 }
