@@ -28,21 +28,6 @@
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </applicationListeners>
 
-<!--    <application-components>-->
-<!--        <component>-->
-<!--            <implementation-class>org.kdb.studio.KDBStudioApplicationComponent</implementation-class>-->
-<!--        </component>-->
-<!--        <component>-->
-<!--            <implementation-class>org.kdb.studio.KDBStudioPlotConfigComponent</implementation-class>-->
-<!--        </component>-->
-<!--    </application-components>-->
-
-<!--    <project-components>-->
-<!--        <component>-->
-<!--            <implementation-class>org.kdb.studio.KDBStudioProjectComponent</implementation-class>-->
-<!--        </component>-->
-<!--    </project-components>-->
-
     <extensions defaultExtensionNs="com.intellij">
         <keymapExtension implementation="org.kdb.studio.KDBKeymapExtension"/>
         <colorSettingsPage implementation="org.kdb.studio.ui.KDBColorSettingsPage" />

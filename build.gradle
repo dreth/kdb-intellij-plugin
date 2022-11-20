@@ -29,14 +29,14 @@ dependencies {
 }
 
 intellij {
-    version.set("2022.1")
+    version.set("2022.1.1")
 }
 
 tasks {
 
     patchPluginXml {
         sinceBuild.set("221")
-        untilBuild.set(null)
+       untilBuild.set("222")
         changeNotes.set("Upgrade to support 2022.1 (and above) ")
     }
 

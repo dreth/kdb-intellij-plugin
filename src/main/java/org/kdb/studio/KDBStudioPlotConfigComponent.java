@@ -9,7 +9,7 @@ import org.kdb.studio.chart.Plots;
 @com.intellij.openapi.components.State(
         name = "KDBStudioPlotConfig",
         storages = {@Storage("kdbstudio_plots.xml")},
-        additionalExportFile = "kdbstudio_plots"
+        additionalExportDirectory = "kdbstudio"
 )
 public class KDBStudioPlotConfigComponent implements PersistentStateComponent<Plots> {
 
