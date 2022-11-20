@@ -14,11 +14,7 @@
       This plugin does not provide q/k4 language syntax highlighting/checking. If you need this functionality, you could use existent q plugin <a href="https://plugins.jetbrains.com/plugin/7925-q/">https://plugins.jetbrains.com/plugin/7925-q/</a>
     ]]></description>
 
-    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
     <idea-version since-build="221"/>
-
-    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-         on how to target different products -->
 
     <depends>com.intellij.modules.lang</depends>
     <depends optional="true" config-file="withQLanguage.xml">idea.k</depends>
@@ -38,16 +34,13 @@
         <toolWindow id="KDBStudio" secondary="true"  anchor="bottom"
                     factoryClass="org.kdb.studio.KDBStudioToolWindowFactory"/>
 
-        <notificationGroup id="KDBStudio"
-                           displayType="BALLOON" />
-        <!-- Add your extensions here -->
+        <notificationGroup id="KDBStudio" displayType="BALLOON" />
     </extensions>
 
     <actions>
         <group id="KDBToolbarActions" popup="false" class="org.kdb.studio.KDBToolbarActionGroup" text="KDB Toolbar Actions">
             <add-to-group group-id="MainToolBar" />
         </group>
-        <!-- Add your actions here -->
     </actions>
 
 </idea-plugin>
