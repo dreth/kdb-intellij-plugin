@@ -11,7 +11,7 @@ public class ExportAction extends QGridAction {
     public ExportAction() {
         super("Export");
         fileExporter = new FileExporter();
-        getTemplatePresentation().setIcon(IconLoader.findIcon("/icons/export1.png"));
+        getTemplatePresentation().setIcon(IconLoader.findIcon("/icons/export1.png", this.getClass().getClassLoader()));
     }
 
     @Override

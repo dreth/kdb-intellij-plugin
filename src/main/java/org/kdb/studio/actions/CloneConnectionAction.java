@@ -11,7 +11,7 @@ public class CloneConnectionAction extends AnAction {
 
     public CloneConnectionAction(ConnectionsManagement connectionsManagement) {
         super("Clone connection");
-        getTemplatePresentation().setIcon(IconLoader.findIcon("/icons/clone.png"));
+        getTemplatePresentation().setIcon(IconLoader.findIcon("/icons/clone.png", this.getClass().getClassLoader()));
         this.connectionsManagement = connectionsManagement;
     }
 

@@ -13,7 +13,7 @@ public class ChartAction extends QGridAction {
 
     public ChartAction() {
         super("Show chart");
-        getTemplatePresentation().setIcon(IconLoader.findIcon("/icons/chart.png"));
+        getTemplatePresentation().setIcon(IconLoader.findIcon("/icons/chart.png", this.getClass().getClassLoader()));
     }
 
     @Override

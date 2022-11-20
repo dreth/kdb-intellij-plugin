@@ -14,41 +14,53 @@
       This plugin does not provide q/k4 language syntax highlighting/checking. If you need this functionality, you could use existent q plugin <a href="https://plugins.jetbrains.com/plugin/7925-q/">https://plugins.jetbrains.com/plugin/7925-q/</a>
     ]]></description>
 
-    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="172.0"/>
-
-    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-         on how to target different products -->
+    <idea-version since-build="221"/>
 
     <depends>com.intellij.modules.lang</depends>
     <depends optional="true" config-file="withQLanguage.xml">idea.k</depends>
 
-    <application-components>
-        <component>
-            <implementation-class>org.kdb.studio.KDBStudioApplicationComponent</implementation-class>
-        </component>
-        <component>
-            <implementation-class>org.kdb.studio.KDBStudioPlotConfigComponent</implementation-class>
-        </component>
-    </application-components>
-
-    <project-components>
-        <component>
-            <implementation-class>org.kdb.studio.KDBStudioProjectComponent</implementation-class>
-        </component>
-    </project-components>
-
     <extensions defaultExtensionNs="com.intellij">
         <keymapExtension implementation="org.kdb.studio.KDBKeymapExtension"/>
         <colorSettingsPage implementation="org.kdb.studio.ui.KDBColorSettingsPage" />
-        <!-- Add your extensions here -->
+
+        <applicationService serviceImplementation="org.kdb.studio.KDBStudioPlotConfigComponent"/>
+        <applicationService serviceImplementation="org.kdb.studio.KDBStudioApplicationComponent"/>
+
+        <toolWindow id="KDBStudio" secondary="true"  anchor="bottom"
+                    factoryClass="org.kdb.studio.KDBStudioToolWindowFactory"/>
+
+        <notificationGroup id="KDBStudio" displayType="BALLOON" />
+
+        <applicationService serviceImplementation="org.kdb.studio.ui.KDBToolbarUIManager" />
+        <applicationService serviceImplementation="org.kdb.studio.chart.PlotConfigManager" />
+
+        <projectService serviceImplementation="org.kdb.studio.ui.QGrid" />
     </extensions>
 
     <actions>
         <group id="KDBToolbarActions" popup="false" class="org.kdb.studio.KDBToolbarActionGroup" text="KDB Toolbar Actions">
             <add-to-group group-id="MainToolBar" />
+            <action class="org.kdb.studio.actions.ConnectionsBoxAction" />
+            <action class="org.kdb.studio.actions.RunCodeAction" id="KDB_1_run_line" />
+            <action class="org.kdb.studio.actions.RunAllAction" id="KDB_2_run_all" />
+            <separator />
+            <action class="org.kdb.studio.actions.ReRunAction" id="KDB_3_run_refresh" />
+            <separator/>
+            <action class="org.kdb.studio.actions.ExcelAction" id="KDB_4_open_excel" />
+            <action class="org.kdb.studio.actions.ExportAction" id="KDB_5_open_export" />
+            <action class="org.kdb.studio.actions.ChartAction" id="KDB_6_open_chart" />
         </group>
-        <!-- Add your actions here -->
+        <action class="org.kdb.studio.actions.ToolbarControlAction" >
+            <add-to-group group-id="UIToggleActions" />
+        </action>
+        <action class="org.kdb.studio.actions.ShowAsHTMLAction" id="KDB_7_open_as_html" icon="AllIcons.General.Web" />
+        <action class="org.kdb.studio.actions.PlotConfigManagementAction" id="KDB_8_plot_config" />
+        <group id="KDBStudioConfigActions" text="KDB+ Studio Config" popup="true" class="com.intellij.openapi.actionSystem.DefaultActionGroup" >
+            <add-to-group group-id="ViewMenu" />
+            <reference id="KDB_8_plot_config" />
+            <action class="org.kdb.studio.actions.FontConfigManagementAction" />
+            <action class="org.kdb.studio.actions.EnableFormattingSupportAction" />
+        </group>
     </actions>
 
 </idea-plugin>

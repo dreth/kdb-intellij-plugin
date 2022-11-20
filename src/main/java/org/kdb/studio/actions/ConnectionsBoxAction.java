@@ -23,9 +23,9 @@ public class ConnectionsBoxAction extends ComboBoxAction {
 
     private Color defaultBg;
 
-    public ConnectionsBoxAction(ConnectionManager connectionManager, AuthenticationDriverManager authenticationDriverManager) {
-        this.connectionManager = connectionManager;
-        this.authenticationDriverManager = authenticationDriverManager;
+    public ConnectionsBoxAction() {
+        this.connectionManager = ConnectionManager.getInstance();
+        this.authenticationDriverManager = AuthenticationDriverManager.getInstance();
     }
 
     @Override
@@ -37,7 +37,7 @@ public class ConnectionsBoxAction extends ComboBoxAction {
         if (connection == null) {
             presentation.setText("<Select Connection>");
         } else {
-            presentation.setIcon(IconLoader.findIcon("/icons/kx-kdb-logo.png"));
+            presentation.setIcon(IconLoader.findIcon("/icons/kx-kdb-logo.png", this.getClass().getClassLoader()));
             presentation.setText(connection.getView());
             if (btn != null) {
                 if  (connection.getBgColor() != null) {

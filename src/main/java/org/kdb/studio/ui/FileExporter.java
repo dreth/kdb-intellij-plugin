@@ -202,7 +202,7 @@ public class FileExporter {
         progressIndicator.setFraction(0.);
 
         if (filename != null) {
-            String lineSeparator = java.security.AccessController.doPrivileged(new sun.security.action.GetPropertyAction("line.separator"));
+            String lineSeparator = System.getProperty("line.separator");
 
             BufferedWriter fw;
 

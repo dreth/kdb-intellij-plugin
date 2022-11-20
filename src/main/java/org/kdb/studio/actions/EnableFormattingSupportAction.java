@@ -8,9 +8,9 @@ public class EnableFormattingSupportAction extends ToggleAction {
 
     private ColorAndFontManager fontManager;
 
-    public EnableFormattingSupportAction(ColorAndFontManager fontManager) {
+    public EnableFormattingSupportAction() {
         super("Q language advanced formatting");
-        this.fontManager = fontManager;
+        this.fontManager = ColorAndFontManager.getInstance();
     }
 
      @Override

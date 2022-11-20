@@ -11,7 +11,7 @@ public class RemoveConnectionAction extends AnAction {
 
     public RemoveConnectionAction(ConnectionsManagement connectionsManagement) {
         super("Remove connection");
-        getTemplatePresentation().setIcon(IconLoader.findIcon("/icons/remove.png"));
+        getTemplatePresentation().setIcon(IconLoader.findIcon("/icons/remove.png", this.getClass().getClassLoader()));
         this.connectionsManagement = connectionsManagement;
     }
 

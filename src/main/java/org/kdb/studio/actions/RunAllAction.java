@@ -8,10 +8,10 @@ import com.intellij.openapi.util.IconLoader;
 import org.kdb.studio.db.ConnectionManager;
 
 public class RunAllAction extends RunCodeAction {
-    public RunAllAction(ConnectionManager connectionManager) {
-        super(connectionManager);
+    public RunAllAction() {
+        super();
         getTemplatePresentation().setText("Run selected or all");
-        getTemplatePresentation().setIcon(IconLoader.findIcon("/icons/run_run.png"));
+        getTemplatePresentation().setIcon(IconLoader.findIcon("/icons/run_run.png", this.getClass().getClassLoader()));
     }
 
     @Override

@@ -14,7 +14,7 @@ public class SelectActiveConnectionAction extends AnAction {
 
     public SelectActiveConnectionAction(Connection connection, ConnectionManager connectionManager) {
         super(connection.getView());
-        getTemplatePresentation().setIcon(IconLoader.findIcon("/icons/kx-kdb-logo.png"));
+        getTemplatePresentation().setIcon(IconLoader.findIcon("/icons/kx-kdb-logo.png", this.getClass().getClassLoader()));
         this.connection = connection;
         this.connectionManager = connectionManager;
     }

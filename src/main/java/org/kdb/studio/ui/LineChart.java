@@ -3,6 +3,7 @@ package org.kdb.studio.ui;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import org.jetbrains.annotations.NotNull;
@@ -44,7 +45,7 @@ public class LineChart extends DialogWrapper {
         Plot config = null;
         if (chart != null) {
             try {
-                config = PlotConfigManager.getInstance().forModel(table);
+                config = ApplicationManager.getApplication().getService(PlotConfigManager.class).forModel(table);
                 new ChartConfigurator().configureChart(config, chart);
             } catch (Exception e) {
                 throw new RuntimeException(e);

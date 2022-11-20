@@ -5,6 +5,7 @@ import com.intellij.json.JsonFileType;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.fileChooser.FileChooser;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.project.Project;
@@ -57,7 +58,7 @@ public class PlotConfigManagement extends DialogWrapper {
     private void createUIComponents() {
         plotTable = new JBTable();
         final String[] columns = {"Plot id", "Default for"};
-        PlotConfigManager configManager = PlotConfigManager.getInstance();
+        PlotConfigManager configManager = ApplicationManager.getApplication().getService(PlotConfigManager.class);
         plotTable.setModel(new AbstractTableModel() {
 
             @Override
@@ -156,7 +157,7 @@ public class PlotConfigManagement extends DialogWrapper {
                 dialog.show();
                 if (DialogWrapper.OK_EXIT_CODE == dialog.getExitCode()) {
                     List<String> ids = Arrays.stream(rowsToDelete).mapToObj(row -> plotTable.getValueAt(row, 0).toString()).collect(Collectors.toList());
-                    PlotConfigManager configManager = PlotConfigManager.getInstance();
+                    PlotConfigManager configManager = ApplicationManager.getApplication().getService(PlotConfigManager.class);
                     for (String id : ids) {
                         configManager.getState().remove(id);
                     }
@@ -189,7 +190,7 @@ public class PlotConfigManagement extends DialogWrapper {
                 }
                 try (InputStream is = files[0].getInputStream()) {
                     Plot plot = ChartConfigLoader.load(is);
-                    PlotConfigManager configManager = PlotConfigManager.getInstance();
+                    PlotConfigManager configManager = ApplicationManager.getApplication().getService(PlotConfigManager.class);
                     if (PlotConfigManager.DEFAULT_ID.equals(plot.getId())) {
                         Messages.showIdeaMessageDialog(project, "Plot id <<DEFAULT>> is not allowed (internally reserved)", "Invalid incoming data.", new String[]{Messages.OK_BUTTON}, 0, null, null);
                         return;
@@ -211,8 +212,8 @@ public class PlotConfigManagement extends DialogWrapper {
         }
 
         protected void addPlotConfig(Plot plot) {
-            PlotConfigManager.getInstance().getState().getPlots().remove(plot);
-            PlotConfigManager.getInstance().getState().getPlots().add(plot);
+            ApplicationManager.getApplication().getService(PlotConfigManager.class).getState().getPlots().remove(plot);
+            ApplicationManager.getApplication().getService(PlotConfigManager.class).getState().getPlots().add(plot);
             plotTable.updateUI();
         }
     }
@@ -224,7 +225,7 @@ public class PlotConfigManagement extends DialogWrapper {
 
         @Override
         protected void doAction(ActionEvent e) {
-            Plots state = PlotConfigManager.getInstance().getState();
+            Plots state = ApplicationManager.getApplication().getService(PlotConfigManager.class).getState();
             for (String defConfig : defaults) {
                 try {
                     Plot plot = ChartConfigLoader.load(PlotConfigManager.class.getResourceAsStream(defConfig));

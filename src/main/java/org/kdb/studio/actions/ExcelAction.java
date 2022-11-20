@@ -18,7 +18,7 @@ public class ExcelAction extends QGridAction {
 
     public ExcelAction() {
         super("Open in Excel");
-        getTemplatePresentation().setIcon(IconLoader.findIcon("/icons/excel_icon.gif"));
+        getTemplatePresentation().setIcon(IconLoader.findIcon("/icons/excel_icon.png", this.getClass().getClassLoader()));
     }
 
     @Override

@@ -1,7 +1,9 @@
 package org.kdb.studio.ui;
 
 import com.intellij.ide.DataManager;
+import com.intellij.ide.ui.UISettings;
 import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.actionSystem.ex.ActionUtil;
 
 public class KDBToolbarUIManager {
 
@@ -11,16 +13,8 @@ public class KDBToolbarUIManager {
 
     private boolean visible;
 
-    public static void initInstance(boolean visible) {
-        INSTANCE = new KDBToolbarUIManager(visible);
-    }
-
-    public static KDBToolbarUIManager getInstance() {
-        return INSTANCE;
-    }
-
-    private KDBToolbarUIManager(boolean visible) {
-        setState(visible);
+    public KDBToolbarUIManager() {
+        setState(true);
     }
 
     public boolean isVisible() {
@@ -42,20 +36,16 @@ public class KDBToolbarUIManager {
 
     public void hide() {
         visible = false;
+        UISettings uiSettings = UISettings.getInstance();
+        uiSettings.fireUISettingsChanged();
     }
 
     public void show() {
-        try {
-            final AnActionEvent event = new AnActionEvent(null, DataManager.getInstance().getDataContext(), "KDB_TOOLBAR", new Presentation(),
-                    ActionManager.getInstance(), 0);
-            ActionManager actionManager = ActionManager.getInstance();
-            ToggleAction viewToolbar = (ToggleAction) actionManager.getAction(VIEW_TOOLBAR);
-            if (!viewToolbar.isSelected(event)) {
-                viewToolbar.setSelected(event, true);
-            }
-        } catch (Throwable ignore) {
-
-        }
         visible = true;
+        UISettings uiSettings = UISettings.getInstance();
+        if (!uiSettings.getShowMainToolbar()) {
+            uiSettings.setShowMainToolbar(true);
+        }
+        uiSettings.fireUISettingsChanged();
     }
 }

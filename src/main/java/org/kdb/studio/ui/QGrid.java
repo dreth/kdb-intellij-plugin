@@ -1,14 +1,15 @@
 package org.kdb.studio.ui;
 
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.stream.MalformedJsonException;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.colors.EditorColorsListener;
 import com.intellij.openapi.editor.colors.EditorColorsManager;
 import com.intellij.openapi.editor.colors.EditorColorsScheme;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.table.JBTable;
@@ -24,7 +25,6 @@ import org.kdb.studio.kx.type.Dict;
 import org.kdb.studio.kx.type.Flip;
 import org.kdb.studio.kx.type.KBase;
 import org.kdb.studio.kx.type.UnaryPrimitive;
-import sun.swing.SwingUtilities2;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -83,8 +83,8 @@ public class QGrid implements EditorColorsListener {
     private boolean blocked = false;
 
 
-    private QGrid(Project project) {
-        this.project = project;
+    private QGrid() {
+        ApplicationManager.getApplication().getMessageBus().connect().subscribe(EditorColorsManager.TOPIC, this);
         tableGroup = new TableGroup();
         tableGroup.disableAll();
         updateStyles();
@@ -127,8 +127,8 @@ public class QGrid implements EditorColorsListener {
     protected int getMaxFontHeight(JComponent component) {
         ColorAndFontManager manager = ColorAndFontManager.getInstance();
         int[] height = new int[] {
-                SwingUtilities2.getFontMetrics(component, manager.getFont(ColorAndFontManager.TABLE_CONTENT_FONT)).getHeight(),
-                SwingUtilities2.getFontMetrics(component, manager.getFont(ColorAndFontManager.TABLE_ROW_NUM_FONT)).getHeight()
+            component.getFontMetrics(manager.getFont(ColorAndFontManager.TABLE_CONTENT_FONT)).getHeight(),
+            component.getFontMetrics(manager.getFont(ColorAndFontManager.TABLE_ROW_NUM_FONT)).getHeight()
         };
         int i = Integer.MIN_VALUE;
         for (int h: height) {
@@ -307,25 +307,9 @@ public class QGrid implements EditorColorsListener {
     }
 
     public static QGrid getInstance(Project project, boolean create) {
-        QGrid instance = instanceMap.get(project);
-        if (instance == null && create) {
-            try {
-                instance = new QGrid(project);
-                EditorColorsManager.getInstance().addEditorColorsListener(instance);
-                instanceMap.put(project, instance);
-            } catch (Exception e) {
-                Notifications.Bus.notify(new Notification("KDBStudio", "Plugin instantiation error", Optional.ofNullable(e.getMessage()).orElse(e.toString()), NotificationType.WARNING));
-            }
-        }
-        return instance;
-    }
-
-    public static void closeInstance(Project project) {
-        QGrid instance = instanceMap.get(project);
-        if (instance != null) {
-            //TODO: dispose instance
-        }
-        instanceMap.remove(project);
+        QGrid qGrid = project.getService(QGrid.class);
+        qGrid.project = project;
+        return qGrid;
     }
 
     public JTabbedPane getTabbedPane1() {
