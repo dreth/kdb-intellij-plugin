@@ -8,8 +8,7 @@ import org.kdb.studio.ui.QGrid;
 
 public class ReRunAction extends RunCodeAction {
 
-    public ReRunAction(ConnectionManager connectionManager) {
-        super(connectionManager);
+    public ReRunAction() {
         getTemplatePresentation().setText("Refresh");
         getTemplatePresentation().setIcon(IconLoader.findIcon("/icons/refresh.png", this.getClass().getClassLoader()));
     }

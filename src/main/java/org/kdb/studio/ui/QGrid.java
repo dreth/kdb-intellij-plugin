@@ -9,6 +9,7 @@ import com.intellij.openapi.editor.colors.EditorColorsListener;
 import com.intellij.openapi.editor.colors.EditorColorsManager;
 import com.intellij.openapi.editor.colors.EditorColorsScheme;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.table.JBTable;
@@ -82,8 +83,8 @@ public class QGrid implements EditorColorsListener {
     private boolean blocked = false;
 
 
-    private QGrid(Project project) {
-        this.project = project;
+    private QGrid() {
+        ApplicationManager.getApplication().getMessageBus().connect().subscribe(EditorColorsManager.TOPIC, this);
         tableGroup = new TableGroup();
         tableGroup.disableAll();
         updateStyles();
@@ -306,25 +307,9 @@ public class QGrid implements EditorColorsListener {
     }
 
     public static QGrid getInstance(Project project, boolean create) {
-        QGrid instance = instanceMap.get(project);
-        if (instance == null && create) {
-            try {
-                instance = new QGrid(project);
-                ApplicationManager.getApplication().getMessageBus().connect().subscribe(EditorColorsManager.TOPIC, instance);
-                instanceMap.put(project, instance);
-            } catch (Exception e) {
-                Notifications.Bus.notify(new Notification("KDBStudio", "Plugin instantiation error", Optional.ofNullable(e.getMessage()).orElse(e.toString()), NotificationType.WARNING));
-            }
-        }
-        return instance;
-    }
-
-    public static void closeInstance(Project project) {
-        QGrid instance = instanceMap.get(project);
-        if (instance != null) {
-            //TODO: dispose instance
-        }
-        instanceMap.remove(project);
+        QGrid qGrid = project.getService(QGrid.class);
+        qGrid.project = project;
+        return qGrid;
     }
 
     public JTabbedPane getTabbedPane1() {

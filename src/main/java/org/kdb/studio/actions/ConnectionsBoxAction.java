@@ -23,9 +23,9 @@ public class ConnectionsBoxAction extends ComboBoxAction {
 
     private Color defaultBg;
 
-    public ConnectionsBoxAction(ConnectionManager connectionManager, AuthenticationDriverManager authenticationDriverManager) {
-        this.connectionManager = connectionManager;
-        this.authenticationDriverManager = authenticationDriverManager;
+    public ConnectionsBoxAction() {
+        this.connectionManager = ConnectionManager.getInstance();
+        this.authenticationDriverManager = AuthenticationDriverManager.getInstance();
     }
 
     @Override

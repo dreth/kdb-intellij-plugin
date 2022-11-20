@@ -19,11 +19,6 @@
     <depends>com.intellij.modules.lang</depends>
     <depends optional="true" config-file="withQLanguage.xml">idea.k</depends>
 
-    <applicationListeners>
-        <listener class="org.kdb.studio.KDBStudioApplicationComponent"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
-
     <extensions defaultExtensionNs="com.intellij">
         <keymapExtension implementation="org.kdb.studio.KDBKeymapExtension"/>
         <colorSettingsPage implementation="org.kdb.studio.ui.KDBColorSettingsPage" />
@@ -35,11 +30,36 @@
                     factoryClass="org.kdb.studio.KDBStudioToolWindowFactory"/>
 
         <notificationGroup id="KDBStudio" displayType="BALLOON" />
+
+        <applicationService serviceImplementation="org.kdb.studio.ui.KDBToolbarUIManager" />
+        <applicationService serviceImplementation="org.kdb.studio.chart.PlotConfigManager" />
+
+        <projectService serviceImplementation="org.kdb.studio.ui.QGrid" />
     </extensions>
 
     <actions>
         <group id="KDBToolbarActions" popup="false" class="org.kdb.studio.KDBToolbarActionGroup" text="KDB Toolbar Actions">
             <add-to-group group-id="MainToolBar" />
+            <action class="org.kdb.studio.actions.ConnectionsBoxAction" />
+            <action class="org.kdb.studio.actions.RunCodeAction" id="KDB_1_run_line" />
+            <action class="org.kdb.studio.actions.RunAllAction" id="KDB_2_run_all" />
+            <separator />
+            <action class="org.kdb.studio.actions.ReRunAction" id="KDB_3_run_refresh" />
+            <separator/>
+            <action class="org.kdb.studio.actions.ExcelAction" id="KDB_4_open_excel" />
+            <action class="org.kdb.studio.actions.ExportAction" id="KDB_5_open_export" />
+            <action class="org.kdb.studio.actions.ChartAction" id="KDB_6_open_chart" />
+        </group>
+        <action class="org.kdb.studio.actions.ToolbarControlAction" >
+            <add-to-group group-id="UIToggleActions" />
+        </action>
+        <action class="org.kdb.studio.actions.ShowAsHTMLAction" id="KDB_7_open_as_html" icon="AllIcons.General.Web" />
+        <action class="org.kdb.studio.actions.PlotConfigManagementAction" id="KDB_8_plot_config" />
+        <group id="KDBStudioConfigActions" text="KDB+ Studio Config" popup="true" class="com.intellij.openapi.actionSystem.DefaultActionGroup" >
+            <add-to-group group-id="ViewMenu" />
+            <reference id="KDB_8_plot_config" />
+            <action class="org.kdb.studio.actions.FontConfigManagementAction" />
+            <action class="org.kdb.studio.actions.EnableFormattingSupportAction" />
         </group>
     </actions>
 

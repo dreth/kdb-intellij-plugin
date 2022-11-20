@@ -35,9 +35,9 @@ public class RunCodeAction extends AnAction {
 
     private ConnectionManager connectionManager;
 
-    public RunCodeAction(ConnectionManager connectionManager) {
+    public RunCodeAction() {
         super("Run selected or line");
-        this.connectionManager = connectionManager;
+        this.connectionManager = ConnectionManager.getInstance();
         getTemplatePresentation().setIcon(IconLoader.findIcon("/icons/run.png", this.getClass().getClassLoader()));
     }
 

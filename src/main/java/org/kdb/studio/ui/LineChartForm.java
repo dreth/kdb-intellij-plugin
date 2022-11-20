@@ -6,6 +6,7 @@ import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionToolbar;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -51,7 +52,7 @@ public class LineChartForm {
     public LineChartForm(KTableModel table, Project project) {
         this.table = table;
         this.project = project;
-        String configId = PlotConfigManager.getInstance().forModel(table).getId();
+        String configId = ApplicationManager.getApplication().getService(PlotConfigManager.class).forModel(table).getId();
         plotConfigBoxAction.setActiveConfig(configId);
         applyConfig(configId);
         chartPanel.setMouseZoomable(true, false);
@@ -190,7 +191,7 @@ public class LineChartForm {
     }
 
     private void createUIComponents() {
-        plotConfigBoxAction = new PlotConfigBoxAction(PlotConfigManager.getInstance(), this);
+        plotConfigBoxAction = new PlotConfigBoxAction(ApplicationManager.getApplication().getService(PlotConfigManager.class), this);
         plotOverrideAction = new PlotOverrideAction();
         DefaultActionGroup actionGroup = new DefaultActionGroup();
         actionGroup.add(plotOverrideAction);
@@ -218,7 +219,7 @@ public class LineChartForm {
         chart = createDataset(table);
         if (chart != null) {
             try {
-                config = PlotConfigManager.getInstance().byName(configId);
+                config = ApplicationManager.getApplication().getService(PlotConfigManager.class).byName(configId);
                 config = ChartConfigLoader.clone(config);
                 PlotOverride override = QGrid.getInstance(project, false).applyPlotConfigOverride(config);
                 plotOverrideAction.setPlotOverride(override);

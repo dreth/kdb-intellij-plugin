@@ -14,12 +14,6 @@ public class PlotConfigManager {
 
     public static String DEFAULT_ID = "<<DEFAULT>>";
 
-    private static final PlotConfigManager INSTANCE = new PlotConfigManager();
-
-    public static PlotConfigManager getInstance() {
-        return INSTANCE;
-    }
-
     private Plots plots = new Plots();
 
     public List<String> listAllPlots(boolean includeDefault) {
