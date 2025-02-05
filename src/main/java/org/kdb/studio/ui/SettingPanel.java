@@ -11,7 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SettingPanel extends JPanel {
-    private ConnectionsManagement connectionsManagement;
+    private final ConnectionsManagement connectionsManagement;
 
     public SettingPanel(ConnectionsManagement connectionsManagement) {
         this.connectionsManagement = connectionsManagement;
@@ -26,6 +26,10 @@ public class SettingPanel extends JPanel {
         actionGroup.add(new CloneConnectionAction(connectionsManagement));
         ActionManager actionManager = ActionManager.getInstance();
         ActionToolbar toolbar = actionManager.createActionToolbar("KDBStudio.SettingsPanel", actionGroup, true);
+
+        // Set the target component explicitly to this panel
+        toolbar.setTargetComponent(this);
+
         JComponent component = toolbar.getComponent();
         component.getInsets().set(0, 0, 0, 0);
         return component;
