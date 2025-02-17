@@ -203,6 +203,10 @@ public class LineChartForm {
         plotOverrideAction.setComponent(plotConfig);
         chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
+
+        // Set the toolbar's target component to the component that provides its UI context.
+        // In this case, use the centralPanel.
+        toolbar.setTargetComponent(centralPanel);
     }
 
     @FunctionalInterface
