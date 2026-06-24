@@ -2,6 +2,7 @@ package org.kdb.studio.actions;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.IconLoader;
 import org.kdb.studio.db.AuthenticationDriverManager;
@@ -19,6 +20,11 @@ public class ConnectionSettingsAction extends AnAction {
         getTemplatePresentation().setIcon(IconLoader.findIcon("/icons/editSource.png", this.getClass().getClassLoader()));
         this.connectionManager = connectionManager;
         this.authenticationDriverManager = authenticationDriverManager;
+    }
+
+    @Override
+    public ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.EDT;
     }
 
     @Override

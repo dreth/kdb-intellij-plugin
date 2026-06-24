@@ -6,6 +6,7 @@ import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.io.FileUtil;
 import org.kdb.studio.kx.LimitedWriter;
@@ -19,6 +20,11 @@ public class ShowAsHTMLAction extends AnAction {
 
     public ShowAsHTMLAction() {
         super("Open console output in default browser");
+    }
+
+    @Override
+    public ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.EDT;
     }
 
     @Override

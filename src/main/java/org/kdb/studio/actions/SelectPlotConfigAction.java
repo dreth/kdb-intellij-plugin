@@ -2,6 +2,7 @@ package org.kdb.studio.actions;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import org.jetbrains.annotations.Nullable;
 import org.kdb.studio.ui.LineChartForm;
 
@@ -14,6 +15,11 @@ public class SelectPlotConfigAction extends AnAction {
         this.configId = text;
         this.plotConfigBoxAction = plotConfigBoxAction;
         this.lineChartForm = lineChartForm;
+    }
+
+    @Override
+    public ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.EDT;
     }
 
     @Override

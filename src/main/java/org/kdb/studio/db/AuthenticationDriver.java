@@ -6,7 +6,6 @@ import com.intellij.notification.Notifications;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.util.lang.UrlClassLoader;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.Function;
@@ -50,7 +49,7 @@ public class AuthenticationDriver {
         if (!StringUtil.isEmptyOrSpaces(clazz)) {
             try {
                 Class<?> function = urlClassLoader().loadClass(clazz);
-                return Optional.ofNullable(function.newInstance()).filter(Function.class::isInstance).map(Function.class::cast).get();
+                return Optional.of(function.getDeclaredConstructor().newInstance()).filter(Function.class::isInstance).map(Function.class::cast).get();
             } catch (Exception e) {
                 Notifications.Bus.notify(new Notification("KDBStudio", "Failed to instantiate authentication function", e.toString(), NotificationType.WARNING));
             }
@@ -70,13 +69,7 @@ public class AuthenticationDriver {
     }
 
     private UrlClassLoader urlClassLoader() {
-        return UrlClassLoader.build().useCache().urls(jarFiles.stream().map(Paths::get).map(Path::toUri).map(uri -> {
-            try {
-                return uri.toURL();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }).collect(Collectors.toList())).get();
+        return UrlClassLoader.build().useCache().files(jarFiles.stream().map(Paths::get).collect(Collectors.toList())).get();
     }
 
     @Override

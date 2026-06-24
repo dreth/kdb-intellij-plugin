@@ -1,6 +1,8 @@
 package org.kdb.studio.actions;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
+import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.actionSystem.ex.ComboBoxAction;
@@ -25,6 +27,11 @@ public class PlotConfigBoxAction extends ComboBoxAction {
     }
 
     @Override
+    public ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.EDT;
+    }
+
+    @Override
     public void update(AnActionEvent e) {
         super.update(e);
 
@@ -38,7 +45,7 @@ public class PlotConfigBoxAction extends ComboBoxAction {
 
     @NotNull
     @Override
-    protected DefaultActionGroup createPopupActionGroup(JComponent button) {
+    protected DefaultActionGroup createPopupActionGroup(JComponent button, @NotNull DataContext dataContext) {
         DefaultActionGroup actionGroup = new DefaultActionGroup();
         for (String plot : plotConfigManager.listAllPlots()) {
             actionGroup.add(new SelectPlotConfigAction(plot, this, lineChartForm));

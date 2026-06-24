@@ -13,7 +13,7 @@ public class KDBStudioToolWindowFactory implements ToolWindowFactory {
   @Override
   public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
 
-    ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
+    ContentFactory contentFactory = ContentFactory.getInstance();
     Content content = contentFactory.createContent(QGrid.getInstance(project, true).getTabbedPane1(), "", false);
 
     toolWindow.getContentManager().addContent(content);

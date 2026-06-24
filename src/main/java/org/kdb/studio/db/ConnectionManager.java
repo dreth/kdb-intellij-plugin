@@ -3,7 +3,7 @@ package org.kdb.studio.db;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ConnectionManager extends Observable {
+public class ConnectionManager {
 
     private static final ConnectionManager INSTANCE = new ConnectionManager();
 
