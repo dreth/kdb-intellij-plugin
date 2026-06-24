@@ -180,19 +180,19 @@ public class PlotConfigManagement extends DialogWrapper {
                 try {
                     List<String> problems = JsonSchemaValidator.validate(files[0].getInputStream());
                     if (!problems.isEmpty()) {
-                        Messages.showIdeaMessageDialog(project, problems.stream().collect(Collectors.joining("\n")), "Invalid incoming data format", new String[]{Messages.OK_BUTTON}, 0, null, null);
+                        Messages.showErrorDialog(project, problems.stream().collect(Collectors.joining("\n")), "Invalid incoming data format");
                         return;
                     }
 
                 } catch (IOException e) {
-                    Messages.showIdeaMessageDialog(project, Optional.ofNullable(e.getMessage()).orElse(e.toString()), "Data import error.", new String[]{Messages.OK_BUTTON}, 0, null, null);
+                    Messages.showErrorDialog(project, Optional.ofNullable(e.getMessage()).orElse(e.toString()), "Data import error.");
                     return;
                 }
                 try (InputStream is = files[0].getInputStream()) {
                     Plot plot = ChartConfigLoader.load(is);
                     PlotConfigManager configManager = ApplicationManager.getApplication().getService(PlotConfigManager.class);
                     if (PlotConfigManager.DEFAULT_ID.equals(plot.getId())) {
-                        Messages.showIdeaMessageDialog(project, "Plot id <<DEFAULT>> is not allowed (internally reserved)", "Invalid incoming data.", new String[]{Messages.OK_BUTTON}, 0, null, null);
+                        Messages.showErrorDialog(project, "Plot id <<DEFAULT>> is not allowed (internally reserved)", "Invalid incoming data.");
                         return;
                     }
                     if (configManager.listAllPlots(false).contains(plot.getId())) {

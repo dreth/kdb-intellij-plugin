@@ -3,8 +3,9 @@ package org.kdb.studio.chart;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.internal.Streams;
+import com.google.gson.Strictness;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.MalformedJsonException;
@@ -71,8 +72,8 @@ public class JsonSchemaValidator {
 
     public static JsonElement parseStrict(Reader reader) {
         try (JsonReader jsonReader = new JsonReader(reader)) {
-            jsonReader.setLenient(false);
-            JsonElement element = Streams.parse(jsonReader);
+            jsonReader.setStrictness(Strictness.STRICT);
+            JsonElement element = JsonParser.parseReader(jsonReader);
             if (!element.isJsonNull() && jsonReader.peek() != JsonToken.END_DOCUMENT) {
                 throw new JsonSyntaxException("Did not consume the entire document.");
             }

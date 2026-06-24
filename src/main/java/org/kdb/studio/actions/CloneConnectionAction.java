@@ -2,6 +2,7 @@ package org.kdb.studio.actions;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.util.IconLoader;
 import org.kdb.studio.ui.ConnectionsManagement;
 
@@ -15,6 +16,11 @@ public class CloneConnectionAction extends AnAction {
         this.connectionsManagement = connectionsManagement;
     }
 
+
+    @Override
+    public ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.EDT;
+    }
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {

@@ -2,6 +2,7 @@ package org.kdb.studio.actions;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.project.Project;
 import org.kdb.studio.ui.KDBFontsForm;
 
@@ -9,6 +10,11 @@ public class FontConfigManagementAction extends AnAction {
 
     public FontConfigManagementAction() {
         super("Font Config");
+    }
+
+    @Override
+    public ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.EDT;
     }
 
     @Override

@@ -29,7 +29,7 @@ public class TernaryOperator extends KBase {
     public TernaryOperator(int i) {
         type = 103;
         primitive = i;
-        Character c = (Character) map.get(new Integer(i));
+        Character c = map.get(i);
         if (c != null)
             charVal = c.charValue();
     }

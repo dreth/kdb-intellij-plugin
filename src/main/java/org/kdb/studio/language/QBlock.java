@@ -10,11 +10,11 @@ import com.intellij.psi.formatter.common.AbstractBlock;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.containers.Predicate;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 public class QBlock extends AbstractBlock {
 
@@ -77,7 +77,7 @@ public class QBlock extends AbstractBlock {
 
     protected boolean hasAnyOf(ASTNode node, TokenSet filter, Predicate<ASTNode> nodePredicate) {
         for (ASTNode astNode: node.getChildren(filter)) {
-            if (nodePredicate.apply(astNode)) {
+            if (nodePredicate.test(astNode)) {
                 return true;
             }
         }

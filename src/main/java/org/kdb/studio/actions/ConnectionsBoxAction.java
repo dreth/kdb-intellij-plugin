@@ -1,6 +1,8 @@
 package org.kdb.studio.actions;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
+import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.actionSystem.ex.ComboBoxAction;
@@ -26,6 +28,11 @@ public class ConnectionsBoxAction extends ComboBoxAction {
     public ConnectionsBoxAction() {
         this.connectionManager = ConnectionManager.getInstance();
         this.authenticationDriverManager = AuthenticationDriverManager.getInstance();
+    }
+
+    @Override
+    public ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.EDT;
     }
 
     @Override
@@ -58,7 +65,7 @@ public class ConnectionsBoxAction extends ComboBoxAction {
 
     @NotNull
     @Override
-    protected DefaultActionGroup createPopupActionGroup(JComponent jComponent) {
+    protected DefaultActionGroup createPopupActionGroup(JComponent jComponent, @NotNull DataContext dataContext) {
         DefaultActionGroup actionGroup = new DefaultActionGroup();
         for (Connection connection : connectionManager.getConnections(true)) {
             actionGroup.add(new SelectActiveConnectionAction(connection, connectionManager));

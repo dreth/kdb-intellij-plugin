@@ -164,14 +164,13 @@ public class ExcelExporter {
 
     public void openTable(File file) {
         try {
-            Runtime run = Runtime.getRuntime();
             String lcOSName = System.getProperty("os.name").toLowerCase();
-            boolean MAC_OS_X = lcOSName.startsWith("mac os x");
-            Process p = null;
-            if (MAC_OS_X) {
-                p = run.exec("open " + file);
+            if (lcOSName.startsWith("mac os x")) {
+                new ProcessBuilder("open", file.getAbsolutePath()).start();
+            } else if (lcOSName.startsWith("windows")) {
+                new ProcessBuilder("cmd.exe", "/c", "start", "", file.getAbsolutePath()).start();
             } else {
-                run.exec("cmd.exe /c start " + file);
+                new ProcessBuilder("xdg-open", file.getAbsolutePath()).start();
             }
         } catch (IOException e) {
             Notifications.Bus.notify(new Notification("KDBStudio", "There was an error opening excel.", "Perhaps you do not have Excel installed, or .xls files are not associated with Excel", NotificationType.ERROR));
