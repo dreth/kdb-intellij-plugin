@@ -1,6 +1,10 @@
-# KDB+ Studio plugin for PyCharm Community
+# KDB+ Studio Modern plugin for PyCharm Community
 
 > Maintained fork of the original KDB+ Studio IntelliJ plugin by Andrii Borovyk: https://gitlab.com/shupakabras/kdb-intellij-plugin
+>
+> Fork source: https://github.com/dreth/kdb-intellij-plugin
+>
+> Marketplace plugin ID: `com.dreth.kdb.studio`
 >
 > This fork keeps original author credit and is distributed under GNU GPLv3. Third-party license texts are retained under `src/main/resources/META-INF/licenses/`.
 
