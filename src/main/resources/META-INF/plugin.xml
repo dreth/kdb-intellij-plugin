@@ -1,13 +1,13 @@
 <idea-plugin>
     <id>com.dreth.kdb.studio</id>
-    <name>KDB+ Studio Modern</name>
+    <name>KDB+ Studio CE</name>
     <version>1.1.6</version>
     <vendor url="https://github.com/dreth">dreth</vendor>
 
     <description><![CDATA[
-      Maintained PyCharm Community fork of KDB+ Studio for sending queries to a q database and showing query results.
+      Maintained community fork of KDB+ Studio for sending queries to a q database and showing query results.
       <br/>
-      Original KDB+ Studio IntelliJ plugin by Andrii Borovyk: <a href="https://gitlab.com/shupakabras/kdb-intellij-plugin">https://gitlab.com/shupakabras/kdb-intellij-plugin</a>.
+      Original KDB+ Studio plugin by Andrii Borovyk: <a href="https://gitlab.com/shupakabras/kdb-intellij-plugin">https://gitlab.com/shupakabras/kdb-intellij-plugin</a>.
       <br/>
       Source code for this fork is available at <a href="https://github.com/dreth/kdb-intellij-plugin">https://github.com/dreth/kdb-intellij-plugin</a>.
       <br/>

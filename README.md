@@ -1,6 +1,6 @@
-# KDB+ Studio Modern plugin for PyCharm Community
+# KDB+ Studio CE
 
-> Maintained fork of the original KDB+ Studio IntelliJ plugin by Andrii Borovyk: https://gitlab.com/shupakabras/kdb-intellij-plugin
+> Maintained Marketplace fork of the original KDB+ Studio plugin by Andrii Borovyk: https://gitlab.com/shupakabras/kdb-intellij-plugin
 >
 > Fork source: https://github.com/dreth/kdb-intellij-plugin
 >
@@ -9,7 +9,7 @@
 > This fork keeps original author credit and is distributed under GNU GPLv3. Third-party license texts are retained under `src/main/resources/META-INF/licenses/`.
 
 
-This branch builds against PyCharm 2026.1.3 (JetBrains build 261.25134.203) and requires JDK 21.
+This branch builds against JetBrains build 261.25134.203 and requires JDK 21.
 
 To build the plugin ZIP:
 
@@ -66,4 +66,3 @@ Also note that disabling View->Toolbar will also hide the Studio Toolbar.
  ![Colors](doc/howto_9.png)
 
  To control plugin font, you may use the View -> KDB+ Studio Config -> Font Config dialog window.
-

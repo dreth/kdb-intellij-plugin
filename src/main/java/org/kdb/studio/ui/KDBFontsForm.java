@@ -1,29 +1,28 @@
 package org.kdb.studio.ui;
 
-import com.intellij.application.options.colors.AbstractFontOptionsPanel;
 import com.intellij.openapi.editor.colors.FontPreferences;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.ui.components.JBCheckBox;
-import com.intellij.ui.treeStructure.SimpleTree;
-import com.intellij.util.ui.JBUI;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class KDBFontsForm extends DialogWrapper {
-    private  Project project;
+    private Project project;
     private JPanel panel1;
     private JPanel fontEditor;
-    private SimpleTree tree;
+    private JTree tree;
 
     public KDBFontsForm(@Nullable Project project) {
         super(project);
@@ -77,85 +76,109 @@ public class KDBFontsForm extends DialogWrapper {
         public void setValue(Object value) {
             myValue = value;
         }
-
     }
 
-    private static class MyFontOptionsPanel extends AbstractFontOptionsPanel {
+    private static class MyFontOptionsPanel extends JPanel {
 
-        MyFontPreferences fontPreferences;
+        private MyFontPreferences fontPreferences;
+        private final JComboBox<String> fontFamilyCombo;
+        private final JSpinner fontSizeSpinner;
+        private final JSpinner lineSpacingSpinner;
+        private final JBCheckBox boldCheckbox;
+        private final JBCheckBox italicCheckbox;
+        private boolean updating;
 
-        JBCheckBox boldCheckbox;
-
-        JBCheckBox italicCheckbox;
-
-        protected JComponent createControls() {
-            JPanel settingPanel = createFontSettingsPanel();
-            Component[] components = settingPanel.getComponents();
-            components[components.length -1].setVisible(false);
-            components[components.length -2].setVisible(false);
-            components[components.length -3].setVisible(false);
-            components[components.length -4].setVisible(false);
-            components[components.length -5].setVisible(false);
-            components[components.length -6].setVisible(false);
+        MyFontOptionsPanel() {
+            super(new GridBagLayout());
+            String[] fontFamilies = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+            Arrays.sort(fontFamilies, String.CASE_INSENSITIVE_ORDER);
+            fontFamilyCombo = new JComboBox<>(fontFamilies);
+            fontSizeSpinner = new JSpinner(new SpinnerNumberModel(FontPreferences.DEFAULT_FONT_SIZE, 6, 96, 1));
+            lineSpacingSpinner = new JSpinner(new SpinnerNumberModel((double) FontPreferences.DEFAULT_LINE_SPACING, 0.6d, 3.0d, 0.05d));
+            boldCheckbox = new JBCheckBox("Bold");
+            italicCheckbox = new JBCheckBox("Italic");
 
             GridBagConstraints c = new GridBagConstraints();
+            c.insets = new Insets(4, 4, 4, 4);
             c.anchor = GridBagConstraints.WEST;
-            c.insets = JBUI.insets(BASE_INSET, BASE_INSET, 0, 0);
+            c.fill = GridBagConstraints.HORIZONTAL;
+
+            addRow("Font", fontFamilyCombo, c, 0);
+            addRow("Size", fontSizeSpinner, c, 1);
+            addRow("Line spacing", lineSpacingSpinner, c, 2);
+
+            c.gridx = 1;
+            c.gridy = 3;
+            c.weightx = 1;
+            JPanel stylePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+            stylePanel.add(boldCheckbox);
+            stylePanel.add(italicCheckbox);
+            add(stylePanel, c);
 
             c.gridx = 0;
-            c.gridy = 5;
-            boldCheckbox = new JBCheckBox("Bold");
-            boldCheckbox.addActionListener(e -> fontPreferences.setBold(boldCheckbox.isSelected()));
-            settingPanel.add(boldCheckbox, c);
+            c.gridy = 4;
+            c.gridwidth = 2;
+            c.weighty = 1;
+            c.fill = GridBagConstraints.BOTH;
+            add(Box.createVerticalGlue(), c);
+
+            ActionListener actionListener = e -> applyToPreferences();
+            ChangeListener changeListener = e -> applyToPreferences();
+            fontFamilyCombo.addActionListener(actionListener);
+            boldCheckbox.addActionListener(actionListener);
+            italicCheckbox.addActionListener(actionListener);
+            fontSizeSpinner.addChangeListener(changeListener);
+            lineSpacingSpinner.addChangeListener(changeListener);
+        }
+
+        private void addRow(String label, JComponent component, GridBagConstraints c, int row) {
+            c.gridx = 0;
+            c.gridy = row;
+            c.weightx = 0;
+            c.fill = GridBagConstraints.NONE;
+            add(new JLabel(label), c);
+
             c.gridx = 1;
-            italicCheckbox = new JBCheckBox("Italic");
-            italicCheckbox.addActionListener(e -> fontPreferences.setItalic(italicCheckbox.isSelected()));
-            settingPanel.add(italicCheckbox, c);
-
-            return settingPanel;
+            c.weightx = 1;
+            c.fill = GridBagConstraints.HORIZONTAL;
+            add(component, c);
         }
-        @Override
-        protected boolean isReadOnly() {
-            return false;
-        }
-
-        @Override
-        protected boolean isDelegating() {
-            return false;
-        }
-
 
         public void setFontPreferences(MyFontPreferences fontPreferences) {
             this.fontPreferences = fontPreferences;
         }
 
-        @NotNull
-        @Override
-        protected FontPreferences getFontPreferences() {
-            return fontPreferences;
-        }
-
-        @Override
-        protected void setFontSize(int fontSize) {
-            fontPreferences.setSize(fontPreferences.getFontFamily(), fontSize);
-        }
-
-        @Override
-        protected float getLineSpacing() {
-            return fontPreferences.getLineSpacing();
-        }
-
-        @Override
-        protected void setCurrentLineSpacing(float lineSpacing) {
-            this.fontPreferences.setLineSpacing(lineSpacing);
-        }
-
-        @Override
         public void updateOptionsList() {
-            super.updateOptionsList();
+            if (fontPreferences == null) {
+                return;
+            }
+            updating = true;
+            String family = fontPreferences.getFontFamily();
+            fontFamilyCombo.setSelectedItem(family);
+            if (!family.equals(fontFamilyCombo.getSelectedItem())) {
+                fontFamilyCombo.addItem(family);
+                fontFamilyCombo.setSelectedItem(family);
+            }
+            fontSizeSpinner.setValue(fontPreferences.getSize(family));
+            lineSpacingSpinner.setValue((double) fontPreferences.getLineSpacing());
             boldCheckbox.setSelected(fontPreferences.isBold());
             italicCheckbox.setSelected(fontPreferences.isItalic());
+            updating = false;
+        }
 
+        private void applyToPreferences() {
+            if (updating || fontPreferences == null) {
+                return;
+            }
+            String family = String.valueOf(fontFamilyCombo.getSelectedItem());
+            int size = ((Number) fontSizeSpinner.getValue()).intValue();
+            float lineSpacing = ((Number) lineSpacingSpinner.getValue()).floatValue();
+
+            fontPreferences.clearFonts();
+            fontPreferences.register(family, size);
+            fontPreferences.setLineSpacing(lineSpacing);
+            fontPreferences.setBold(boldCheckbox.isSelected());
+            fontPreferences.setItalic(italicCheckbox.isSelected());
         }
     }
 

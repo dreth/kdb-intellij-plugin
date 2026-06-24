@@ -1,4 +1,5 @@
 import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
+import org.jetbrains.intellij.platform.gradle.models.ProductRelease
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 
 plugins {
@@ -7,7 +8,7 @@ plugins {
 }
 
 group = 'com.dreth.kdb.studio'
-version = '1.2.1'
+version = '1.2.2'
 
 java {
     toolchain {
@@ -51,7 +52,7 @@ dependencies {
 intellijPlatform {
     pluginConfiguration {
         version = project.version
-        changeNotes = 'Marketplace fork: modernized for PyCharm Community 2026.1.3 / PC-261.25134.203.'
+        changeNotes = 'Marketplace fork: renamed KDB+ Studio CE and removed internal JetBrains Platform API usages reported by 2026.2 EAP verification.'
         ideaVersion {
             sinceBuild = '261'
             untilBuild = provider { null }
@@ -63,6 +64,11 @@ intellijPlatform {
             create(IntelliJPlatformType.PyCharmCommunity, '2026.1.3', { config ->
                 config.useInstaller = false
             })
+            latest { filter ->
+                filter.types.set([IntelliJPlatformType.IntellijIdeaCommunity])
+                filter.channels.set([ProductRelease.Channel.EAP])
+                filter.sinceBuild.set('262')
+            }
         }
     }
 }

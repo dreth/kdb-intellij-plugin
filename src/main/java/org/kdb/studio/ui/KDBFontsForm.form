@@ -8,7 +8,7 @@
     <properties/>
     <border type="none"/>
     <children>
-      <component id="7ff3c" class="com.intellij.ui.treeStructure.SimpleTree" binding="tree">
+      <component id="7ff3c" class="javax.swing.JTree" binding="tree">
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="0" anchor="8" fill="2" indent="0" use-parent-layout="false">
             <minimum-size width="200" height="400"/>

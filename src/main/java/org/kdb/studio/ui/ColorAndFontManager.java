@@ -82,8 +82,7 @@ public class ColorAndFontManager {
     protected MyFontPreferences toFontPreferences(Font font) {
         MyFontPreferences myFontPreferences = new MyFontPreferences();
         myFontPreferences.clearFonts();
-        myFontPreferences.getEffectiveFontFamilies().add(font.getFamily());
-        myFontPreferences.setSize(font.getFamily(), font.getSize());
+        myFontPreferences.register(font.getFamily(), font.getSize());
         myFontPreferences.setItalic(font.isItalic());
         myFontPreferences.setBold(font.isBold());
         return myFontPreferences;
