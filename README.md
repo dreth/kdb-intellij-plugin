@@ -4,7 +4,7 @@
 >
 > Fork source: https://github.com/dreth/kdb-intellij-plugin
 >
-> Marketplace plugin ID: `com.dreth.kdb.studio`
+> Marketplace plugin ID: `com.dreth.kdb.studio` ([JetBrains Marketplace](https://plugins.jetbrains.com/plugin/32463-kdb-studio-ce))
 >
 > This fork keeps original author credit and is distributed under GNU GPLv3. Third-party license texts are retained under `src/main/resources/META-INF/licenses/`.
 
